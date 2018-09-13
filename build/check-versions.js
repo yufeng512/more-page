@@ -1,8 +1,8 @@
 'use strict'
-const chalk = require('chalk')
-const semver = require('semver')
-const packageConfig = require('../package.json')
-const shell = require('shelljs')
+const chalk = require('chalk') // 命令行颜色高亮
+const semver = require('semver') // npm包
+const packageConfig = require('../package.json') //获取package.json版本
+const shell = require('shelljs') //执行shell命令
 
 function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()

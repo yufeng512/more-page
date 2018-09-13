@@ -1,11 +1,11 @@
 <template>
-  <div @click="go">cell</div>
+  <div @click="go">goods</div>
 </template>
 <script>
 export default {
   methods: {
     go () {
-      this.$router.push('cellDetail')
+      this.$router.push('goodsDetail')
     }
   }
 }
