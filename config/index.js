@@ -44,7 +44,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: '',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
@@ -68,7 +68,7 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   module: {
-    name: 'cell',
+    name: 'memberPolicy',
     isTestPackage: true
   }
 }
