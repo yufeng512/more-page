@@ -89,7 +89,7 @@ export default {
       sex: "",
       birthDay: '',
       sexList: [{ label: "男", value: 1 }, { label: "女", value: 0 }],
-      mapJson: '../../static/map.json',
+      mapJson: '../../static/json/map.json',
       province:'',
       sheng: '',
       shi: '',
