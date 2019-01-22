@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="map-warpper">
         <div class="map-box" id="map">
         </div>
         <div class="panel-box">
@@ -20,7 +20,7 @@
         </div>
         <div class="select-box" @click="choiceArea">
             <div class="img-box"><img src="@/assets/address.png" alt=""></div>
-            <input placeholder="请选择省市" type="text" class="mint-field-core text-right" readonly="readonly" v-model="areaText">
+            <input placeholder="请选择省市" type="text" readonly disabled v-model="areaText">
         </div>
         <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade" class="mint-popup-4">
             <div class="picker-toolbar">
@@ -55,6 +55,7 @@ export default {
             areaText: '',
             title: '',
             address: '',
+            detailUrl: '',
             popupVisible: false,
             citySlots: [{
                 flex: 1,
@@ -104,8 +105,8 @@ export default {
     mounted(){
         var options = {
             enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
+            timeout: 6000,
+            maximumAge: 1
         }
         navigator.geolocation.getCurrentPosition(this.success, this.error, options);
         setTimeout(()=>{
@@ -128,13 +129,13 @@ export default {
     methods: {
         success(pos) {
             var crd = pos.coords;
-            console.log('Your current position is:');
-            console.log('Latitude : ' + crd.latitude);
-            console.log('Longitude: ' + crd.longitude);
-            console.log('More or less ' + crd.accuracy + ' meters.');
+            alert('Your current position is:');
+            alert('Latitude : ' + crd.latitude);
+            alert('Longitude: ' + crd.longitude);
+            alert('More or less ' + crd.accuracy + ' meters.');
         },
         error(err) {
-            console.warn('ERROR(' + err.code + '): ' + err.message);
+            alert('ERROR(' + err.code + '): ' + err.message);
         },
         choiceArea () {
             this.popupVisible = true
@@ -182,6 +183,7 @@ export default {
         infoWindow (item) {
             this.title = item.title
             this.address = item.address
+            this.detailUrl = item.detailUrl
             let option = { lat: item.point.lat, lng: item.point.lng }
             let point = new BMap.Point(option.lng, option.lat);
             let marker = new BMap.Marker(point);
@@ -191,28 +193,33 @@ export default {
                 width :250,
                 minHeight:45
             }
-            let sContent = document.getElementById('redituser')
+            var sContent = document.getElementById('redituser')
             let infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
             marker.addEventListener("click",function(){
                 map.openInfoWindow(infoWindow,point);
             });
-
             map.enableScrollWheelZoom(true);
             map.openInfoWindow(infoWindow,map.getCenter());//开启信息窗口
         },
         goDetails () {
-            console.log('222222')
+            location.href= this.detailUrl
         }
-    },
-   
+    }
 }
 </script>
 <style scoped>
 .img-box img{
   width: 100%;
 }
+.map-warpper{
+    height: 100%;
+    position: relative;
+}
 .map-box{
+    position: absolute;
+    width: 100%;
     height: 40vh;
+    z-index: 2;
 }
 .select-box{
     position: fixed;
@@ -238,6 +245,7 @@ export default {
     text-indent: 10px;
     font-size: 14px;
     color: #333333;
+    background: none;
     border-left: 1px solid #dbdbdb;
 }
 .select-box::before{
@@ -260,7 +268,7 @@ export default {
     height: 40vh;
 }
 .panel-box{
-    position: fixed;
+    position: absolute;
     height: 60vh;
     width: 100%;
     bottom: 0;
