@@ -155,7 +155,7 @@ export default {
         },
         doSearch () {
             map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
-            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+            map.enableScrollWheelZoom(false);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
             let option = { map:map, autoViewport:false, selectFirstResult: false }
             local = new BMap.LocalSearch(map,{ renderOptions:option});
@@ -187,6 +187,7 @@ export default {
             let option = { lat: item.point.lat, lng: item.point.lng }
             let point = new BMap.Point(option.lng, option.lat);
             let marker = new BMap.Marker(point);
+            marker.setShadow(null)
             // map.addOverlay(marker);
             map.centerAndZoom(point,11);
             let opts ={
@@ -198,7 +199,7 @@ export default {
             marker.addEventListener("click",function(){
                 map.openInfoWindow(infoWindow,point);
             });
-            map.enableScrollWheelZoom(true);
+            map.enableScrollWheelZoom(false);
             map.openInfoWindow(infoWindow,map.getCenter());//开启信息窗口
         },
         goDetails () {

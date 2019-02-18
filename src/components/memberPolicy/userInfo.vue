@@ -78,7 +78,8 @@
   </div>
 </template>
 <script>
-import { getMapJson } from '@/api/memberPolicy/index'
+import { getPosition } from '@/utils/utils'
+import { getMapJson, Provinces, Cities, Districts, MemberUpdate } from '@/api/memberPolicy'
 import axios  from 'axios'
 
 export default {
@@ -104,6 +105,11 @@ export default {
     this.getCityData()
   },
   methods:{
+    provinces () {
+      Provinces().then(res=>{
+        console.log(res)
+      })
+    },
     getCityData () {
       var that = this
       getMapJson(that.mapJson).then(function(response){

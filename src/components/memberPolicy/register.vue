@@ -17,6 +17,8 @@
   </div>
 </template>
 <script>
+import { MemberInsert } from '@/api/memberPolicy/index'
+
 export default {
   data () {
     return {
@@ -28,6 +30,14 @@ export default {
   methods: {
     go () {
       this.$router.push('userInfo')
+    },
+    regiter () {
+      let params = {
+        mobile: '',
+      }
+      MemberInsert(params).then(res=>{
+        console.log(res)
+      })
     }
   }
 }

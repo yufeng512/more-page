@@ -1,5 +1,4 @@
 import Vue from 'Vue'
-import VideoPlayer from 'vue-video-player'
 import VueRouter from 'vue-router'
 import write from './write.vue'
 import '@/styles/index.sass'
