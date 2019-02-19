@@ -39,6 +39,7 @@
     </div>
 </template>
 <script>
+import { getCurrentCity } from '@/api/storeSearch/index'
 var local,
     map,
     address = {},
@@ -103,6 +104,10 @@ export default {
         this.citySlots[2].values = Object.values(address)[0]
     },
     mounted(){
+        getCurrentCity().then(res=>{
+            console.log('1111111', res)
+        })
+        this.getLocation()
         var options = {
             enableHighAccuracy: true,
             timeout: 6000,
@@ -127,6 +132,16 @@ export default {
         },300)
     },
     methods: {
+        getLocation(){
+            if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }else{
+               alert("Geolocation is not supported by this browser.")
+            }
+        },
+        showPosition(position){
+            alert(position.coords.latitude,position.coords.longitude)
+        },
         success(pos) {
             var crd = pos.coords;
             alert('Your current position is:');
@@ -187,8 +202,7 @@ export default {
             let option = { lat: item.point.lat, lng: item.point.lng }
             let point = new BMap.Point(option.lng, option.lat);
             let marker = new BMap.Marker(point);
-            marker.setShadow(null)
-            // map.addOverlay(marker);
+            map.addOverlay(marker);
             map.centerAndZoom(point,11);
             let opts ={
                 width :250,

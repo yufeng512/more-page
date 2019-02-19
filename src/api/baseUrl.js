@@ -1,6 +1,6 @@
 const BASEAPI = process.env.BASE_API
 console.log('请求接口地址',BASEAPI)
-module.exports = { 
+export default { 
     MemberInsert: BASEAPI + 'mobile/member/insert', //会员注册接口
     MemberUpdate: BASEAPI + 'mobile/member/update', //会员更新
     QueryByMobile: BASEAPI + 'mobile/member/queryByMobile/', //根据手机号查询会员信息
@@ -15,4 +15,6 @@ module.exports = {
     Verify: BASEAPI + 'mobile/campaignDetail/verify/', //活动礼包核销
     AddMobile: BASEAPI + 'mobile/campaignDetail/addMobile', //活动礼包自助核销接口
     ListAvailable: BASEAPI + 'mobile/campaign/listAvailable', //渠道查询接口
+    //专柜查询
+    CurrentCity: '/mobile/region/currentCity', //当前城市
 }
