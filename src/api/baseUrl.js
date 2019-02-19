@@ -16,5 +16,4 @@ export default {
     AddMobile: BASEAPI + 'mobile/campaignDetail/addMobile', //活动礼包自助核销接口
     ListAvailable: BASEAPI + 'mobile/campaign/listAvailable', //渠道查询接口
     //专柜查询
-    CurrentCity: '/mobile/region/currentCity', //当前城市
 }

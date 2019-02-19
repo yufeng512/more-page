@@ -56,7 +56,7 @@ export function fetch(url, params = {}) {
         params: params
       })
       .then(response => {
-        console.log(response)
+        // console.log(response)
         resolve(response.data);
       })
       .catch(err => {

@@ -39,19 +39,17 @@
     </div>
 </template>
 <script>
-import { getCurrentCity } from '@/api/storeSearch/index'
+import { getCurrentCity, Provinces, Cities} from '@/api/storeSearch/index'
 var local,
     map,
-    address = {},
-    provinceCodeList = {},
-    cityCodeList = {}
+    address = {}
 export default {
     name: 'store',
     data() { 
         return {
             current: 0,
             panelList: [],
-            currentLocation: '北京',
+            currentLocation: '',
             searchWord: '欧舒丹精品店',
             areaText: '',
             title: '',
@@ -76,50 +74,29 @@ export default {
                 textAlign: 'center'
             }],
             areaList: {
-                "上海": [ "上海" ],
-                "北京": [ "北京" ],
-                "广东": [ "广州", "深圳" ],
-                "江苏": [ "徐州", "南京" ],
-                "福建": [ "福州" ]
-            },
-            provinceCodeList: {
-                "上海": [ "120001" ],
-                "北京": [ "110001" ],
-                "广东": [ "130001" ],
-                "江苏": [ "130007" ],
-                "福建": [ "0100" ]
-            },
-            cityCodeList: {
-                "上海": [ "120002" ],
-                "北京": [ "110002" ],
-                "广州": [ "130002" ],
-                "南京": [ "130006" ],
-                "深圳": [ "518000" ],
-                "福州": [ "0200"],
-                "徐州": [ "130009" ]
+                "上海": [],
+                "北京": [],
+                "广东": [],
+                "江苏": [],
+                "福建": []
             }
         }
     },
     created(){ 
-        address = this.areaList
-        this.citySlots[0].values = Object.keys(address)
-        this.citySlots[2].values = Object.values(address)[0]
+        this.getCurrentCity()
+        this.getProvinces()
     },
     mounted(){
-        this.getLocation()
         let params = {
             longitude: this.longitude,
             latitude: this.latitude,
         }
-        getCurrentCity(params).then(res=>{
-            console.log('1111111', res)
-        })
         var options = {
             enableHighAccuracy: true,
             timeout: 6000,
             maximumAge: 1
         }
-        navigator.geolocation.getCurrentPosition(this.success, this.error, options);
+        // navigator.geolocation.getCurrentPosition(this.success, this.error, options);
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
             // let geolocation = new BMap.Geolocation();
@@ -138,17 +115,32 @@ export default {
         },300)
     },
     methods: {
-        getLocation(){
-            if (navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(this.showPosition);
-            }else{
-               alert("Geolocation is not supported by this browser.")
+        getCurrentCity () {
+            let params = {
+                longitude:121.443010,
+                latitude:31.280850
             }
+            getCurrentCity(params).then((res)=>{
+                console.log(res)
+                this.areaText = res.data.name
+                this.currentLocation = res.data.name
+            })
         },
-        showPosition(position){
-            this.latitude = position.coords.latitude
-            this.longitude = position.coords.longitude
-            alert(position.coords.latitude,position.coords.longitude)
+        getProvinces() {
+            let obj={}
+            Provinces().then((res)=>{ 
+                res.data.forEach((item)=>{
+                    Cities({provinceCode:item.code}).then(r=>{
+                        let arr = []
+                        r.data.forEach((i)=>{ arr.push(i.name) })
+                        obj[item.name] =arr
+                        address = obj
+                        console.log('24545644', address,  Object.keys(address),Object.values(address)[0])
+                        this.citySlots[0].values = Object.keys(address)
+                        this.citySlots[2].values = Object.values(address)[0]
+                    })
+                })
+            })
         },
         success(pos) {
             var crd = pos.coords;
