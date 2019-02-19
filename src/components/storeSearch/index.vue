@@ -58,6 +58,8 @@ export default {
             address: '',
             detailUrl: '',
             popupVisible: false,
+            latitude: '',
+            longitude: '',
             citySlots: [{
                 flex: 1,
                 values: Object.keys(address),
@@ -104,10 +106,14 @@ export default {
         this.citySlots[2].values = Object.values(address)[0]
     },
     mounted(){
-        getCurrentCity().then(res=>{
+        this.getLocation()
+        let params = {
+            longitude: this.longitude,
+            latitude: this.latitude,
+        }
+        getCurrentCity(params).then(res=>{
             console.log('1111111', res)
         })
-        this.getLocation()
         var options = {
             enableHighAccuracy: true,
             timeout: 6000,
@@ -134,12 +140,14 @@ export default {
     methods: {
         getLocation(){
             if (navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(showPosition);
+                navigator.geolocation.getCurrentPosition(this.showPosition);
             }else{
                alert("Geolocation is not supported by this browser.")
             }
         },
         showPosition(position){
+            this.latitude = position.coords.latitude
+            this.longitude = position.coords.longitude
             alert(position.coords.latitude,position.coords.longitude)
         },
         success(pos) {

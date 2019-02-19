@@ -6,6 +6,6 @@ import {
   put
 } from '@/utils/request'
 //当前城市
-export function getCurrentCity() {
-  return fetch(api.CurrentCity)
+export function getCurrentCity(params) {
+  return fetch(api.CurrentCity, params)
 }
