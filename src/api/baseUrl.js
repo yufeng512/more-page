@@ -16,4 +16,5 @@ export default {
     AddMobile: BASEAPI + 'mobile/campaignDetail/addMobile', //活动礼包自助核销接口
     ListAvailable: BASEAPI + 'mobile/campaign/listAvailable', //渠道查询接口
     //专柜查询
+    CounterList: BASEAPI + 'mobile/counter/counterList', //城市门店列表
 }

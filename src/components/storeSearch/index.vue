@@ -12,7 +12,7 @@
                     <p>{{item.address}}</p>
                     <div class="tag">
                         <span>{{item.phoneNumber}}</span>
-                        <span></span>
+                        <span>{{item.distance}}KM</span>
                         <span></span>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import { getCurrentCity, Provinces, Cities} from '@/api/storeSearch/index'
+import { getCurrentCity, getCounterList, Provinces, Cities} from '@/api/storeSearch/index'
 var local,
     map,
     address = {}
@@ -74,56 +74,59 @@ export default {
                 textAlign: 'center'
             }],
             areaList: {
-                "上海": [],
-                "北京": [],
-                "广东": [],
-                "江苏": [],
-                "福建": []
             }
         }
     },
     created(){ 
         this.getCurrentCity()
-        this.getProvinces()
     },
     mounted(){
-        let params = {
-            longitude: this.longitude,
-            latitude: this.latitude,
-        }
+        
         var options = {
             enableHighAccuracy: true,
             timeout: 6000,
             maximumAge: 1
         }
-        // navigator.geolocation.getCurrentPosition(this.success, this.error, options);
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
-            // let geolocation = new BMap.Geolocation();
-            // geolocation.getCurrentPosition(function(r){
-            //     console.log(this)
-                // if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                //     var mk = new BMap.Marker(r.point);
-                //     this.map.addOverlay(mk);
-                //     this.map.panTo(r.point);
-                //     console.log('您的位置：'+r.point.lng+','+r.point.lat);
-                // }else {
-                //     console.log('failed'+this.getStatus());
-                // }
-            // },{enableHighAccuracy: false})
+            let geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function(r){
+                if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                    var mk = new BMap.Marker(r.point);
+                    this.map.addOverlay(mk);
+                    this.map.panTo(r.point);
+                    this.longitude = r.point.lng
+                    this.latitude = r.point.lat
+                    console.log('您的位置：'+r.point.lng+','+r.point.lat);
+                }else {
+                    console.log('failed'+this.getStatus());
+                }
+            },{enableHighAccuracy: false})
+            this.getProvinces()
+            this.counterList()
             this.doSearch()
         },300)
     },
     methods: {
         getCurrentCity () {
             let params = {
-                longitude:121.443010,
-                latitude:31.280850
+                longitude:this.longitude||121.443010,
+                latitude:this.latitude||31.280850
             }
             getCurrentCity(params).then((res)=>{
                 console.log(res)
-                this.areaText = res.data.name
                 this.currentLocation = res.data.name
+            })
+        },
+        counterList () {
+            let params = {
+                city: this.currentLocation,
+                longitude:this.longitude||121.443010,
+                latitude:this.latitude||31.280850
+            }
+            getCounterList(params).then(res=>{
+                console.log(res.data)
+                this.panelList = res.data
             })
         },
         getProvinces() {
@@ -135,22 +138,11 @@ export default {
                         r.data.forEach((i)=>{ arr.push(i.name) })
                         obj[item.name] =arr
                         address = obj
-                        console.log('24545644', address,  Object.keys(address),Object.values(address)[0])
                         this.citySlots[0].values = Object.keys(address)
                         this.citySlots[2].values = Object.values(address)[0]
                     })
                 })
             })
-        },
-        success(pos) {
-            var crd = pos.coords;
-            alert('Your current position is:');
-            alert('Latitude : ' + crd.latitude);
-            alert('Longitude: ' + crd.longitude);
-            alert('More or less ' + crd.accuracy + ' meters.');
-        },
-        error(err) {
-            alert('ERROR(' + err.code + '): ' + err.message);
         },
         choiceArea () {
             this.popupVisible = true
@@ -161,6 +153,7 @@ export default {
         selectaddress () {
             this.popupVisible = false
             this.doSearch()
+            this.counterList()
         },
         onCityChange (picker, values) {
             console.log(picker, values)
@@ -174,22 +167,22 @@ export default {
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
             let option = { map:map, autoViewport:false, selectFirstResult: false }
             local = new BMap.LocalSearch(map,{ renderOptions:option});
-            local.search(this.searchWord);
-            // local.searchNearby([val], mPoint, 2000)
-            local.setSearchCompleteCallback((res)=>{
-                this.panelList = res.Gq
-            })
-            local.setMarkersSetCallback((res)=>{
-                console.log('23423423', res)
-            })
-            local.setInfoHtmlSetCallback((res)=>{
-                console.log('234234231111111111', res)
-                this.panelList.forEach((item,i)=>{
-                    if(item.uid == res.uid){
-                        this.current = i
-                    }
-                })
-            })
+            // local.search(this.searchWord);
+            // // local.searchNearby([val], mPoint, 2000)
+            // local.setSearchCompleteCallback((res)=>{
+            //     this.panelList = res.Gq
+            // })
+            // local.setMarkersSetCallback((res)=>{
+            //     console.log('23423423', res)
+            // })
+            // local.setInfoHtmlSetCallback((res)=>{
+            //     console.log('234234231111111111', res)
+            //     this.panelList.forEach((item,i)=>{
+            //         if(item.uid == res.uid){
+            //             this.current = i
+            //         }
+            //     })
+            // })
         },
         infohtmlset(item,index) {
             this.current = index
@@ -199,7 +192,7 @@ export default {
             this.title = item.title
             this.address = item.address
             this.detailUrl = item.detailUrl
-            let option = { lat: item.point.lat, lng: item.point.lng }
+            let option = { lat: item.latitude, lng: item.longitude }
             let point = new BMap.Point(option.lng, option.lat);
             let marker = new BMap.Marker(point);
             map.addOverlay(marker);

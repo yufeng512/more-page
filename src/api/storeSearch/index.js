@@ -9,6 +9,10 @@ import {
 export function getCurrentCity(params) {
   return fetch(api.CurrentCity, params)
 }
+//城市门店
+export function getCounterList(params) {
+  return fetch(api.CounterList, params)
+}
 export function Provinces() {
     return fetch(api.Provinces)
 }
