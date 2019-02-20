@@ -13,7 +13,7 @@
                     <div class="tag">
                         <span>{{item.phoneNumber}}</span>
                         <span>{{item.distance}}KM</span>
-                        <span></span>
+                        <span>{{item.phone}}</span>
                     </div>
                 </div>
             </div>
@@ -29,12 +29,12 @@
             </div>
             <mt-picker :slots="citySlots" @change="onCityChange" :visible-item-count="5"></mt-picker>
         </mt-popup>
-        <div v-show="false">
-            <div id='redituser'>
-                <h4 style='font-size:14px'>{{title}}</h4>
-                <p style='margin:6px 0;font-size:12px;color:#666666;'>{{address}}</p>
-                <button @click='goDetails' style='color:#666666;font-size:12px;'>到这里去</button>
-            </div>
+        <div id="redituser" style="visibility:hidden;">
+        </div>
+        <div id="tpl" >
+            <h4 style='font-size:14px'>{{title}}</h4>
+            <p style='margin:6px 0;font-size:12px;color:#666666;'>{{address}}</p>
+            <button @click='goDetails' style='color:#666666;font-size:12px;'>到这里去</button>
         </div>
     </div>
 </template>
@@ -50,7 +50,7 @@ export default {
             current: 0,
             panelList: [],
             currentLocation: '',
-            searchWord: '欧舒丹精品店',
+            searchWord: '',
             areaText: '',
             title: '',
             address: '',
@@ -58,6 +58,8 @@ export default {
             popupVisible: false,
             latitude: '',
             longitude: '',
+            targetLatitude: '',
+            targetLongitude: '',
             citySlots: [{
                 flex: 1,
                 values: Object.keys(address),
@@ -83,25 +85,36 @@ export default {
     mounted(){
         
         var options = {
-            enableHighAccuracy: true,
+            enableHighAccuracy: false,
             timeout: 6000,
             maximumAge: 1
         }
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
             let geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function(r){
-                if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                    var mk = new BMap.Marker(r.point);
-                    this.map.addOverlay(mk);
-                    this.map.panTo(r.point);
-                    this.longitude = r.point.lng
-                    this.latitude = r.point.lat
-                    console.log('您的位置：'+r.point.lng+','+r.point.lat);
-                }else {
-                    console.log('failed'+this.getStatus());
+            let r = {
+                point:{
+                    lng:121.44,
+                    lat:31.28
                 }
-            },{enableHighAccuracy: false})
+            }
+            this.longitude = r.point.lng
+            this.latitude = r.point.lat
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            map.panTo(r.point);
+            // geolocation.getCurrentPosition(function(r){
+            //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            //         var mk = new BMap.Marker(r.point);
+            //         map.addOverlay(mk);
+            //         map.panTo(r.point);
+            //         this.latitude = r.point.lat
+            //         this.longitude = r.point.lng
+            //         console.log('您的位置：'+r.point.lng+','+r.point.lat);
+            //     }else {
+            //         console.log('failed'+this.getStatus());
+            //     }
+            // },{enableHighAccuracy: false})
             this.getProvinces()
             this.counterList()
             this.doSearch()
@@ -158,12 +171,12 @@ export default {
         onCityChange (picker, values) {
             console.log(picker, values)
             picker.setSlotValues(1, address[values[0]])
-            this.areaText =values[0]+' / '+ values[1]
+            // this.areaText =values[0]+' / '+ values[1]
             this.currentLocation = values[1]
         },
         doSearch () {
             map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
-            map.enableScrollWheelZoom(false);     //开启鼠标滚轮缩放
+            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
             let option = { map:map, autoViewport:false, selectFirstResult: false }
             local = new BMap.LocalSearch(map,{ renderOptions:option});
@@ -185,32 +198,45 @@ export default {
             // })
         },
         infohtmlset(item,index) {
+            // let sContent = document.getElementById('tpl')
+            // document.getElementById('redituser').appendChild(sContent)
             this.current = index
-            this.infoWindow(item)
+            this.targetLatitude = item.latitude
+            this.targetLongitude = item.longitude
+            this.infoWindow(item,index)
         },
-        infoWindow (item) {
+        infoWindow (item,index) {
             this.title = item.title
             this.address = item.address
-            this.detailUrl = item.detailUrl
             let option = { lat: item.latitude, lng: item.longitude }
-            let point = new BMap.Point(option.lng, option.lat);
-            let marker = new BMap.Marker(point);
-            map.addOverlay(marker);
-            map.centerAndZoom(point,11);
+            let point = new BMap.Point(option.lng, option.lat)
+            let marker = new BMap.Marker(point)
+            map.addOverlay(marker)
+            map.centerAndZoom(point,11)
             let opts ={
                 width :250,
-                minHeight:45
+                minHeight:45,
             }
-            var sContent = document.getElementById('redituser')
+            let sContent = document.getElementById('tpl')
+            console.log(sContent)
             let infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
             marker.addEventListener("click",function(){
                 map.openInfoWindow(infoWindow,point);
             });
-            map.enableScrollWheelZoom(false);
+            map.enableScrollWheelZoom(true);
             map.openInfoWindow(infoWindow,map.getCenter());//开启信息窗口
         },
         goDetails () {
-            location.href= this.detailUrl
+            let sContent = document.getElementById('tpl')
+            document.getElementById('redituser').appendChild(sContent)
+            console.log(this.targetLongitude,this.targetLatitude)
+            // location.href= this.detailUrl
+            // var map = new BMap.Map("map");
+            map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+            var p1 = new BMap.Point(116.301934,39.977552);
+            var p2 = new BMap.Point(116.508328,39.919141);
+            var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+            driving.search(p1, p2);
         }
     }
 }
