@@ -20,6 +20,7 @@
   </div>
 </template>
 <script>
+import {ListAvailable} from '@/api/write/index'
 export default {
   data () {
     return {
@@ -34,9 +35,17 @@ export default {
       phone: ''
     }
   },
+  mounted(){
+    this.getListAvailable()
+  },
   methods: {
     search () {
       this.$router.push({name: 'details', params: {active: this.value, phone:this.phone}})
+    },
+    getListAvailable() {
+        ListAvailable().then(res=>{
+            console.log(res)
+        })
     }
   }
 } 

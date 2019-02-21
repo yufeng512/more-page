@@ -17,3 +17,7 @@ export function Query(params) {
 export function Verify(params) {
   return fetch(api.Verify + params)
 }
+//活动礼包核销
+export function ListAvailable() {
+  return fetch(api.ListAvailable)
+}

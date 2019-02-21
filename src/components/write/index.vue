@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+import {FindByCode} from '@/api/write/index'
 export default {
   data () {
     return {
@@ -20,7 +21,18 @@ export default {
   },
   methods: {
     login () {
-      this.$router.push('search')
+      let params = this.baCode
+      FindByCode(params).then(res=>{
+        console.log(res)
+        if(res.code==0){
+          this.$router.push('search')
+        }else {
+          self.$message({
+            message: res.msg,
+            type: 'fail'
+          });
+        }
+      })
     }
   }
 }

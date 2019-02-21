@@ -9,6 +9,8 @@
     </div>
 </template>
 <script>
+
+import {ListAvailable} from '@/api/write/index'
 export default {
     data () {
         return {
@@ -20,10 +22,16 @@ export default {
     mounted () {
         this.active = '2018年'+this.$route.params.active+'活动'
         this.phone = this.$route.params.phone
+        this.getListAvailable()
     },
     methods:{
         getGift () {
 
+        },
+        getListAvailable() {
+            ListAvailable().then(res=>{
+                console.log(res)
+            })
         }
     }
 }
