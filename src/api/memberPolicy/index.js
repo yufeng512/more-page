@@ -3,7 +3,7 @@ import { fetch, post, patch, put } from '@/utils/request'
 export function getMapJson(url) {
   return fetch(url)
 }
-//会员注册
+//会员新增
 export function MemberInsert(params) {
   return post(api.MemberInsert, params)
 }

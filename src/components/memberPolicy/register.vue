@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div></div>
     <div class="input-item flex-box">
       <input type="number" v-model="phone" placeholder="请输入您的手机号码">
     </div>
@@ -17,6 +16,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
 import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
 import { Message } from 'element-ui'
 
@@ -31,8 +31,13 @@ export default {
   },
   methods: {
     go () {
+      // this.$router.push('userInfo')
     },
     getCode () {
+      let self = this
+      let params = {
+        mobile: this.phone
+      }
       if(this.phone==''){
         this.$message({
           message: '请输入正确的手机号码！',
@@ -40,13 +45,19 @@ export default {
         });
         return false
       }
-      console.log(this.phone)
-      let params = {
-        mobile: this.phone
-      }
-      Send(params).then(res=>{
-        console.log(res)
-
+      $.ajax({ url:"http://172.21.11.23/api/member/mobile/code/send", type:"post", data: params,
+        success:function(data){
+          console.log(data);
+          if(data.code==0){
+            self.$message({
+              message: data.msg,
+              type: 'success'
+            });
+          }
+        },
+        error:function(e){
+          console.log("错误！！");
+        }
       })
     },
     regiter () {
@@ -54,6 +65,7 @@ export default {
         mobile: this.phone,
         code: this.code
       }
+      
       if(!this.checked){
         this.$message({
           message: '请勾选隐私条款！',
@@ -61,13 +73,15 @@ export default {
         });
         return false
       }
-      MemberInsert(params).then(res=>{
+      CodeVerify(params).then(res=>{
         if(res.code == 0){
           this.$message({
-            message: '注册成功',
+            message: res.msg,
             type: 'warning'
           });
-          this.$router.push('userInfo')
+          setTimeout(function(){
+            this.$router.push('userInfo')
+          },1000)
         }
       })
     }

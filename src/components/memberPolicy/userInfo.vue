@@ -4,20 +4,20 @@
     <div class="input-item">
       <span>姓名*</span>
       <div class="input-box">
-        <el-input v-model="name" type="text" placeholder="请输入您的姓名" size="small"></el-input>
+        <el-input v-model="params.name" type="text" placeholder="请输入您的姓名" size="small"></el-input>
       </div>
     </div>
     <div class="input-item">
       <span>手机号码*</span>
       <div class="input-box">
-        <el-input v-model="phone" type="number" placeholder="请输入您的手机号码" size="small"></el-input>
+        <el-input v-model="params.mobile" type="number" placeholder="请输入您的手机号码" size="small"></el-input>
       </div>
     </div>
     <div class="input-item">
       <span>生日*</span>
       <div class="input-box">
         <el-date-picker
-          v-model="birthDay"
+          v-model="params.birthDay"
           type="date"
           placeholder="请输入您的生日" 
           size="small">
@@ -27,7 +27,7 @@
     <div class="input-item">
       <span>性别*</span>
       <div class="input-box">
-        <el-select v-model="sex" placeholder="请选择性别" size="small">
+        <el-select v-model="params.sex" placeholder="请选择性别" size="small">
           <el-option
             v-for="item in sexList"
             :key="item.value"
@@ -40,25 +40,25 @@
     <div class="input-item">
       <span>省市区</span>
       <div class="input-box">
-        <el-select v-model="sheng" @change="choseProvince" placeholder="省级地区" size="small">
+        <el-select v-model="params.province" @change="choseProvince" placeholder="省级地区" size="small">
           <el-option
-            v-for="item in province"
+            v-for="item in provinces"
             :key="item.id"
             :label="item.value"
             :value="item.id">
           </el-option>
         </el-select>
-        <el-select  v-model="shi" @change="choseCity" placeholder="市级地区" size="small">
+        <el-select  v-model="params.city" @change="choseCity" placeholder="市级地区" size="small">
           <el-option
-            v-for="item in shi1"
+            v-for="item in citys"
             :key="item.id"
             :label="item.value"
             :value="item.id">
           </el-option>
         </el-select>
-        <el-select v-model="qu" @change="choseBlock" placeholder="区级地区" size="small">
+        <el-select v-model="params.region" @change="choseBlock" placeholder="区级地区" size="small">
           <el-option
-             v-for="item in qu1"
+             v-for="item in regions"
             :key="item.id"
             :label="item.value"
             :value="item.id">
@@ -69,11 +69,11 @@
     <div class="input-item">
       <span>详细地址*</span>
       <div class="input-box">
-        <input type="number" placeholder="请输入您的地址">
+        <input type="number" v-model="params.address" placeholder="请输入您的地址">
       </div>
     </div>
     <div class="btn-item flex-box">
-      <button>提交信息</button>
+      <button @click="save">提交信息</button>
     </div>
   </div>
 </template>
@@ -85,61 +85,66 @@ import axios  from 'axios'
 export default {
   data() {
     return {
-      name: '',
-      phone: '',
-      sex: "",
-      birthDay: '',
+      params:{
+        name: '',
+        mobile: '',
+        sex: "",
+        birthDay: '',
+        province: '',
+        city: '',
+        region: '',
+        address:''
+      },
       sexList: [{ label: "男", value: 1 }, { label: "女", value: 0 }],
       mapJson: '../../static/json/map.json',
-      province:'',
-      sheng: '',
-      shi: '',
-      shi1: [],
-      qu: '',
-      qu1: [],
-      city:'',
-      block:''
+      provinces: [],
+      citys: [],
+      regions: []
     };
   },
   mounted () {
     this.getCityData()
   },
   methods:{
-    provinces () {
-      Provinces().then(res=>{
-        console.log(res)
-      })
+    save () {
+      let params = this.params
+      console.log(params)
     },
+    // provinces () {
+    //   Provinces().then(res=>{
+    //     console.log(res)
+    //   })
+    // },
     getCityData () {
       var that = this
       getMapJson(that.mapJson).then(function(response){
         var data = response
-        that.province = []
-        that.city = []
-        that.block = []
+        that.provinces = []
+        that.citys = []
+        that.regions = []
         // 省市区数据分类
         for (var item in data) {
           if (item.match(/0000$/)) {//省
-            that.province.push({id: item, value: data[item], children: []})
+            that.provinces.push({id: item, value: data[item], children: []})
           } else if (item.match(/00$/)) {//市
-            that.city.push({id: item, value: data[item], children: []})
+            that.citys.push({id: item, value: data[item], children: []})
           } else {//区
-            that.block.push({id: item, value: data[item]})
+            that.regions.push({id: item, value: data[item]})
           }
         }
         // 分类市级
-        for (var index in that.province) {
-          for (var index1 in that.city) {
-            if (that.province[index].id.slice(0, 2) === that.city[index1].id.slice(0, 2)) {
-              that.province[index].children.push(that.city[index1])
+        for (var index in that.provinces) {
+          for (var index1 in that.citys) {
+            if (that.provinces[index].id.slice(0, 2) === that.citys[index1].id.slice(0, 2)) {
+              that.provinces[index].children.push(that.citys[index1])
             }
           }
         }
         // 分类区级
-        for(var item1 in that.city) {
-          for(var item2 in that.block) {
-            if (that.block[item2].id.slice(0, 4) === that.city[item1].id.slice(0, 4)) {
-              that.city[item1].children.push(that.block[item2])
+        for(var item1 in that.citys) {
+          for(var item2 in that.regions) {
+            if (that.regions[item2].id.slice(0, 4) === that.citys[item1].id.slice(0, 4)) {
+              that.citys[item1].children.push(that.regions[item2])
             }
           }
         }
@@ -147,23 +152,23 @@ export default {
     },
     // 选省
     choseProvince (e) {
-      for (var index2 in this.province) {
-        if (e === this.province[index2].id) {
-          this.shi1 = this.province[index2].children
-          this.shi = this.province[index2].children[0].value
-          this.qu1 =this.province[index2].children[0].children
-          this.qu = this.province[index2].children[0].children[0].value
-          this.E = this.qu1[0].id
+      for (var index2 in this.provinces) {
+        if (e === this.provinces[index2].id) {
+          this.citys = this.provinces[index2].children
+          this.city = this.provinces[index2].children[0].value
+          this.regions =this.provinces[index2].children[0].children
+          this.region = this.provinces[index2].children[0].children[0].value
+          this.E = this.regions[0].id
         }
       }
     },
     // 选市
     choseCity (e) {
-      for (var index3 in this.city) {
-        if (e === this.city[index3].id) {
-          this.qu1 = this.city[index3].children
-          this.qu = this.city[index3].children[0].value
-          this.E = this.qu1[0].id
+      for (var index3 in this.citys) {
+        if (e === this.citys[index3].id) {
+          this.regions = this.citys[index3].children
+          this.region = this.citys[index3].children[0].value
+          this.E = this.regions[0].id
           // console.log(this.E)
         }
       }

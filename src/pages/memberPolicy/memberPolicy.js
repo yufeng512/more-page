@@ -1,4 +1,5 @@
 import Vue from 'Vue'
+import axios from 'axios'
 import VueRouter from 'vue-router'
 import memberPolicy from './memberPolicy.vue'
 import routes from '../../router/memberPolicy.js'
@@ -11,7 +12,7 @@ import {
   DatePicker,
   Message
 } from 'element-ui'
-
+Vue.prototype.$ajax = axios;
 Vue.component(Button.name, Button);
 Vue.component(Input.name, Input);
 Vue.component(Select.name, Select);
