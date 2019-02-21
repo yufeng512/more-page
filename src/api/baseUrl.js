@@ -17,4 +17,7 @@ export default {
     ListAvailable: BASEAPI + 'mobile/campaign/listAvailable', //渠道查询接口
     //专柜查询
     CounterList: BASEAPI + 'mobile/counter/counterList', //城市门店列表
+    //会员注册
+    Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
+    CodeVerify: BASEAPI + 'mobile/code/verify' //校验短信验证码接口
 }

@@ -8,7 +8,8 @@ import {
   Button,
   Select,
   Option,
-  DatePicker
+  DatePicker,
+  Message
 } from 'element-ui'
 
 Vue.component(Button.name, Button);
@@ -16,6 +17,8 @@ Vue.component(Input.name, Input);
 Vue.component(Select.name, Select);
 Vue.component(Option.name, Option);
 Vue.component(DatePicker.name, DatePicker);
+
+Vue.prototype.$message = Message;
 
 Vue.use(VueRouter)
 var router = new VueRouter({

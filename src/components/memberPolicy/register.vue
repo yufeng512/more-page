@@ -6,18 +6,20 @@
     </div>
     <div class="input-item flex-box">
       <input type="number" v-model="code" placeholder="请输入验证码">
-      <button>获取验证码</button>
+      <button @click="getCode">获取验证码</button>
     </div>
     <div class="input-item flex-box">
       <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span>隐私条款</span>，并同意接受其中的所有条款。</p>
     </div>
     <div class="btn-item flex-box">
-      <button @click="go">注册绑定</button>
+      <button @click="regiter">注册绑定</button>
     </div>
   </div>
 </template>
 <script>
-import { MemberInsert } from '@/api/memberPolicy/index'
+import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
+import { Message } from 'element-ui'
+
 
 export default {
   data () {
@@ -29,14 +31,44 @@ export default {
   },
   methods: {
     go () {
-      this.$router.push('userInfo')
+    },
+    getCode () {
+      if(this.phone==''){
+        this.$message({
+          message: '请输入正确的手机号码！',
+          type: 'warning'
+        });
+        return false
+      }
+      console.log(this.phone)
+      let params = {
+        mobile: this.phone
+      }
+      Send(params).then(res=>{
+        console.log(res)
+
+      })
     },
     regiter () {
       let params = {
-        mobile: '',
+        mobile: this.phone,
+        code: this.code
+      }
+      if(!this.checked){
+        this.$message({
+          message: '请勾选隐私条款！',
+          type: 'warning'
+        });
+        return false
       }
       MemberInsert(params).then(res=>{
-        console.log(res)
+        if(res.code == 0){
+          this.$message({
+            message: '注册成功',
+            type: 'warning'
+          });
+          this.$router.push('userInfo')
+        }
       })
     }
   }

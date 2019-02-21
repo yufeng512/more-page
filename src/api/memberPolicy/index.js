@@ -7,6 +7,14 @@ export function getMapJson(url) {
 export function MemberInsert(params) {
   return post(api.MemberInsert, params)
 }
+//获取验证码
+export function Send(data) {
+  return post(api.Send, data)
+}
+//验证验证码
+export function CodeVerify(params) {
+  return fetch(api.CodeVerify, params)
+}
 //会员更新
 export function MemberUpdate(params) {
   return post(api.MemberUpdate, params)
