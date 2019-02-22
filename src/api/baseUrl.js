@@ -19,5 +19,6 @@ export default {
     CounterList: BASEAPI + 'mobile/counter/counterList', //城市门店列表
     //会员注册
     Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
-    CodeVerify: BASEAPI + 'mobile/code/verify' //校验短信验证码接口
+    CodeVerify: BASEAPI + 'mobile/code/verify', //校验短信验证码接口
+    Login: BASEAPI + 'mobile/auth/login' //校验短信验证码接口
 }

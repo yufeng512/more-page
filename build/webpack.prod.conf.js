@@ -14,7 +14,7 @@ const vConsolePlugin = require('vconsole-webpack-plugin')
 
 
 // 新增
-const env = config.dev.env
+const env = config.build.env
 env.IS_PRO = config.module.isTestPackage //打包属性
 
 const webpackConfig = merge(baseWebpackConfig, {

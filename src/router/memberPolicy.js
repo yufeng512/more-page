@@ -9,10 +9,12 @@ const routes = [
   },
   {
     path: '/register',
+    name: 'register',
     component: register
   },
   {
     path: '/userInfo',
+    name: 'userInfo',
     component: userInfo
   }
 ]

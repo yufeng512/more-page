@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="register-box">
+      <img src="@/assets/memberPolicy/logo.jpg" alt="">
+    </div>
     <div class="input-item flex-box">
       <input type="number" v-model="phone" placeholder="请输入您的手机号码">
     </div>
@@ -45,12 +48,12 @@ export default {
         });
         return false
       }
-      $.ajax({ url:"http://172.21.11.23/api/member/mobile/code/send", type:"post", data: params,
+      $.ajax({ url:process.env.BASE_API+"mobile/code/send", type:"post", data: params,
         success:function(data){
-          console.log(data);
+          // alert(JSON.stringify(data))
           if(data.code==0){
             self.$message({
-              message: data.msg,
+              message: '获取成功',
               type: 'success'
             });
           }
@@ -61,26 +64,40 @@ export default {
       })
     },
     regiter () {
+      let self = this
       let params = {
-        mobile: this.phone,
-        code: this.code
+        mobile: self.phone,
+        code: self.code
       }
-      
-      if(!this.checked){
+      if(this.phone==''){
         this.$message({
+          message: '请输入正确的手机号码！',
+          type: 'warning'
+        });
+        return false
+      } else if(this.code==''){
+        this.$message({
+          message: '请输入验证码！',
+          type: 'warning'
+        });
+        return false
+      }
+      if(!self.checked){
+        self.$message({
           message: '请勾选隐私条款！',
           type: 'warning'
         });
         return false
       }
       CodeVerify(params).then(res=>{
+        // alert(JSON.stringify(res))
         if(res.code == 0){
-          this.$message({
+          self.$message({
             message: res.msg,
-            type: 'warning'
+            type: 'success'
           });
           setTimeout(function(){
-            this.$router.push('userInfo')
+            self.$router.push({name:'userInfo',params:{mobile: self.mobile}})
           },1000)
         }
       })
@@ -89,6 +106,11 @@ export default {
 }
 </script>
 <style lang="sass" scoped>
+.register-box img
+  width: 100%
+.register-box
+  padding: 10px
+
 .btn-item
   margin-top: 20px
   padding: 0 20px
@@ -128,6 +150,7 @@ export default {
     margin-left: 6px
     span
       color: rgba(47,117,181,1)
+
 
 </style>
 

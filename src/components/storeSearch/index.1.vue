@@ -177,7 +177,7 @@ export default {
             this.infoWindow(item,index)
         },
         infoWindow (item,index) {
-            this.title = item.title==undefined?'--': item.title
+            this.title = item.title
             this.address = item.address
             let option = { lat: item.latitude, lng: item.longitude }
             let point = new BMap.Point(option.lng, option.lat)
@@ -188,8 +188,17 @@ export default {
                 width :250,
                 minHeight:45,
             }
-            // let sContent = document.getElementById('tpl')
-            let sContent = `<div>`+this.title +`</div><div style="margin: 6px 0">`+item.address+`</div><button>到这里去</button>`
+            // let opts ={
+            //     boxStyle:{
+            //         background: "#ffffff",
+            //         width: "250px",
+            //         padding: "10px"
+            //     },
+            //     closeIconMargin: "10px 2px 0 0",
+            //     enableAutoPan: true,
+            //     alignBottom: false
+            // }
+            let sContent = document.getElementById('tpl')
             console.log(sContent)
             // var infoWindow =  new BMapLib.InfoBox(map,sContent,opts);
             // infoWindow.open(marker)
@@ -203,9 +212,9 @@ export default {
             map.openInfoWindow(infoWindow, map.getCenter());//开启信息窗口
         },
         goDetails () {
-            // let sContent = document.getElementById('tpl')
-            // console.log(sContent)
-            // document.getElementById('redituser').appendChild(sContent)
+            let sContent = document.getElementById('tpl')
+            console.log(sContent)
+            document.getElementById('redituser').appendChild(sContent)
             map.centerAndZoom(new BMap.Point(this.longitude, this.latitude), 11);
             map.clearOverlays()
             var p1 = new BMap.Point(this.longitude,this.latitude);
@@ -319,9 +328,6 @@ export default {
 }
 .mint-popup-4{
     width: 100%;
-}
-.address{
-    margin: 6px 0;
 }
 </style>
 

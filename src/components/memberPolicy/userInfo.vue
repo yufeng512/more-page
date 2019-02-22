@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div></div>
+    <div class="register-box">
+      <img src="@/assets/memberPolicy/logo.jpg" alt="">
+    </div>
     <div class="input-item">
       <span>姓名*</span>
       <div class="input-box">
@@ -17,9 +19,11 @@
       <span>生日*</span>
       <div class="input-box">
         <el-date-picker
-          v-model="params.birthDay"
+          v-model="params.birthday"
           type="date"
+          value-format="yyyy-MM-dd"
           placeholder="请输入您的生日" 
+          :editable="false"
           size="small">
         </el-date-picker>
       </div>
@@ -44,24 +48,24 @@
           <el-option
             v-for="item in provinces"
             :key="item.id"
-            :label="item.value"
-            :value="item.id">
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
         <el-select  v-model="params.city" @change="choseCity" placeholder="市级地区" size="small">
           <el-option
             v-for="item in citys"
             :key="item.id"
-            :label="item.value"
-            :value="item.id">
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
         <el-select v-model="params.region" @change="choseBlock" placeholder="区级地区" size="small">
           <el-option
              v-for="item in regions"
             :key="item.id"
-            :label="item.value"
-            :value="item.id">
+            :label="item.text"
+            :value="item.value">
           </el-option>
         </el-select>
       </div>
@@ -69,7 +73,7 @@
     <div class="input-item">
       <span>详细地址*</span>
       <div class="input-box">
-        <input type="number" v-model="params.address" placeholder="请输入您的地址">
+        <input type="text" v-model="params.address" placeholder="请输入您的地址">
       </div>
     </div>
     <div class="btn-item flex-box">
@@ -79,8 +83,9 @@
 </template>
 <script>
 import { getPosition } from '@/utils/utils'
-import { getMapJson, Provinces, Cities, Districts, MemberUpdate } from '@/api/memberPolicy'
-import axios  from 'axios'
+import $ from 'jquery'
+import { getMapJson, ProvincesList, Cities, Districts, MemberUpdate, MemberInsert } from '@/api/memberPolicy'
+import _  from 'lodash'
 
 export default {
   data() {
@@ -89,7 +94,7 @@ export default {
         name: '',
         mobile: '',
         sex: "",
-        birthDay: '',
+        birthday: '',
         province: '',
         city: '',
         region: '',
@@ -103,85 +108,138 @@ export default {
     };
   },
   mounted () {
-    this.getCityData()
+    this.getProvincesList()
+    if(this.$route.params.mobile){
+      this.params.mobile = this.$route.params.mobile
+    }
+    this.params = this.$route.params
+    console.log(this.params)
+    if(this.$route.params.name){
+      this.getData()
+    }
   },
   methods:{
     save () {
-      let params = this.params
-      console.log(params)
+      let self = this
+      // self.params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      // self.params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      self.params.openId = localStorage.getItem("openId")
+      self.params.unionId = localStorage.getItem("unionId")
+      alert(JSON.stringify(self.params))
+      alert(localStorage.getItem("member"))
+      if (localStorage.getItem("member")){
+        alert(1111)
+        MemberUpdate(self.params).then(res=>{
+          alert('res'+JSON.stringify(res))
+          if(res.code == 0){
+            self.$router.push('index')
+          }
+        }).catch(err=>{
+          alert('err'+JSON.stringify(err))
+        })
+      }else{
+        alert(222222)
+        MemberInsert(self.params).then(res=>{
+          alert('res'+JSON.stringify(res))
+          if(res.code == 0){
+            self.$router.push('index')
+          }
+        }).catch(err=>{
+          alert('err'+JSON.stringify(err))
+        })
+      }
     },
-    // provinces () {
-    //   Provinces().then(res=>{
-    //     console.log(res)
-    //   })
-    // },
-    getCityData () {
-      var that = this
-      getMapJson(that.mapJson).then(function(response){
-        var data = response
-        that.provinces = []
-        that.citys = []
-        that.regions = []
-        // 省市区数据分类
-        for (var item in data) {
-          if (item.match(/0000$/)) {//省
-            that.provinces.push({id: item, value: data[item], children: []})
-          } else if (item.match(/00$/)) {//市
-            that.citys.push({id: item, value: data[item], children: []})
-          } else {//区
-            that.regions.push({id: item, value: data[item]})
-          }
-        }
-        // 分类市级
-        for (var index in that.provinces) {
-          for (var index1 in that.citys) {
-            if (that.provinces[index].id.slice(0, 2) === that.citys[index1].id.slice(0, 2)) {
-              that.provinces[index].children.push(that.citys[index1])
-            }
-          }
-        }
-        // 分类区级
-        for(var item1 in that.citys) {
-          for(var item2 in that.regions) {
-            if (that.regions[item2].id.slice(0, 4) === that.citys[item1].id.slice(0, 4)) {
-              that.citys[item1].children.push(that.regions[item2])
-            }
-          }
-        }
-      }).catch(function(error){console.log(typeof+ error)})
+    getData () {
+      let self = this
+      ProvincesList().then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        self.provinces =  obj
+      })
+      Cities({provinceCode: this.member.province}).then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        self.citys =  obj
+      })
+      Districts({cityCode: this.member.city}).then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        self.regions =  obj
+      })
+    },
+    getProvincesList(){
+      ProvincesList().then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        this.provinces =  obj
+        })
     },
     // 选省
     choseProvince (e) {
-      for (var index2 in this.provinces) {
-        if (e === this.provinces[index2].id) {
-          this.citys = this.provinces[index2].children
-          this.city = this.provinces[index2].children[0].value
-          this.regions =this.provinces[index2].children[0].children
-          this.region = this.provinces[index2].children[0].children[0].value
-          this.E = this.regions[0].id
-        }
-      }
+      console.log(e,this.provinces)
+      Cities({provinceCode: e}).then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        this.citys =  obj
+      })
+      
     },
     // 选市
     choseCity (e) {
-      for (var index3 in this.citys) {
-        if (e === this.citys[index3].id) {
-          this.regions = this.citys[index3].children
-          this.region = this.citys[index3].children[0].value
-          this.E = this.regions[0].id
-          // console.log(this.E)
-        }
-      }
+      console.log(e)
+      Districts({cityCode: e}).then(res=>{
+        console.log(res)
+        let obj = []
+        res.data.forEach(item => {
+          obj.push({
+            text: item.name,
+            value: item.code
+          })
+        });
+        this.regions =  obj
+      })
     },
-    // 选区
     choseBlock (e) {
-      this.E=e;
-      // console.log(this.E)
     }
   }
 };
 </script>
 <style lang="sass" scoped>
+.register-box img
+  width: 100%
+.register-box
+  padding: 10px
+
 .btn-item
   margin-top: 20px
   padding: 0 20px

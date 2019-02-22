@@ -7,6 +7,10 @@ export function getMapJson(url) {
 export function MemberInsert(params) {
   return post(api.MemberInsert, params)
 }
+//会员新增
+export function Login(params) {
+  return post(api.Login, params)
+}
 //获取验证码
 export function Send(data) {
   return post(api.Send, data)
@@ -32,7 +36,7 @@ export function CurrentCity(params) {
   return fetch(api.CurrentCity, params)
 }
 //获取省
-export function Provinces(params) {
+export function ProvincesList(params) {
   return fetch(api.Provinces, params)
 }
 //获取城市
