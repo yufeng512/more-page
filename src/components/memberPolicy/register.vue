@@ -29,8 +29,10 @@ export default {
     return {
       phone: '',
       code: '',
-      checked: false
+      checked: true
     }
+  },
+  mounted(){
   },
   methods: {
     go () {
@@ -39,27 +41,22 @@ export default {
     getCode () {
       let self = this
       let params = {
-        mobile: this.phone
+        mobile: self.phone
       }
-      if(this.phone==''){
-        this.$message({
-          message: '请输入正确的手机号码！',
-          type: 'warning'
-        });
+      if(self.phone==''){
+        self.$toast("请输入手机号码！");
         return false
       }
       $.ajax({ url:process.env.BASE_API+"mobile/code/send", type:"post", data: params,
         success:function(data){
-          // alert(JSON.stringify(data))
           if(data.code==0){
-            self.$message({
-              message: '获取成功',
-              type: 'success'
-            });
+            self.$toast("已成功获取验证码！");
+          }else{
+            self.$toast(data.msg);
           }
         },
         error:function(e){
-          console.log("错误！！");
+          self.$toast(e.msg);
         }
       })
     },
@@ -70,35 +67,25 @@ export default {
         code: self.code
       }
       if(this.phone==''){
-        this.$message({
-          message: '请输入正确的手机号码！',
-          type: 'warning'
-        });
+        self.$toast('请输入手机号码！');
         return false
       } else if(this.code==''){
-        this.$message({
-          message: '请输入验证码！',
-          type: 'warning'
-        });
+        self.$toast('请输入验证码！');
         return false
       }
       if(!self.checked){
-        self.$message({
-          message: '请勾选隐私条款！',
-          type: 'warning'
-        });
+        self.$toast('请勾选隐私条款！');
         return false
       }
       CodeVerify(params).then(res=>{
         // alert(JSON.stringify(res))
         if(res.code == 0){
-          self.$message({
-            message: res.msg,
-            type: 'success'
-          });
+          self.$toast('验证成功');
           setTimeout(function(){
             self.$router.push({name:'userInfo',params:{mobile: self.mobile}})
-          },1000)
+          },1500)
+        }else{
+          self.$toast(res.msg);
         }
       })
     }

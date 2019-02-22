@@ -3,6 +3,9 @@ import axios from 'axios'
 import VueRouter from 'vue-router'
 import memberPolicy from './memberPolicy.vue'
 import routes from '../../router/memberPolicy.js'
+import Toast from '@/components/Toast'
+Vue.use(Toast);
+
 import '@/styles/index.sass'
 import {
   Input,
@@ -10,7 +13,8 @@ import {
   Select,
   Option,
   DatePicker,
-  Message
+  Message,
+  MessageBox
 } from 'element-ui'
 Vue.prototype.$ajax = axios;
 Vue.component(Button.name, Button);
@@ -20,7 +24,8 @@ Vue.component(Option.name, Option);
 Vue.component(DatePicker.name, DatePicker);
 
 Vue.prototype.$message = Message;
-
+Vue.prototype.$msgbox = MessageBox;
+Vue.use(Toast);
 Vue.use(VueRouter)
 var router = new VueRouter({
   routes
