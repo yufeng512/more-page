@@ -1,18 +1,17 @@
 <template>
   <div>
-    <img src="../../assets/logo.png" alt="">
     <div class="item-box">
       <el-select v-model="value" placeholder="选择活动" size="small">
         <el-option
           v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.label">
+          :key="item.id"
+          :label="item.text"
+          :value="item.id">
         </el-option>
       </el-select>
     </div>
     <div class="item-box">
-      <el-input v-model="phone" placeholder="参与人手机号" size="small"></el-input>
+      <el-input v-model="mobile" placeholder="参与人手机号" size="small"></el-input>
     </div>
     <div class="item-box">
       <el-button @click="search" type="primary" size="small">查询</el-button>
@@ -20,31 +19,47 @@
   </div>
 </template>
 <script>
-import {ListAvailable} from '@/api/write/index'
+import {ListAvailable, Query} from '@/api/write/index'
 export default {
   data () {
     return {
-      options: [
-        { value: '选项1', label: '黄金糕' }, 
-        { value: '选项2', label: '双皮奶' }, 
-        { value: '选项3', label: '蚵仔煎' }, 
-        { value: '选项4', label: '龙须面' }, 
-        { value: '选项5', label: '北京烤鸭' }
-        ],
+      options: [],
       value: '',
-      phone: ''
+      mobile: '',
+      baCode: ''
     }
   },
   mounted(){
+    this.baCode = this.$route.params.code
     this.getListAvailable()
   },
   methods: {
     search () {
-      this.$router.push({name: 'details', params: {active: this.value, phone:this.phone}})
+      let params = {
+        baCode: this.baCode,
+        mobile: this.mobile,
+        campaignId: this.value
+      }
+      Query(params).then(res=>{
+        console.log(res)
+        let obj = res.data.campaign
+        if(res.code == 0){
+          this.$router.push({name: 'details', params: {active: obj.campaignName, mobile:this.mobile}})
+        }
+      })
     },
     getListAvailable() {
         ListAvailable().then(res=>{
-            console.log(res)
+          console.log(res)
+            let obj = []
+            res.data.forEach(item => {
+              obj.push({
+                text: item.campaignName,
+                value: item.campaignStatus,
+                id: item.id,
+              })
+            });
+            this.options = obj
         })
     }
   }

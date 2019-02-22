@@ -1,8 +1,8 @@
 <template>
     <div class="warpper">
-        <p>{{active}}</p>
-        <p>参与人手机号：{{phone}}</p>
-        <p>可领取礼包：{{gift}}</p>
+        <p>{{params.active}}</p>
+        <p>参与人手机号：{{params.mobile}}</p>
+        <p>可领取礼包：{{params.gift}}</p>
         <div class="item-box">
             <el-button @click="getGift" type="primary" size="small">确认领取</el-button>
         </div>
@@ -14,15 +14,15 @@ import {ListAvailable} from '@/api/write/index'
 export default {
     data () {
         return {
-            active: '2018年*************活动',
-            phone: '',
-            gift: ''
+            params:{
+                active: '',
+                mobile: '',
+                gift: ''
+            }
         }
     },
     mounted () {
-        this.active = '2018年'+this.$route.params.active+'活动'
-        this.phone = this.$route.params.phone
-        this.getListAvailable()
+        this.params = this.$route.params
     },
     methods:{
         getGift () {

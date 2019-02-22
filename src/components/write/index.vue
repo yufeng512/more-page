@@ -21,11 +21,12 @@ export default {
   },
   methods: {
     login () {
-      let params = this.baCode
+      let self = this
+      let params = self.baCode
       FindByCode(params).then(res=>{
         console.log(res)
         if(res.code==0){
-          this.$router.push('search')
+          self.$router.push({name:'search',params:{code: self.baCode}})
         }else {
           self.$message({
             message: res.msg,

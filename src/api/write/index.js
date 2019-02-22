@@ -11,7 +11,7 @@ export function FindByCode(params) {
 }
 //活动礼包查询
 export function Query(params) {
-  return fetch(api.Query + params)
+  return fetch(api.Query, params)
 }
 //活动礼包核销
 export function Verify(params) {
