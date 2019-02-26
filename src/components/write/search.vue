@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted(){
-    this.baCode = this.$route.params.code
+    this.baCode = localStorage.getItem('baCode')
     this.getListAvailable()
   },
   methods: {
@@ -44,23 +44,23 @@ export default {
         console.log(res)
         let obj = res.data.campaign
         if(res.code == 0){
-          this.$router.push({name: 'details', params: {active: obj.campaignName, mobile:this.mobile}})
+          this.$router.push({name:'details',params: res.data})
         }
       })
     },
     getListAvailable() {
-        ListAvailable().then(res=>{
-          console.log(res)
-            let obj = []
-            res.data.forEach(item => {
-              obj.push({
-                text: item.campaignName,
-                value: item.campaignStatus,
-                id: item.id,
-              })
-            });
-            this.options = obj
-        })
+      ListAvailable().then(res=>{
+        console.log(res)
+          let obj = []
+          res.data.forEach(item => {
+            obj.push({
+              text: item.campaignName,
+              value: item.campaignStatus,
+              id: item.id,
+            })
+          });
+          this.options = obj
+      })
     }
   }
 } 

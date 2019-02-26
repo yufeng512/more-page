@@ -1,96 +1,121 @@
 <template>
 <div>
-  <div class="img-box" v-if="isRegister">
-    <img src="@/assets/memberPolicy/1.jpg" alt="">
-    <img src="@/assets/memberPolicy/2.jpg" alt="">
-    <img src="@/assets/memberPolicy/3.jpg" alt="">
-    <img src="@/assets/memberPolicy/4.jpg" alt="">
-    <div class="img-box" @click="goPage">
-      <img src="@/assets/memberPolicy/5.jpg" alt="">
+  <div v-show="isRegister">
+    <div class="register-box">
+      <img src="@/assets/memberPolicy/logo.jpg" alt="">
+    </div>
+    <div class="input-item flex-box">
+      <input type="number" v-model="phone" placeholder="请输入您的手机号码">
+    </div>
+    <div class="input-item flex-box">
+      <input type="number" v-model="code" placeholder="请输入验证码">
+      <button @click="getCode">获取验证码</button>
+    </div>
+    <div class="input-item flex-box">
+      <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span>隐私条款</span>，并同意接受其中的所有条款。</p>
+    </div>
+    <div class="btn-item flex-box">
+      <button @click="regiter">注册绑定</button>
     </div>
   </div>
-  <div class="register-box" v-else>
+  <div class="register-box" v-show="isInfo">
     <img src="@/assets/memberPolicy/logo.jpg" alt="">
     <div>
-      <div class="info-item">
+    <div class="info-item">
         <span>姓名</span>
-        <span>{{member.name}}</span>
-      </div>
-      <div class="info-item">
+        <span>{{name}}</span>
+    </div>
+    <div class="info-item">
         <span>手机号码</span>
-        <span>{{member.mobile}}</span>
-      </div>
-      <div class="info-item">
+        <span>{{mobile}}</span>
+    </div>
+    <div class="info-item">
         <span>生日</span>
-        <span>{{member.birthday}}</span>
-      </div>
-      <div class="info-item">
+        <span>{{birthday}}</span>
+    </div>
+    <div class="info-item">
+        <span>性别</span>
+        <span>{{gender==1?'男':'女'}}</span>
+    </div>
+    <div class="info-item">
         <span>省市区</span>
-        <span>{{member.province + member.city + member.region}}</span>
-      </div>
-      <div class="info-item">
+        <span>{{countryName}}</span>
+    </div>
+    <div class="info-item">
         <span>详细信息</span>
-        <span>{{member.address}}</span>
-      </div>
+        <span>{{address}}</span>
+    </div>
     </div>
     <button @click="changeInfo">修改我的信息</button>
-  </div>
-  
+</div>
 </div>
 </template>
 <script>
 import $ from 'jquery'
+import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
 import { Login, ProvincesList, Cities, Districts,} from '@/api/memberPolicy/index'
+import { Message } from 'element-ui'
+
 export default {
-  data(){
+  data () {
     return {
+      phone: '',
+      code: '',
+      checked: true,
       isRegister: false,
-      openId: '',
-      member: {},
-      unionId: ''
+      name: '',
+      mobile: '',
+      gender: "",
+      birthday: '',
+      province: '',
+      city: '',
+      region: '',
+      address:'',
+      countryName: '',
+      isInfo: false
     }
   },
   mounted(){
     this.isLogin()
+    if(localStorage.getItem("id")){
+      this.name = localStorage.getItem("name")
+      this.mobile = localStorage.getItem("mobile")
+      this.gender = localStorage.getItem("gender")
+      this.birthday = localStorage.getItem("birthday")
+      this.province = localStorage.getItem("province")||''
+      this.city = localStorage.getItem("city")||''
+      this.region = localStorage.getItem("region")||''
+      this.address = localStorage.getItem("address")||''
+      this.getData(this.province,this.city,this.region)
+    }else{
+      this.isRegister = true
+    }
   },
   methods: {
-    getData (province,city,region) {
-      let self = this
-      ProvincesList().then(res=>{
-        let obj = res.data.find(item=>{
-          return item.code == province
-        })
-        self.member.province = obj.name
-      })
-      Cities({provinceCode: province}).then(res=>{
-       let obj = res.data.find(item=>{
-          return item.code == city
-        })
-        self.member.city = obj.name
-      })
-      Districts({cityCode: city}).then(res=>{
-        let obj = res.data.find(item=>{
-          return item.code == region
-        })
-        self.member.region = obj.name
-      })
-    },
     changeInfo () {
-      // alert(JSON.stringify(this.member))
-      let obj = {
-        name: this.member.name,
-        mobile: this.member.mobile,
-        sex: this.member.sex,
-        birthday: this.member.birthday,
-        province: this.member.province,
-        city: this.member.city,
-        region: this.member.region,
-        address: this.member.address
-      }
-      this.$router.push({name:'userInfo', params: obj})
+        this.$router.push('userInfo')
     },
-    goPage () {
-      this.$router.push('register')
+    getData (province,city,region) {
+        let self = this,a='',b='',c=''
+        ProvincesList().then(res=>{
+            let obj = res.data.find(item=>{
+            return item.code == province
+            })
+            a = obj.name
+            Cities({provinceCode: province}).then(res=>{
+                let obj = res.data.find(item=>{
+                    return item.code == city
+                })
+                b = obj.name
+                Districts({cityCode: city}).then(res=>{
+                    let obj = res.data.find(item=>{
+                        return item.code == region
+                    })
+                    c = obj.name
+                    self.countryName = a+b+c
+                })
+            })
+        })
     },
     isLogin (){
       let self = this
@@ -104,22 +129,48 @@ export default {
         success:function(res){
           // alert(JSON.stringify(res))
           if(res.code==0){
-            self.openId=res.data.openId
-            self.unionId=res.data.unionId
+            // alert(1)
             localStorage.setItem("openId",res.data.openId)
             localStorage.setItem("unionId",res.data.unionId)
-            localStorage.setItem("member",res.data.member)
             if(res.data.member){
-              self.isRegister = false
-              self.member=res.data.member
-              self.getData(self.member.province,self.member.city,self.member.region)
+              // alert(2)
+              self.isInfo = true
+              self.name = res.data.member.name
+              self.mobile = res.data.member.mobile
+              self.gender = res.data.member.gender
+              self.birthday = res.data.member.birthday
+              self.province = res.data.member.province||''
+              self.city = res.data.member.city||''
+              self.region = res.data.member.region||''
+              self.address = res.data.member.address||''
+              localStorage.setItem("id",res.data.member.id)
+              localStorage.setItem("name",res.data.member.name)
+              localStorage.setItem("mobile",res.data.member.mobile)
+              localStorage.setItem("gender",res.data.member.gender)
+              localStorage.setItem("birthday",res.data.member.birthday)
+              localStorage.setItem("province",res.data.member.province||'')
+              localStorage.setItem("city",res.data.member.city||'')
+              localStorage.setItem("region",res.data.member.region||'')
+              localStorage.setItem("address",res.data.member.address||'')
             }else{
               self.isRegister = true
+              localStorage.removeItem("id")
+              localStorage.removeItem("name")
+              localStorage.removeItem("mobile")
+              localStorage.removeItem("gender")
+              localStorage.removeItem("birthday")
+              localStorage.removeItem("province")
+              localStorage.removeItem("city")
+              localStorage.removeItem("region")
+              localStorage.removeItem("address")
             }
+          }else {
+            self.isInfo = true
           }
         },
         error:function(e){
-          console.log("错误！！");
+          self.isInfo = true
+          self.$toast(e)
         }
       })
     },
@@ -137,35 +188,134 @@ export default {
       }
       return value
     },
+    getCode () {
+      let self = this
+      let params = {
+        mobile: self.phone
+      }
+      if(!self.isPoneAvailable(self.phone)){
+        self.$toast('请输入11位有效手机号码');
+        return false
+      }
+      $.ajax({ url:process.env.BASE_API+"mobile/code/send", type:"post", data: params,
+        success:function(data){
+          if(data.code==0){
+            self.$toast("验证码已发送");
+          }else{
+            self.$toast(data.msg||'错误');
+          }
+        },
+        error:function(e){
+          self.$toast(e.msg);
+        }
+      })
+    },
+    regiter () {
+      let self = this
+      let params = {
+        mobile: self.phone,
+        code: self.code
+      }
+      if(!self.isPoneAvailable(self.phone)){
+        self.$toast('请输入11位有效手机号码');
+        return false
+      } else if(this.code==''){
+        self.$toast('请输入验证码！');
+        return false
+      }
+      if(!self.checked){
+        self.$toast('请勾选隐私条款！');
+        return false
+      }
+      CodeVerify(params).then(res=>{
+        // alert(JSON.stringify(res))
+        if(res.code == 0){
+          if(res.data == 1){
+            self.$toast(res.msg||'短信验证成功');
+            setTimeout(function(){
+              self.$router.push({name:'userInfo',params:{mobile: self.phone}})
+            },1500)
+          }else{
+            self.$toast(res.msg||'验证错误');
+          }
+        }else{
+          self.$toast(res.msg);
+        }
+      })
+    },
+    isPoneAvailable(str) {
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+        if (!myreg.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
   }
 }
 </script>
-<style scoped>
-.register-box img,
-.img-box img{
-  width: 100%;
-}
-.register-box{
-  padding: 10px;
-}
-.register-box button{
-  background: #666666;
-  color: #ffffff;
-  border: none;
-  width: 100%;
-  font-size: 16px;
-  padding: 10px 0;
-  margin-top: 20px;
-  border-radius: 6px;
-}
-.info-item{
-  padding: 15px 0;
-  border-bottom: 1px solid #dbdbdb;
-  display: flex;
-  justify-content: flex-start;
-}
-.info-item span:first-child{
-  width: 30%;
-}
-</style>
+<style lang="sass" scoped>
+.register-box img
+  width: 100%
+.register-box
+  padding: 10px
 
+.register-box button
+  background: #666666
+  color: #ffffff
+  border: none
+  width: 100%
+  font-size: 16px
+  padding: 10px 0
+  margin-top: 20px
+  border-radius: 6px
+
+.info-item
+  padding: 15px 0
+  border-bottom: 1px solid #dbdbdb
+  display: flex
+  justify-content: flex-start
+
+.info-item span:first-child
+  width: 30%
+
+.btn-item
+  margin-top: 20px
+  padding: 0 20px
+  button
+    outline: none
+    border: #999999
+    padding: 0 20px
+    border-radius: 4px
+    background: #999999
+    color: #ffffff
+    height: 32px
+    flex: 1
+.input-item
+  margin-top: 20px
+  padding: 0 20px
+  input
+    border: 1px solid #dbdbdb
+    height: 30px
+    line-height: 30px
+    border-radius: 4px
+    flex: 1 0 auto
+    outline: none
+    text-indent: 6px
+    display: block
+    font-size: 12px
+  button
+    outline: none
+    border: #999999
+    padding: 0 20px
+    border-radius: 4px
+    background: #999999
+    color: #ffffff
+    height: 32px
+    margin-left: 10px
+  p
+    font-size: 12px
+    margin-left: 6px
+    span
+      color: rgba(47,117,181,1)
+</style>

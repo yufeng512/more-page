@@ -13,7 +13,7 @@ Toast.install = function (Vue) {
   document.body.appendChild(instance.$el)
   // 通过Vue的原型注册一个方法
   // 让所有实例共享这个方法 
-  Vue.prototype.$toast = (msg, duration = 1500) => {
+  Vue.prototype.$toast = (msg, duration = 1000) => {
     instance.message = msg;
     instance.visible = true;
     setTimeout(() => {

@@ -29,7 +29,7 @@
             </div>
             <mt-picker :slots="citySlots" @change="onCityChange" :visible-item-count="5"></mt-picker>
         </mt-popup>
-        <div id="redituser" style="visibility:hidden;">
+        <!-- <div id="redituser" style="visibility:hidden;">
         </div>
         <div style="visibility:hidden;">
             <div id="tpl" >
@@ -37,12 +37,11 @@
                 <p style='margin:6px 0;font-size:12px;color:#666666;'>{{address}}</p>
                 <button @click='goDetails' style='color:#666666;font-size:12px;'>到这里去</button>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
 import { CurrentCity, getCounterList, Provinces, Cities} from '@/api/storeSearch/index'
-import BMapLib from './infoBox.js'
 var local,
     map,
     infoWindow,
@@ -85,7 +84,6 @@ export default {
     created(){ 
     },
     mounted(){
-        console.log(BMapLib)
         let self = this
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
@@ -115,6 +113,7 @@ export default {
             CurrentCity(params).then((res)=>{
                 console.log(res.data)
                 this.currentLocation = res.data.name
+                this.areaText = res.data.name
                 this.doSearch()
                 this.counterList()
             })
@@ -189,10 +188,8 @@ export default {
                 minHeight:45,
             }
             // let sContent = document.getElementById('tpl')
-            let sContent = `<div>`+this.title +`</div><div style="margin: 6px 0">`+item.address+`</div><button>到这里去</button>`
+            let sContent = `<div>`+this.title +`</div><div style="margin: 6px 0">`+item.address+`</div><a href="https://api.map.baidu.com/direction?origin=latlng:`+this.latitude+`,`+this.longitude+`|name:我的位置&destination=`+this.address+`&mode=driving&region=`+this.currentLocation+`&output=html&src=webapp.baidu.openAPIdemo'">到这里去</a>`
             console.log(sContent)
-            // var infoWindow =  new BMapLib.InfoBox(map,sContent,opts);
-            // infoWindow.open(marker)
             infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
             infoWindow.disableCloseOnClick()
             marker.addEventListener("click",function(){
@@ -203,15 +200,20 @@ export default {
             map.openInfoWindow(infoWindow, map.getCenter());//开启信息窗口
         },
         goDetails () {
+            alert(this.address)
+            console.log(this.currentLocation)
+            // var p2 = new BMap.Point(this.targetLongitude,this.targetLatitude);
+            // location.href = 'http://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination?origin=latlng'+this.targetLatitude+','+this.targetLongitude+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
+            location.href = 'https://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination='+this.address+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
             // let sContent = document.getElementById('tpl')
             // console.log(sContent)
             // document.getElementById('redituser').appendChild(sContent)
-            map.centerAndZoom(new BMap.Point(this.longitude, this.latitude), 11);
-            map.clearOverlays()
-            var p1 = new BMap.Point(this.longitude,this.latitude);
-            var p2 = new BMap.Point(this.targetLongitude,this.targetLatitude);
-            var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-            driving.search(p1, p2);
+            // map.centerAndZoom(new BMap.Point(this.longitude, this.latitude), 11);
+            // map.clearOverlays()
+            // var p1 = new BMap.Point(this.longitude,this.latitude);
+            // var p2 = new BMap.Point(this.targetLongitude,this.targetLatitude);
+            // var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+            // driving.search(p1, p2);
         }
     }
 }

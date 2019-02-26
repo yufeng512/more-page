@@ -26,12 +26,13 @@ export default {
       FindByCode(params).then(res=>{
         console.log(res)
         if(res.code==0){
-          self.$router.push({name:'search',params:{code: self.baCode}})
+          self.$toast(res.msg||'查询成功');
+          setTimeout(()=>{
+            localStorage.setItem('baCode',self.baCode)
+            self.$router.push({name:'search',params:{code: self.baCode}})
+          },1000)
         }else {
-          self.$message({
-            message: res.msg,
-            type: 'fail'
-          });
+          self.$toast(res.msg||'失败');
         }
       })
     }
