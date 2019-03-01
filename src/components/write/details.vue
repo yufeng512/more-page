@@ -3,13 +3,13 @@
         <div>
             <div class="info">
                 <p>{{campaignName}}</p>
-                <p>参与人手机号：{{mobile}}</p>
-                <p>可领取礼包：{{giftName||''}}</p>
+                <p v-show="mobile">参与人手机号：{{mobile}}</p>
+                <p v-show="giftName">可领取礼包：{{giftName||''}}</p>
             </div>
-            <div class="item-box" v-if="campaignStatus==0">
+            <div class="item-box" v-if="verifyStatus==0">
                 <el-button @click="getGift" type="primary" size="small">确认领取</el-button>
             </div>
-            <div class="item-box" v-if="campaignStatus==1">
+            <div class="item-box" v-if="verifyStatus==1">
                 <el-button @click="goSearch" type="info" size="small">已领取,返回</el-button>
             </div>
             <div class="item-box" v-if="mobileAdd==1">
@@ -64,21 +64,21 @@ export default {
             channel: '',
             isShow:false,
             current: 0,
-            campaignStatus: '',
+            verifyStatus: null,
             detail: {},
             campaign: {}
         }
     },
     mounted () {
+        console.log(this.$route.params)
         if(this.$route.params.detail){
             this.detail = this.$route.params.detail
             this.giftName = this.detail.giftName
+            this.verifyStatus = this.detail.verifyStatus
+            this.mobile = this.detail.mobile
         }
         this.campaign = this.$route.params.campaign
-        
         this.campaignName = this.campaign.campaignName
-        this.mobile = this.campaign.mobile
-        this.campaignStatus = this.campaign.campaignStatus
         this.id = this.campaign.id
         this.mobileAdd = this.campaign.mobileAdd
         this.getListAvailable()

@@ -34,17 +34,36 @@ export default {
     this.getListAvailable()
   },
   methods: {
+    isPoneAvailable(str) {
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+        if (!myreg.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
+    },
     search () {
       let params = {
         baCode: this.baCode,
         mobile: this.mobile,
         campaignId: this.value
       }
+      if(this.value == ''){
+        this.$toast('请选择活动');
+        return false
+      }else if(!this.isPoneAvailable(this.mobile)){
+        this.$toast('请输入有效的11位手机号码');
+        return false
+      } 
       Query(params).then(res=>{
         console.log(res)
         let obj = res.data.campaign
         if(res.code == 0){
-          this.$router.push({name:'details',params: res.data})
+          if(res.data.detail){
+            this.$router.push({name:'details',params: res.data})
+          }else {
+            this.$toast('该用户没有参与活动');
+          }
         }
       })
     },

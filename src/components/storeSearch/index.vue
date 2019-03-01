@@ -8,12 +8,12 @@
                     <img src="@/assets/logo.jpg" alt="">
                 </div>
                 <div class="text-box">
-                    <h2>{{item.title}}</h2>
+                    <h2>{{item.counterName}}</h2>
                     <p>{{item.address}}</p>
                     <div class="tag">
-                        <span v-show="item.phoneNumber">{{item.phoneNumber}}</span>
-                        <span v-show="item.distance">{{item.distance}}KM</span>
                         <span v-show="item.phone">{{item.phone}}</span>
+                        <span v-show="item.businessHour">{{item.businessHour}}</span>
+                        <!-- <span v-show="item.distance">{{item.distance}}米</span> -->
                     </div>
                 </div>
             </div>
@@ -29,15 +29,6 @@
             </div>
             <mt-picker :slots="citySlots" @change="onCityChange" :visible-item-count="5"></mt-picker>
         </mt-popup>
-        <!-- <div id="redituser" style="visibility:hidden;">
-        </div>
-        <div style="visibility:hidden;">
-            <div id="tpl" >
-                <h4 style='font-size:14px'>{{title}}</h4>
-                <p style='margin:6px 0;font-size:12px;color:#666666;'>{{address}}</p>
-                <button @click='goDetails' style='color:#666666;font-size:12px;'>到这里去</button>
-            </div>
-        </div> -->
     </div>
 </template>
 <script>
@@ -95,8 +86,7 @@ export default {
                     map.panTo(r.point);
                     self.latitude = r.point.lat
                     self.longitude = r.point.lng
-                    console.log(self.longitude,self.latitude)
-                    console.log('您的位置：'+r.point.lng+','+r.point.lat);
+                    // console.log('您的位置：'+r.point.lng+','+r.point.lat);
                     let params = {
                         longitude:self.longitude,
                         latitude:self.latitude
@@ -120,14 +110,21 @@ export default {
         },
         counterList () {
             let params = {
-                    longitude:self.longitude,
-                    latitude:self.latitude,
+                    longitude:this.longitude,
+                    latitude:this.latitude,
                     city: this.currentLocation
                 }
             console.log(params)
             getCounterList(params).then(res=>{
                 console.log(res.data)
+                res.data.forEach(item=>{
+                    let option = { lat: item.latitude, lng: item.longitude }
+                    let point = new BMap.Point(option.lng, option.lat)
+                    let marker = new BMap.Marker(point);
+                    map.addOverlay(marker);
+                })
                 this.panelList = res.data
+                
             })
         },
         getProvinces() {
@@ -160,7 +157,7 @@ export default {
         onCityChange (picker, values) {
             console.log(picker, values)
             picker.setSlotValues(1, address[values[0]])
-            // this.areaText =values[0]+' / '+ values[1]
+            this.areaText = values[1]
             this.currentLocation = values[1]
         },
         doSearch () {
@@ -176,8 +173,6 @@ export default {
             this.infoWindow(item,index)
         },
         infoWindow (item,index) {
-            this.title = item.title==undefined?'--': item.title
-            this.address = item.address
             let option = { lat: item.latitude, lng: item.longitude }
             let point = new BMap.Point(option.lng, option.lat)
             let marker = new BMap.Marker(point)
@@ -187,8 +182,8 @@ export default {
                 width :250,
                 minHeight:45,
             }
-            // let sContent = document.getElementById('tpl')
-            let sContent = `<div>`+this.title +`</div><div style="margin: 6px 0">`+item.address+`</div><a href="https://api.map.baidu.com/direction?origin=latlng:`+this.latitude+`,`+this.longitude+`|name:我的位置&destination=`+this.address+`&mode=driving&region=`+this.currentLocation+`&output=html&src=webapp.baidu.openAPIdemo'">到这里去</a>`
+            let sContent =  `<div style="font-size:14px">欧舒丹精品店</div><div style="margin: 6px 0;color:#333;font-size:14px;">`+item.counterName+ `</div><div style="font-size:12px;color:#666;">`+item.address +`</div>`
+                            // `</span><a style="font-size:14px;margin-left:15px;text-decoration:underline;color:#3d6dcc;" href="https://api.map.baidu.com/direction?origin=latlng:`+this.latitude+`,`+this.longitude+`|name:我的位置&destination=`+item.address+`&mode=driving&region=`+this.currentLocation+`&output=html&src=webapp.baidu.openAPIdemo'">到这里去</a></div>`
             console.log(sContent)
             infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
             infoWindow.disableCloseOnClick()
@@ -202,18 +197,7 @@ export default {
         goDetails () {
             alert(this.address)
             console.log(this.currentLocation)
-            // var p2 = new BMap.Point(this.targetLongitude,this.targetLatitude);
-            // location.href = 'http://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination?origin=latlng'+this.targetLatitude+','+this.targetLongitude+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
             location.href = 'https://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination='+this.address+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
-            // let sContent = document.getElementById('tpl')
-            // console.log(sContent)
-            // document.getElementById('redituser').appendChild(sContent)
-            // map.centerAndZoom(new BMap.Point(this.longitude, this.latitude), 11);
-            // map.clearOverlays()
-            // var p1 = new BMap.Point(this.longitude,this.latitude);
-            // var p2 = new BMap.Point(this.targetLongitude,this.targetLatitude);
-            // var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-            // driving.search(p1, p2);
         }
     }
 }
@@ -313,6 +297,11 @@ export default {
     color: #333333;
     font-size: 12px;
 }
+.tag{
+    background: #eee;
+    padding: 4px;
+    border-radius: 4px;
+}
 .tag span{
     font-size: 12px
 }
@@ -324,6 +313,10 @@ export default {
 }
 .address{
     margin: 6px 0;
+}
+.tpl{
+    position: absolute;
+    bottom: 0
 }
 </style>
 

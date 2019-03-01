@@ -9,7 +9,7 @@
     </div>
     <div class="input-item flex-box">
       <input type="number" v-model="code" placeholder="请输入验证码">
-      <button @click="getCode">获取验证码</button>
+      <button :disabled="isDisabled"  @click="getCode">{{codeText}}</button>
     </div>
     <div class="input-item flex-box">
       <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span>隐私条款</span>，并同意接受其中的所有条款。</p>
@@ -71,13 +71,17 @@ export default {
       city: '',
       region: '',
       address:'',
+      codeText: '获取验证码',
+      isDisabled: false,
       countryName: '',
-      isInfo: false
+      isInfo: false,
+      time: 60,
+      interval: null
     }
   },
   mounted(){
-    this.isLogin()
     if(localStorage.getItem("id")){
+      this.isInfo = true
       this.name = localStorage.getItem("name")
       this.mobile = localStorage.getItem("mobile")
       this.gender = localStorage.getItem("gender")
@@ -88,7 +92,7 @@ export default {
       this.address = localStorage.getItem("address")||''
       this.getData(this.province,this.city,this.region)
     }else{
-      this.isRegister = true
+      this.isLogin()
     }
   },
   methods: {
@@ -120,7 +124,7 @@ export default {
     isLogin (){
       let self = this
       let code = self.UrlSearch()
-      // alert(code)
+      // alert('code'+code)
       self.code = code
       let params ={
         code: code
@@ -164,12 +168,14 @@ export default {
               localStorage.removeItem("region")
               localStorage.removeItem("address")
             }
+          }else if(res.code==1){
+            self.isRegister = true
+            self.$toast(res.msg||'登陆失败')
           }else {
-            self.isInfo = true
+            self.isRegister = true
           }
         },
         error:function(e){
-          self.isInfo = true
           self.$toast(e)
         }
       })
@@ -201,6 +207,10 @@ export default {
         success:function(data){
           if(data.code==0){
             self.$toast("验证码已发送");
+            self.settime()
+          }else if(data.code==1){
+            self.$toast(data.msg||'错误');
+            this.codeText="短信已发送";
           }else{
             self.$toast(data.msg||'错误');
           }
@@ -209,6 +219,23 @@ export default {
           self.$toast(e.msg);
         }
       })
+    },
+    settime() {
+        let self = this
+        if (self.time == 0) {
+            self.codeText="获取验证码";
+            self.time = 60;
+            self.isDisabled =  false
+            clearInterval(self.interval)
+        } else {
+            self.isDisabled =  true
+            self.codeText= self.time+"后重新发送"
+            self.time--
+            self.interval = setTimeout(function() {
+                self.settime()
+            },1000)
+        }
+ 
     },
     regiter () {
       let self = this

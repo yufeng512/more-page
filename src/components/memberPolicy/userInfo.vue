@@ -93,7 +93,7 @@ export default {
       info:{
         name: '',
         mobile: '',
-        gender: "",
+        gender: '2',
         birthday: '',
         province: '',
         city: '',

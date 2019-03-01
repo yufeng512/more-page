@@ -23,6 +23,10 @@ export default {
     login () {
       let self = this
       let params = self.baCode
+      if(self.baCode==''){
+        self.$toast('请输入baCode');
+        return false
+      }
       FindByCode(params).then(res=>{
         console.log(res)
         if(res.code==0){

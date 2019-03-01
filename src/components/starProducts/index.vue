@@ -6,7 +6,6 @@
     <img src="@/assets/starProducts/3.jpg" alt="">
     <img src="@/assets/starProducts/4.jpg" alt="">
     <img src="@/assets/starProducts/5.jpg" alt="">
-    <img src="@/assets/starProducts/6.jpg" alt="">
   </div>
 </div>
 </template>
