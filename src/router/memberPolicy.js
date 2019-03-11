@@ -4,6 +4,7 @@ import userInfo from '../components/memberPolicy/userInfo'
 const routes = [
   {
     path: '/',
+    name: 'index',
     component: index
   },
   {

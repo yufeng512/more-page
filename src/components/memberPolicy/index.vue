@@ -39,7 +39,7 @@
     </div>
     <div class="info-item">
         <span>省市区</span>
-        <span>{{countryName}}</span>
+        <span>{{province+city+address}}</span>
     </div>
     <div class="info-item">
         <span>详细信息</span>
@@ -73,58 +73,21 @@ export default {
       address:'',
       codeText: '获取验证码',
       isDisabled: false,
-      countryName: '',
       isInfo: false,
       time: 60,
       interval: null
     }
   },
   mounted(){
-    if(localStorage.getItem("id")){
-      this.isInfo = true
-      this.name = localStorage.getItem("name")
-      this.mobile = localStorage.getItem("mobile")
-      this.gender = localStorage.getItem("gender")
-      this.birthday = localStorage.getItem("birthday")
-      this.province = localStorage.getItem("province")||''
-      this.city = localStorage.getItem("city")||''
-      this.region = localStorage.getItem("region")||''
-      this.address = localStorage.getItem("address")||''
-      this.getData(this.province,this.city,this.region)
-    }else{
-      this.isLogin()
-    }
+    this.isLogin()
   },
   methods: {
     changeInfo () {
         this.$router.push('userInfo')
     },
-    getData (province,city,region) {
-        let self = this,a='',b='',c=''
-        ProvincesList().then(res=>{
-            let obj = res.data.find(item=>{
-            return item.code == province
-            })
-            a = obj.name
-            Cities({provinceCode: province}).then(res=>{
-                let obj = res.data.find(item=>{
-                    return item.code == city
-                })
-                b = obj.name
-                Districts({cityCode: city}).then(res=>{
-                    let obj = res.data.find(item=>{
-                        return item.code == region
-                    })
-                    c = obj.name
-                    self.countryName = a+b+c
-                })
-            })
-        })
-    },
     isLogin (){
       let self = this
       let code = self.UrlSearch()
-      // alert('code'+code)
       self.code = code
       let params ={
         code: code
@@ -133,11 +96,9 @@ export default {
         success:function(res){
           // alert(JSON.stringify(res))
           if(res.code==0){
-            // alert(1)
             localStorage.setItem("openId",res.data.openId)
             localStorage.setItem("unionId",res.data.unionId)
             if(res.data.member){
-              // alert(2)
               self.isInfo = true
               self.name = res.data.member.name
               self.mobile = res.data.member.mobile
@@ -147,6 +108,8 @@ export default {
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
               self.address = res.data.member.address||''
+              self.getData(self.province,self.city,self.region)
+              localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
               localStorage.setItem("mobile",res.data.member.mobile)
@@ -157,28 +120,43 @@ export default {
               localStorage.setItem("region",res.data.member.region||'')
               localStorage.setItem("address",res.data.member.address||'')
             }else{
+              self.setRemoveLocal()
               self.isRegister = true
-              localStorage.removeItem("id")
-              localStorage.removeItem("name")
-              localStorage.removeItem("mobile")
-              localStorage.removeItem("gender")
-              localStorage.removeItem("birthday")
-              localStorage.removeItem("province")
-              localStorage.removeItem("city")
-              localStorage.removeItem("region")
-              localStorage.removeItem("address")
             }
-          }else if(res.code==1){
-            self.isRegister = true
-            self.$toast(res.msg||'登陆失败')
           }else {
-            self.isRegister = true
+            if(localStorage.getItem("isMember")){
+              self.isInfo = true
+              self.name = localStorage.getItem("name")
+              self.mobile = localStorage.getItem("mobile")
+              self.gender = localStorage.getItem("gender")
+              self.birthday = localStorage.getItem("birthday")
+              self.province = localStorage.getItem("province")||''
+              self.city = localStorage.getItem("city")||''
+              self.region = localStorage.getItem("region")||''
+              self.address = localStorage.getItem("address")||''
+              self.getData(self.province,self.city,self.region) 
+            }else{
+              self.setRemoveLocal()
+              self.isRegister = true
+            }
           }
         },
         error:function(e){
           self.$toast(e)
         }
       })
+    },
+    setRemoveLocal(){
+      localStorage.removeItem("isMember")
+      localStorage.removeItem("id")
+      localStorage.removeItem("name")
+      localStorage.removeItem("mobile")
+      localStorage.removeItem("gender")
+      localStorage.removeItem("birthday")
+      localStorage.removeItem("province")
+      localStorage.removeItem("city")
+      localStorage.removeItem("region")
+      localStorage.removeItem("address")
     },
     UrlSearch() {
       var name,value;

@@ -50,7 +50,7 @@
             v-for="item in provinces"
             :key="item.id"
             :label="item.text"
-            :value="item.value">
+            :value="item.text">
           </el-option>
         </el-select>
         <el-select  v-model="info.city" @change="choseCity" placeholder="市级地区" size="small">
@@ -58,7 +58,7 @@
             v-for="item in citys"
             :key="item.id"
             :label="item.text"
-            :value="item.value">
+            :value="item.text">
           </el-option>
         </el-select>
         <el-select v-model="info.region" @change="choseBlock" placeholder="区级地区" size="small">
@@ -66,7 +66,7 @@
              v-for="item in regions"
             :key="item.id"
             :label="item.text"
-            :value="item.value">
+            :value="item.text">
           </el-option>
         </el-select>
       </div>
@@ -112,7 +112,7 @@ export default {
     if(this.$route.params.mobile){
       this.info.mobile = this.$route.params.mobile
     }
-    if(localStorage.getItem("id")){
+    if(localStorage.getItem("isMember")){
       this.info.id = localStorage.getItem("id").toString()
       this.info.name = localStorage.getItem("name")
       this.info.mobile = localStorage.getItem("mobile")
@@ -122,8 +122,8 @@ export default {
       this.info.city = localStorage.getItem("city")||''
       this.info.region = localStorage.getItem("region")||''
       this.info.address = localStorage.getItem("address")||''
+      this.getData()
     }
-    this.getData()
   },
   methods:{
     save () {
@@ -139,10 +139,10 @@ export default {
         self.$toast("请输入生日！");
         return false
       }
-      // params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
-      // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
-      params.openId = localStorage.getItem("openId")
-      params.unionId = localStorage.getItem("unionId")
+      params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      // params.openId = localStorage.getItem("openId")
+      // params.unionId = localStorage.getItem("unionId")
       if (params.id){
         // alert('res'+JSON.stringify(params))
         MemberUpdate(params).then(res=>{
@@ -178,6 +178,7 @@ export default {
       }
     },
     setLocal (member) {
+      localStorage.setItem("isMember", true)
       localStorage.setItem("id", member.id)
       localStorage.setItem("name", member.name)
       localStorage.setItem("mobile", member.mobile)
@@ -190,64 +191,28 @@ export default {
     },
     getData () {
       let self = this
-      Cities({provinceCode: this.info.province}).then(res=>{
-        let obj = []
-        res.data.forEach(item => {
-          obj.push({
-            text: item.name,
-            value: item.code
-          })
-        });
-        self.citys =  obj
+      Cities({province: this.info.province}).then(res=>{
+        self.citys =  res.data
       })
-      Districts({cityCode: this.info.city}).then(res=>{
-        let obj = []
-        res.data.forEach(item => {
-          obj.push({
-            text: item.name,
-            value: item.code
-          })
-        });
-        self.regions =  obj
+      Districts({city: this.info.city}).then(res=>{
+        self.regions = res.data
       })
     },
     getProvincesList(){
       ProvincesList().then(res=>{
-        console.log(res)
-        let obj = []
-        res.data.forEach(item => {
-          obj.push({
-            text: item.name,
-            value: item.code
-          })
-        });
-        this.provinces =  obj
+        this.provinces = res.data
       })
     },
     // 选省
     choseProvince (e) {
       console.log(e,this.provinces)
       let self = this
-      Cities({provinceCode: e}).then(c=>{
-        let citys = []
-        c.data.forEach(item => {
-          citys.push({
-            text: item.name,
-            value: item.code
-          })
-        });
-        self.citys = citys
-        self.info.city =  self.citys[0].value
-        Districts({cityCode: self.citys[0].value}).then(r=>{
-          let regions = []
-          r.data.forEach(_item => {
-            regions.push({
-              text: _item.name,
-              value: _item.code
-            })
-          });
-          this.regions =  regions
-          this.info.region =  this.regions[0].value
+      Cities({province: e}).then(c=>{
+        self.citys = c.data
+        self.info.city =  self.citys[0].text
+        Districts({city: self.citys[0].text}).then(r=>{
+          this.regions = r.data
+          this.info.region =  this.regions[0].text
         })
       })
       
@@ -255,17 +220,9 @@ export default {
     // 选市
     choseCity (e) {
       console.log(e)
-      Districts({cityCode: e}).then(res=>{
-        console.log(res)
-        let obj = []
-        res.data.forEach(item => {
-          obj.push({
-            text: item.name,
-            value: item.code
-          })
-        });
-        this.regions =  obj
-        this.info.region =  obj[0].text 
+      Districts({city: e}).then(res=>{
+        this.regions = res.data
+        this.info.region =  obj[0].value
       })
     },
     choseBlock (e) {
