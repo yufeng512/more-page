@@ -12,46 +12,54 @@
       <button :disabled="isDisabled"  @click="getCode">{{codeText}}</button>
     </div>
     <div class="input-item flex-box">
-      <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span>隐私条款</span>，并同意接受其中的所有条款。</p>
+      <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span @click="isOpen(true)">隐私条款</span>，并同意接受其中的所有条款。</p>
     </div>
     <div class="btn-item flex-box">
       <button @click="regiter">注册绑定</button>
     </div>
   </div>
+  
   <div class="register-box" v-show="isInfo">
     <img src="@/assets/memberPolicy/logo.jpg" alt="">
     <div>
-    <div class="info-item">
-        <span>姓名</span>
-        <span>{{name}}</span>
-    </div>
-    <div class="info-item">
-        <span>手机号码</span>
-        <span>{{mobile}}</span>
-    </div>
-    <div class="info-item">
-        <span>生日</span>
-        <span>{{birthday}}</span>
-    </div>
-    <div class="info-item">
-        <span>性别</span>
-        <span>{{gender==1?'男':'女'}}</span>
-    </div>
-    <div class="info-item">
-        <span>省市区</span>
-        <span>{{province+city+address}}</span>
-    </div>
-    <div class="info-item">
-        <span>详细信息</span>
-        <span>{{address}}</span>
-    </div>
+      <div class="info-item">
+          <span>姓名</span>
+          <span>{{name}}</span>
+      </div>
+      <div class="info-item">
+          <span>手机号码</span>
+          <span>{{mobile}}</span>
+      </div>
+      <div class="info-item">
+          <span>生日</span>
+          <span>{{birthday}}</span>
+      </div>
+      <div class="info-item">
+          <span>性别</span>
+          <span>{{gender==1?'男':'女'}}</span>
+      </div>
+      <div class="info-item">
+          <span>省市区</span>
+          <span>{{province+city+region}}</span>
+      </div>
+      <div class="info-item">
+          <span>详细信息</span>
+          <span>{{memberAddress}}</span>
+      </div>
     </div>
     <button @click="changeInfo">修改我的信息</button>
-</div>
+  </div>
+  <div class="popup" v-if="isShow">
+    <div class="content">
+        <img class="close" src="@/assets/close.png" alt="" @click="isOpen(false)">
+        <privacy></privacy>
+    </div>
+  </div>
 </div>
 </template>
 <script>
 import $ from 'jquery'
+import privacy from './privacy'
 import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
 import { Login, ProvincesList, Cities, Districts,} from '@/api/memberPolicy/index'
 import { Message } from 'element-ui'
@@ -59,6 +67,7 @@ import { Message } from 'element-ui'
 export default {
   data () {
     return {
+      isShow: false,
       phone: '',
       code: '',
       checked: true,
@@ -70,7 +79,7 @@ export default {
       province: '',
       city: '',
       region: '',
-      address:'',
+      memberAddress:'',
       codeText: '获取验证码',
       isDisabled: false,
       isInfo: false,
@@ -81,7 +90,13 @@ export default {
   mounted(){
     this.isLogin()
   },
+  components:{
+    privacy
+  },
   methods: {
+    isOpen (p) {
+      this.isShow = p
+    },
     changeInfo () {
         this.$router.push('userInfo')
     },
@@ -102,23 +117,22 @@ export default {
               self.isInfo = true
               self.name = res.data.member.name
               self.mobile = res.data.member.mobile
-              self.gender = res.data.member.gender
+              self.gender = res.data.member.sex
               self.birthday = res.data.member.birthday
               self.province = res.data.member.province||''
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
-              self.address = res.data.member.address||''
-              self.getData(self.province,self.city,self.region)
+              self.memberAddress = res.data.member.memberAddress||''
               localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
               localStorage.setItem("mobile",res.data.member.mobile)
-              localStorage.setItem("gender",res.data.member.gender)
+              localStorage.setItem("sex",res.data.member.sex)
               localStorage.setItem("birthday",res.data.member.birthday)
               localStorage.setItem("province",res.data.member.province||'')
               localStorage.setItem("city",res.data.member.city||'')
               localStorage.setItem("region",res.data.member.region||'')
-              localStorage.setItem("address",res.data.member.address||'')
+              localStorage.setItem("memberAddress",res.data.member.memberAddress||'')
             }else{
               self.setRemoveLocal()
               self.isRegister = true
@@ -128,13 +142,12 @@ export default {
               self.isInfo = true
               self.name = localStorage.getItem("name")
               self.mobile = localStorage.getItem("mobile")
-              self.gender = localStorage.getItem("gender")
+              self.gender = localStorage.getItem("sex")
               self.birthday = localStorage.getItem("birthday")
               self.province = localStorage.getItem("province")||''
               self.city = localStorage.getItem("city")||''
               self.region = localStorage.getItem("region")||''
-              self.address = localStorage.getItem("address")||''
-              self.getData(self.province,self.city,self.region) 
+              self.memberAddress = localStorage.getItem("memberAddress")||''
             }else{
               self.setRemoveLocal()
               self.isRegister = true
@@ -151,12 +164,12 @@ export default {
       localStorage.removeItem("id")
       localStorage.removeItem("name")
       localStorage.removeItem("mobile")
-      localStorage.removeItem("gender")
+      localStorage.removeItem("sex")
       localStorage.removeItem("birthday")
       localStorage.removeItem("province")
       localStorage.removeItem("city")
       localStorage.removeItem("region")
-      localStorage.removeItem("address")
+      localStorage.removeItem("memberAddress")
     },
     UrlSearch() {
       var name,value;
@@ -323,4 +336,24 @@ export default {
     margin-left: 6px
     span
       color: rgba(47,117,181,1)
+.popup
+  position: fixed
+  width: 100%
+  height: 100%
+  top: 0
+  background: rgba(0,0,0,0.7)
+  z-index: 9999
+  .content
+    width: 80%
+    margin-left: 10%
+    margin-top: 15%
+    height: 80%
+    padding: 5px 0 10px
+    background: #ffffff
+    border-radius: 4px
+    text-align: center
+    overflow: scroll
+    .close 
+      position: absolute
+      right: 10%
 </style>

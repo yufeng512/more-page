@@ -116,12 +116,12 @@ export default {
       this.info.id = localStorage.getItem("id").toString()
       this.info.name = localStorage.getItem("name")
       this.info.mobile = localStorage.getItem("mobile")
-      this.info.gender = localStorage.getItem("gender")
+      this.info.gender = localStorage.getItem("sex")
       this.info.birthday = localStorage.getItem("birthday")
       this.info.province = localStorage.getItem("province")||''
       this.info.city = localStorage.getItem("city")||''
       this.info.region = localStorage.getItem("region")||''
-      this.info.address = localStorage.getItem("address")||''
+      this.info.address = localStorage.getItem("memberAddress")||''
       this.getData()
     }
   },
@@ -139,12 +139,12 @@ export default {
         self.$toast("请输入生日！");
         return false
       }
-      params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
-      params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
-      // params.openId = localStorage.getItem("openId")
-      // params.unionId = localStorage.getItem("unionId")
+      // params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      params.openId = localStorage.getItem("openId")
+      params.unionId = localStorage.getItem("unionId")
+      // alert('res'+JSON.stringify(params))
       if (params.id){
-        // alert('res'+JSON.stringify(params))
         MemberUpdate(params).then(res=>{
           // alert('res'+JSON.stringify(res))
           if(res.code == 0){
@@ -162,7 +162,7 @@ export default {
       }else{
         // alert(222222)
         MemberInsert(params).then(res=>{
-          // alert('res'+JSON.stringify(params))
+          // alert('res'+JSON.stringify(res))
           if(res.code == 0){
             self.$toast("保存成功");
             self.setLocal(res.data)
@@ -182,12 +182,12 @@ export default {
       localStorage.setItem("id", member.id)
       localStorage.setItem("name", member.name)
       localStorage.setItem("mobile", member.mobile)
-      localStorage.setItem("gender", member.gender)
+      localStorage.setItem("sex", member.sex)
       localStorage.setItem("birthday", member.birthday)
       localStorage.setItem("province", member.province||'')
       localStorage.setItem("city", member.city||'')
       localStorage.setItem("region", member.region||'')
-      localStorage.setItem("address", member.address||'')
+      localStorage.setItem("memberAddress", member.memberAddress||'')
     },
     getData () {
       let self = this
@@ -222,7 +222,7 @@ export default {
       console.log(e)
       Districts({city: e}).then(res=>{
         this.regions = res.data
-        this.info.region =  obj[0].value
+        this.info.region =  this.regions[0].text
       })
     },
     choseBlock (e) {

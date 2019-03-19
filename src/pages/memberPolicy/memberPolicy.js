@@ -14,7 +14,9 @@ import {
   Option,
   DatePicker,
   Message,
-  MessageBox
+  MessageBox,
+  Tabs,
+  TabPane,
 } from 'element-ui'
 Vue.prototype.$ajax = axios;
 Vue.component(Button.name, Button);
@@ -25,7 +27,9 @@ Vue.component(DatePicker.name, DatePicker);
 
 Vue.prototype.$message = Message;
 Vue.prototype.$msgbox = MessageBox;
-Vue.use(Toast);
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Toast)
 Vue.use(VueRouter)
 var router = new VueRouter({
   routes

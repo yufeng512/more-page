@@ -20,5 +20,9 @@ export default {
     //会员注册
     Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
     CodeVerify: BASEAPI + 'mobile/code/verify', //校验短信验证码接口
-    Login: BASEAPI + 'mobile/auth/login' //校验短信验证码接口
+    Login: BASEAPI + 'mobile/auth/login', //校验短信验证码接口
+    //会员中心
+    MemberInfo: BASEAPI + 'mobile/member/queryByMobile/', //会员信息
+    Querypoint: BASEAPI + 'mobile/scoreQuery', //积分信息
+    MemberCoupon: BASEAPI + 'mobile/member/couponQueryByCode', //卡券信息
 }
