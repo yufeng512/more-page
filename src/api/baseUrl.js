@@ -25,4 +25,7 @@ export default {
     MemberInfo: BASEAPI + 'mobile/member/queryByMobile/', //会员信息
     Querypoint: BASEAPI + 'mobile/scoreQuery', //积分信息
     MemberCoupon: BASEAPI + 'mobile/member/couponQueryByCode', //卡券信息
+    MemberNoCoupon: BASEAPI + 'mobile/member/couponQuery', //会员卡号查询
+    MemberScoreQuery: BASEAPI + 'mobile/member/scoreQuery', //会员卡号积分查询
+    MemberOrderQuery: BASEAPI + 'mobile/member/orderQuery', //会员卡号消费查询
 }

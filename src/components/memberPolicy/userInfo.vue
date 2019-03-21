@@ -49,24 +49,24 @@
           <el-option
             v-for="item in provinces"
             :key="item.id"
-            :label="item.text"
-            :value="item.text">
+            :label="item.name"
+            :value="item.code">
           </el-option>
         </el-select>
         <el-select  v-model="info.city" @change="choseCity" placeholder="市级地区" size="small">
           <el-option
             v-for="item in citys"
             :key="item.id"
-            :label="item.text"
-            :value="item.text">
+            :label="item.name"
+            :value="item.code">
           </el-option>
         </el-select>
         <el-select v-model="info.region" @change="choseBlock" placeholder="区级地区" size="small">
           <el-option
              v-for="item in regions"
             :key="item.id"
-            :label="item.text"
-            :value="item.text">
+            :label="item.name"
+            :value="item.code">
           </el-option>
         </el-select>
       </div>
@@ -84,7 +84,7 @@
 </template>
 <script>
 import { getPosition } from '@/utils/utils'
-import { getMapJson, ProvincesList, Cities, Districts, MemberUpdate, MemberInsert } from '@/api/memberPolicy'
+import { ProvincesList, Cities, Districts, MemberUpdate, MemberInsert } from '@/api/memberPolicy'
 import _  from 'lodash'
 
 export default {
@@ -116,12 +116,12 @@ export default {
       this.info.id = localStorage.getItem("id").toString()
       this.info.name = localStorage.getItem("name")
       this.info.mobile = localStorage.getItem("mobile")
-      this.info.gender = localStorage.getItem("sex")
+      this.info.gender = localStorage.getItem("gender")
       this.info.birthday = localStorage.getItem("birthday")
       this.info.province = localStorage.getItem("province")||''
       this.info.city = localStorage.getItem("city")||''
       this.info.region = localStorage.getItem("region")||''
-      this.info.address = localStorage.getItem("memberAddress")||''
+      this.info.address = localStorage.getItem("address")||''
       this.getData()
     }
   },
@@ -182,19 +182,19 @@ export default {
       localStorage.setItem("id", member.id)
       localStorage.setItem("name", member.name)
       localStorage.setItem("mobile", member.mobile)
-      localStorage.setItem("sex", member.sex)
+      localStorage.setItem("gender", member.gender)
       localStorage.setItem("birthday", member.birthday)
       localStorage.setItem("province", member.province||'')
       localStorage.setItem("city", member.city||'')
       localStorage.setItem("region", member.region||'')
-      localStorage.setItem("memberAddress", member.memberAddress||'')
+      localStorage.setItem("address", member.address||'')
     },
     getData () {
       let self = this
-      Cities({province: this.info.province}).then(res=>{
+      Cities({provinceCode: this.info.province}).then(res=>{
         self.citys =  res.data
       })
-      Districts({city: this.info.city}).then(res=>{
+      Districts({cityCode: this.info.city}).then(res=>{
         self.regions = res.data
       })
     },
@@ -207,12 +207,12 @@ export default {
     choseProvince (e) {
       console.log(e,this.provinces)
       let self = this
-      Cities({province: e}).then(c=>{
+      Cities({provinceCode: e}).then(c=>{
         self.citys = c.data
-        self.info.city =  self.citys[0].text
-        Districts({city: self.citys[0].text}).then(r=>{
+        self.info.city =  self.citys[0].code
+        Districts({cityCode: self.citys[0].code}).then(r=>{
           this.regions = r.data
-          this.info.region =  this.regions[0].text
+          this.info.region =  this.regions[0].code
         })
       })
       
@@ -220,9 +220,9 @@ export default {
     // 选市
     choseCity (e) {
       console.log(e)
-      Districts({city: e}).then(res=>{
+      Districts({cityCode: e}).then(res=>{
         this.regions = res.data
-        this.info.region =  this.regions[0].text
+        this.info.region =  this.regions[0].code
       })
     },
     choseBlock (e) {

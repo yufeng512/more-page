@@ -12,3 +12,12 @@ export function getMemberInfo(mobile) {
 export function getMemberCoupon(couponNo) {
   return post(api.MemberCoupon + '?tenantId=3&couponNo=' + couponNo)
 }
+export function getMemberNoCoupon(memberNo) {
+  return post(api.MemberNoCoupon + '?tenantId=3&memberNo=' + memberNo)
+}
+export function getMemberScoreQuery(memberNo) {
+  return post(api.MemberScoreQuery + '?tenantId=3&memberNo=' + memberNo)
+}
+export function getMemberOrderQuery(memberNo) {
+  return post(api.MemberOrderQuery + '?tenantId=3&memberNo=' + memberNo)
+}

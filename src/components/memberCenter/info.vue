@@ -28,7 +28,7 @@
             </div>
             <div class="info-item">
                 <span>等级:</span>
-                <span>{{info.mobilegrade}}</span>
+                <span>{{info.gradeDesc}}</span>
             </div>
             <div class="info-item">
                 <span>积分:</span>
@@ -45,21 +45,28 @@ export default {
            info:{} 
         }
     },
+    methods: {
+        getMobileInfo(mobile){
+            getMemberInfo(mobile).then(res=>{
+                console.log(res)
+                if(res.code == 0){
+                    this.info = res.data
+                }
+            })
+
+        }
+    },
     mounted () {
         let mobile = '15026970585'
-        getMemberInfo(mobile).then(res=>{
-            console.log(res)
-            if(res.code == 0){
-                this.info = res.data
-            }
-        })
+        this.getMobileInfo(mobile)
+        // this.getMobileInfo(localStorage.getItem("mobile"))
     }
 }
 </script>
 
 <style lang="sass" scoped>
 .member-box
-  padding: 10px 20px
+  padding: 10px 15px
   .card-code
     position: absolute
     width: 60px

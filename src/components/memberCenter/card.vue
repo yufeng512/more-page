@@ -2,13 +2,13 @@
     <div>
         <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
             <el-tab-pane :label="item.name" v-for="(item, index) in tags" :key="index">
-                <div class="list-box">
-                    <div class="list-item flex-btw">
+                <div class="list-box" v-if="couponList.length>0">
+                    <div class="list-item flex-btw" v-for="(item,index) in couponList" :key="index">
                         <div>
-                            <h4>XXXX礼券</h4>
-                            <p>有效期： 2019/02/01-2019/0301</p>
+                            <h4>{{item.couponName}}}</h4>
+                            <p>有效期：{{item.beginDate}}-{{item.endDate}} </p>
                         </div>
-                        <div class="item-code flex-column" @click="use">
+                        <div class="item-code flex-column" @click="use(item)">
                             <div class="flex-column">
                                 <img src="@/assets/qrcode.png" alt="">
                             </div>
@@ -16,13 +16,16 @@
                         </div>
                     </div>
                 </div>
+                <div v-else>
+                    <p>当前没有卡券</p>
+                </div>
             </el-tab-pane>
         </el-tabs>
         <div class="popup" v-if="isShow">
             <div class="content">
                 <img class="close" src="@/assets/close.png" alt="" @click="close">
-                <h4>XXXX礼券</h4>
-                <p>有效期： 2019/02/01-2019/0301</p>
+                <h4>{{title}}</h4>
+                <p>有效期：{{beginDate}}-{{endDate}} </p>
                 <img class="" :src="url" alt="">
                 <p>扫码核销</p>
             </div>
@@ -30,8 +33,9 @@
     </div>
 </template>
 <script>
-import { getMemberCoupon } from '@/api/memberCenter/index'
+import { getMemberNoCoupon } from '@/api/memberCenter/index'
 import QRCode from 'qrcode'
+import _ from 'lodash'
 
 export default {
     data () {
@@ -39,18 +43,31 @@ export default {
             tags:[ {name:'未使用'}, {name:'已使用'}, {name:'已过期'}],
             activeName: '',
             isShow: false,
-            url: ''
+            url: '',
+            target: [],
+            couponList: [],
+            title: '',
+            beginDate: '',
+            endDate: ''
         }
     },
     methods: {
       handleClick(tab, event) {
-        // console.log(this.activeName);
+        let n = this.activeName
+        if(n==0){ n=1 } else 
+        if(n==1){ n=2 }else 
+        if(n==2){ n = 3 }
+        this.couponList = _.filter(this.target, (item)=>{
+            return item.status == n
+        })
       },
-      use(){
+      use(item){
         this.isShow = true
-        QRCode.toDataURL('http://www.baidu.com').then(url => {
+        this.title = item.couponName
+        this.beginDate = item.beginDate
+        this.endDate = item.endDate
+        QRCode.toDataURL(item.couponNo).then(url => {
             this.url = url
-            console.log(url)
         }).catch(err => {
             console.error(err)
         })
@@ -60,9 +77,10 @@ export default {
       }
     },
     mounted () {
-        let couponNo = '1075734440480649218'
-        getMemberCoupon(couponNo).then(res=>{
-
+        let no = localStorage.getItem("memberCode")
+        getMemberNoCoupon(no).then(res=>{
+           this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
+           this.target = res
         })
     }
 }

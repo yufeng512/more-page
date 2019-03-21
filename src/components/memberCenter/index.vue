@@ -16,7 +16,7 @@
                 </div>
                 <div class="info-item">
                     <span>等级:</span>
-                    <span>{{info.mobilegrade}}</span>
+                    <span>{{info.gradeDesc}}</span>
                 </div>
                 <div class="info-item">
                     <span>积分:</span>
@@ -44,23 +44,23 @@
                 </div>
             </div>
             <div class="btn-box flex-btw">
-                <div class="btn-item flex-column" @click="goPage('')">
+                <div class="btn-item flex-column" @click="goPage('pointHistory')">
                     <div class="img-box flex-column">
                         <img src="@/assets/memberCenter/member-info.png" alt="">
                     </div>
                     <p>积分历史</p>
                 </div>
                 <div class="btn-item flex-column">
-                    <div class="img-box flex-column" @click="goPage('')">
+                    <div class="img-box flex-column" @click="goPage('orderHistory')">
                         <img src="@/assets/memberCenter/point.png" alt="">
                     </div>
                     <p>消费历史</p>
                 </div>
                 <div class="btn-item flex-column">
-                    <div class="img-box flex-column" @click="goPage('')">
+                    <!-- <div class="img-box flex-column" @click="goPage('')">
                         <img src="@/assets/memberCenter/card.png" alt="">
                     </div>
-                    <p>卡券包</p>
+                    <p>卡券包</p> -->
                 </div>
             </div>
         </div>
@@ -75,14 +75,16 @@
     </div>
 </template>
 <script>
+import $ from 'jquery'
 import { getMemberInfo } from '@/api/memberCenter/index'
 import QRCode from 'qrcode'
 export default {
     data () {
         return {
-            info: {},
-            isShow: false,
-            url: ''
+            info: {
+
+            },
+            isShow: false
         }
     },
     methods: {
@@ -96,22 +98,73 @@ export default {
         },
         use(){
             this.isShow = true
-            QRCode.toDataURL('http://www.baidu.com').then(url => {
+            QRCode.toDataURL(this.info.memberCode).then(url => {
                 this.url = url
                 console.log(url)
             }).catch(err => {
                 console.error(err)
             })
         },
+        isLogin (){
+            let self = this
+            let code = self.UrlSearch()
+            self.code = code
+            let params ={
+                code: code
+            }
+            $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
+                success:function(res){
+                // alert(JSON.stringify(res))
+                if(res.code==0){
+                    if(res.data.member){
+                        localStorage.setItem("isMember",true)
+                        localStorage.setItem("mobile",res.data.member.mobile)
+                        self.getMobileInfo(res.data.member.mobile)
+                    }else{
+                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                    }
+                }else {
+                    if(localStorage.getItem("isMember")){
+                        self.getMobileInfo(localStorage.getItem("mobile"))
+                    }else{
+                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                    }
+                }
+                },
+                error:function(e){
+                    alert(e)
+                }
+            })
+        },
+        UrlSearch() {
+            var name,value;
+            var str=location.href; //取得整个地址栏
+            var num=str.indexOf("?")
+            str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+            var arr=str.split("&"); //各个参数放到数组里
+            for(var i=0;i < arr.length;i++){
+                num=arr[i].split("=");
+                if(num[0]=='code'){
+                value = num[1]
+                }
+            }
+            return value
+        },
+        getMobileInfo (mobile){
+            getMemberInfo(mobile).then(res=>{
+                console.log(res)
+                if(res.code == 0){
+                    this.info = res.data
+                    localStorage.setItem("memberCode",'C0004500000019851')
+                    // localStorage.setItem("memberCode",res.data.memberCode)
+                }
+            })
+        }
     },
     mounted () {
+        // this.isLogin()
         let mobile = '15026970585'
-        getMemberInfo(mobile).then(res=>{
-            console.log(res)
-            if(res.code == 0){
-                this.info = res.data
-            }
-        })
+        this.getMobileInfo(mobile)
     }
 }
 </script>

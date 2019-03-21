@@ -44,7 +44,7 @@
       </div>
       <div class="info-item">
           <span>详细信息</span>
-          <span>{{memberAddress}}</span>
+          <span>{{address}}</span>
       </div>
     </div>
     <button @click="changeInfo">修改我的信息</button>
@@ -79,7 +79,7 @@ export default {
       province: '',
       city: '',
       region: '',
-      memberAddress:'',
+      address:'',
       codeText: '获取验证码',
       isDisabled: false,
       isInfo: false,
@@ -100,6 +100,30 @@ export default {
     changeInfo () {
         this.$router.push('userInfo')
     },
+    getData () {
+      let self = this
+      ProvincesList().then(res=>{
+        res.data.forEach((item)=>{
+          if(item.code == self.province){
+            self.province = item.name
+          }
+        })
+      })
+      Cities({provinceCode: self.province}).then(res=>{
+        res.data.forEach((item)=>{
+          if(item.code == self.city){
+            self.city = item.name
+          }
+        })
+      })
+      Districts({cityCode: self.city}).then(res=>{
+        res.data.forEach((item)=>{
+          if(item.code == self.region){
+            self.region = item.name
+          }
+        })
+      })
+    },
     isLogin (){
       let self = this
       let code = self.UrlSearch()
@@ -117,22 +141,23 @@ export default {
               self.isInfo = true
               self.name = res.data.member.name
               self.mobile = res.data.member.mobile
-              self.gender = res.data.member.sex
+              self.gender = res.data.member.gender
               self.birthday = res.data.member.birthday
               self.province = res.data.member.province||''
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
-              self.memberAddress = res.data.member.memberAddress||''
+              self.address = res.data.member.address||''
               localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
               localStorage.setItem("mobile",res.data.member.mobile)
-              localStorage.setItem("sex",res.data.member.sex)
+              localStorage.setItem("gender",res.data.member.gender)
               localStorage.setItem("birthday",res.data.member.birthday)
               localStorage.setItem("province",res.data.member.province||'')
               localStorage.setItem("city",res.data.member.city||'')
               localStorage.setItem("region",res.data.member.region||'')
-              localStorage.setItem("memberAddress",res.data.member.memberAddress||'')
+              localStorage.setItem("address",res.data.member.address||'')
+              self.getData()
             }else{
               self.setRemoveLocal()
               self.isRegister = true
@@ -142,12 +167,13 @@ export default {
               self.isInfo = true
               self.name = localStorage.getItem("name")
               self.mobile = localStorage.getItem("mobile")
-              self.gender = localStorage.getItem("sex")
+              self.gender = localStorage.getItem("gender")
               self.birthday = localStorage.getItem("birthday")
               self.province = localStorage.getItem("province")||''
               self.city = localStorage.getItem("city")||''
               self.region = localStorage.getItem("region")||''
-              self.memberAddress = localStorage.getItem("memberAddress")||''
+              self.address = localStorage.getItem("address")||''
+              self.getData()
             }else{
               self.setRemoveLocal()
               self.isRegister = true
@@ -164,12 +190,12 @@ export default {
       localStorage.removeItem("id")
       localStorage.removeItem("name")
       localStorage.removeItem("mobile")
-      localStorage.removeItem("sex")
+      localStorage.removeItem("gender")
       localStorage.removeItem("birthday")
       localStorage.removeItem("province")
       localStorage.removeItem("city")
       localStorage.removeItem("region")
-      localStorage.removeItem("memberAddress")
+      localStorage.removeItem("address")
     },
     UrlSearch() {
       var name,value;
