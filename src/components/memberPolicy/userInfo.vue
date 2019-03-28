@@ -83,7 +83,6 @@
   </div>
 </template>
 <script>
-import { getPosition } from '@/utils/utils'
 import { ProvincesList, Cities, Districts, MemberUpdate, MemberInsert } from '@/api/memberPolicy'
 import _  from 'lodash'
 
@@ -101,7 +100,6 @@ export default {
         address:''
       },
       sexList: [{ label: "男", value: '1'}, { label: "女", value: '2' }],
-      mapJson: '../../static/json/map.json',
       provinces: [],
       citys: [],
       regions: []
@@ -139,10 +137,10 @@ export default {
         self.$toast("请输入生日！");
         return false
       }
-      params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
-      params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
-      // params.openId = localStorage.getItem("openId")
-      // params.unionId = localStorage.getItem("unionId")
+      // params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      params.openId = localStorage.getItem("openId")
+      params.unionId = localStorage.getItem("unionId")
       // alert('res'+JSON.stringify(params))
       if (params.id){
         MemberUpdate(params).then(res=>{

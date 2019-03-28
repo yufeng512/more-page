@@ -165,6 +165,8 @@ export default {
     },
     mounted () {
         this.isLogin()
+        // let mobile = '13818645674'
+        // this.getMobileInfo(mobile)
     }
 }
 </script>

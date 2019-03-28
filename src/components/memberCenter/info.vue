@@ -38,6 +38,10 @@
                 <span>积分:</span>
                 <span>{{info.point}}</span>
             </div>
+            <div class="info-item"  v-if="info.point">
+                <span>天猫积分:</span>
+                <span>{{info.tmallPoint}}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -61,6 +65,8 @@ export default {
         }
     },
     mounted () {
+        // let mobile = '13818645674'
+        // this.getMobileInfo(mobile)
         this.getMobileInfo(localStorage.getItem("mobile"))
     }
 }
