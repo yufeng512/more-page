@@ -2,35 +2,39 @@
     <div class="member-box">
         <img src="@/assets/memberCenter/logo.jpg" alt="">
         <div>
-            <div class="info-item">
+            <div class="info-item"  v-if="info.name">
                 <span>姓名:</span>
                 <span>{{info.name}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item" v-if="info.mobile">
                 <span>手机:</span>
                 <span>{{info.mobile}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item" v-if="info.sex">
                 <span>性别:</span>
                 <span>{{info.sex==1?'男':'女'}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item" v-if="info.birthday">
                 <span>生日:</span>
                 <span>{{info.birthday}}</span>
             </div>
-            <div class="info-item">
-                <span>住址:</span>
-                <span>{{info.province}}</span>
+            <div class="info-item" v-if="info.province">
+                <span>省市区:</span>
+                <span>{{info.province+info.city+info.region}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item" v-if="info.memberAddress">
+                <span>详细地址:</span>
+                <span>{{info.memberAddress}}</span>
+            </div>
+            <div class="info-item" v-if="info.mail">
                 <span>邮件:</span>
                 <span>{{info.mail}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item"  v-if="info.gradeDesc">
                 <span>等级:</span>
                 <span>{{info.gradeDesc}}</span>
             </div>
-            <div class="info-item">
+            <div class="info-item"  v-if="info.point">
                 <span>积分:</span>
                 <span>{{info.point}}</span>
             </div>
@@ -48,7 +52,7 @@ export default {
     methods: {
         getMobileInfo(mobile){
             getMemberInfo(mobile).then(res=>{
-                console.log(res)
+                // alert(JSON.stringify(res))
                 if(res.code == 0){
                     this.info = res.data
                 }
@@ -57,9 +61,7 @@ export default {
         }
     },
     mounted () {
-        let mobile = '15026970585'
-        this.getMobileInfo(mobile)
-        // this.getMobileInfo(localStorage.getItem("mobile"))
+        this.getMobileInfo(localStorage.getItem("mobile"))
     }
 }
 </script>

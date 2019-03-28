@@ -139,10 +139,10 @@ export default {
         self.$toast("请输入生日！");
         return false
       }
-      // params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
-      // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
-      params.openId = localStorage.getItem("openId")
-      params.unionId = localStorage.getItem("unionId")
+      params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      // params.openId = localStorage.getItem("openId")
+      // params.unionId = localStorage.getItem("unionId")
       // alert('res'+JSON.stringify(params))
       if (params.id){
         MemberUpdate(params).then(res=>{

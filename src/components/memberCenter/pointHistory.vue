@@ -1,8 +1,13 @@
 <template>
     <div class="point-box">
-        <div class="point-item" v-for="(item,index) in pointList" :key="index">
-            <h4>{{item.storeName}}</h4>
-            <p class="flex-btw"><span>积分：{{item.score}}</span><span>交易时间：{{item.transDate}}</span></p>
+        <div v-if="pointList.length>0">
+            <div class="point-item" v-for="(item,index) in pointList" :key="index">
+                <h4>{{item.storeName}}</h4>
+                <p class="flex-btw"><span>积分：{{item.score}}</span><span>交易时间：{{item.transDate}}</span></p>
+            </div>
+        </div>
+        <div v-else>
+            <p>当前没有积分历史</p>
         </div>
     </div>
 </template>

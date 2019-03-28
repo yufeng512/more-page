@@ -98,7 +98,7 @@ export default {
       this.isShow = p
     },
     changeInfo () {
-        this.$router.push('userInfo')
+        this.$router.push({name:'userInfo',params:{mobile: this.mobile}})
     },
     getData () {
       let self = this

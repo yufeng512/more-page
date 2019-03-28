@@ -1,4 +1,4 @@
-import index from '../components/video/index'
+import index from '../components/wxActive/index'
 
 const routes = [{
     path: '/',

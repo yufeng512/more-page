@@ -117,16 +117,18 @@ export default {
                 // alert(JSON.stringify(res))
                 if(res.code==0){
                     if(res.data.member){
-                        localStorage.setItem("isMember",true)
+                        localStorage.setItem("isMemberCenter",true)
                         localStorage.setItem("mobile",res.data.member.mobile)
                         self.getMobileInfo(res.data.member.mobile)
                     }else{
+                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
                         // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
                     }
                 }else {
-                    if(localStorage.getItem("isMember")){
+                    if(localStorage.getItem("isMemberCenter")){
                         self.getMobileInfo(localStorage.getItem("mobile"))
                     }else{
+                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
                         // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
                     }
                 }
@@ -152,19 +154,17 @@ export default {
         },
         getMobileInfo (mobile){
             getMemberInfo(mobile).then(res=>{
-                console.log(res)
+                // alert(JSON.stringify(res))
                 if(res.code == 0){
                     this.info = res.data
-                    localStorage.setItem("memberCode",'C0004500000019851')
-                    // localStorage.setItem("memberCode",res.data.memberCode)
+                    // localStorage.setItem("memberCode",'C0004500000019851')
+                    localStorage.setItem("memberCode",res.data.memberCode)
                 }
             })
         }
     },
     mounted () {
-        // this.isLogin()
-        let mobile = '15026970585'
-        this.getMobileInfo(mobile)
+        this.isLogin()
     }
 }
 </script>

@@ -1,8 +1,8 @@
 import Vue from 'Vue'
 import VueRouter from 'vue-router'
-import video from './video.vue'
+import video from './wxActive.vue'
 import '@/styles/index.sass'
-import routes from '../../router/video.js'
+import routes from '../../router/wxActive.js'
 import '@/styles/index.sass'
 
 Vue.use(VueRouter)
