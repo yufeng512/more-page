@@ -2,43 +2,43 @@
     <div class="member-box">
         <img src="@/assets/memberCenter/logo.jpg" alt="">
         <div>
-            <div class="info-item"  v-if="info.name">
+            <div class="info-item" >
                 <span>姓名:</span>
                 <span>{{info.name}}</span>
             </div>
-            <div class="info-item" v-if="info.mobile">
+            <div class="info-item">
                 <span>手机:</span>
                 <span>{{info.mobile}}</span>
             </div>
-            <div class="info-item" v-if="info.sex">
+            <div class="info-item" >
                 <span>性别:</span>
                 <span>{{info.sex==1?'男':'女'}}</span>
             </div>
-            <div class="info-item" v-if="info.birthday">
+            <div class="info-item">
                 <span>生日:</span>
                 <span>{{info.birthday}}</span>
             </div>
-            <div class="info-item" v-if="info.province">
+            <div class="info-item">
                 <span>省市区:</span>
                 <span>{{info.province+info.city+info.region}}</span>
             </div>
-            <div class="info-item" v-if="info.memberAddress">
+            <div class="info-item">
                 <span>详细地址:</span>
                 <span>{{info.memberAddress}}</span>
             </div>
-            <div class="info-item" v-if="info.mail">
+            <div class="info-item" >
                 <span>邮件:</span>
                 <span>{{info.mail}}</span>
             </div>
-            <div class="info-item"  v-if="info.gradeDesc">
+            <div class="info-item" >
                 <span>等级:</span>
                 <span>{{info.gradeDesc}}</span>
             </div>
-            <div class="info-item"  v-if="info.point">
+            <div class="info-item">
                 <span>积分:</span>
                 <span>{{info.point}}</span>
             </div>
-            <div class="info-item"  v-if="info.point">
+            <div class="info-item" >
                 <span>天猫积分:</span>
                 <span>{{info.tmallPoint}}</span>
             </div>
