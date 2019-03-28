@@ -18,6 +18,10 @@
                 <span>生日:</span>
                 <span>{{info.birthday}}</span>
             </div>
+            <div class="info-item" >
+                <span>等级:</span>
+                <span>{{info.gradeDesc}}</span>
+            </div>
             <div class="info-item">
                 <span>积分:</span>
                 <span>{{info.point}}</span>
@@ -33,10 +37,6 @@
             <div class="info-item">
                 <span>详细地址:</span>
                 <span>{{info.memberAddress}}</span>
-            </div>
-            <div class="info-item" >
-                <span>等级:</span>
-                <span>{{info.gradeDesc}}</span>
             </div>
         </div>
     </div>
