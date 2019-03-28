@@ -19,6 +19,14 @@
                 <span>{{info.birthday}}</span>
             </div>
             <div class="info-item">
+                <span>积分:</span>
+                <span>{{info.point}}</span>
+            </div>
+            <div class="info-item" >
+                <span>天猫积分:</span>
+                <span>{{info.tmallPoint}}</span>
+            </div>
+            <div class="info-item">
                 <span>省市区:</span>
                 <span>{{info.province+info.city+info.region}}</span>
             </div>
@@ -27,20 +35,8 @@
                 <span>{{info.memberAddress}}</span>
             </div>
             <div class="info-item" >
-                <span>邮件:</span>
-                <span>{{info.mail}}</span>
-            </div>
-            <div class="info-item" >
                 <span>等级:</span>
                 <span>{{info.gradeDesc}}</span>
-            </div>
-            <div class="info-item">
-                <span>积分:</span>
-                <span>{{info.point}}</span>
-            </div>
-            <div class="info-item" >
-                <span>天猫积分:</span>
-                <span>{{info.tmallPoint}}</span>
             </div>
         </div>
     </div>
