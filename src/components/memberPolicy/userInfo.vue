@@ -83,7 +83,7 @@
   </div>
 </template>
 <script>
-import { ProvincesList, Cities, Districts, MemberUpdate, MemberInsert } from '@/api/memberPolicy'
+import { ProvincesList, Cities, Districts, MemberUpdate, MemberInsert, GetCardSign} from '@/api/memberPolicy'
 import _  from 'lodash'
 
 export default {
@@ -107,6 +107,7 @@ export default {
   },
   mounted () {
     console.log(wx)
+    this.getGetCardSign('CNL000000170')
     this.getProvincesList()
     if(this.$route.params.mobile){
       this.info.mobile = this.$route.params.mobile
@@ -125,6 +126,35 @@ export default {
     }
   },
   methods:{
+    getGetCardSign (no) {
+      GetCardSign(no).then(res=>{
+        alert('res'+JSON.stringify(res))
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: localStorage.getItem("openId"), // 必填，公众号的唯一标识
+            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+            nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
+            signature: res.data.signature,// 必填，签名
+            jsApiList: ['addCard'] // 必填，需要使用的JS接口列表
+        });
+        wx.addCard({
+          cardList: [{
+            cardId: res.data.card_id,
+            cardExt: '{"code":"' + res.data.memberCode + '","openid":"'+localStorage.getItem("openId")+'","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"xcx"}'
+          }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
+          success: function(result) {
+            alert('领取成功', result);
+            window.location.href="http://wmtuat.eloccitane.com/memberCenter/memberCenter.html"
+          },
+          fail: function(res) {
+            alert('领取失败', res);
+          },
+          complete: function() {
+
+          }
+        })
+      })
+    },
     save () {
       let self = this
       let params = self.info
@@ -164,9 +194,7 @@ export default {
           if(res.code == 0){
             self.$toast("注册成功");
             self.setLocal(res.data)
-            setTimeout(function(){
-              self.$router.push('/')
-            },2000)
+            self.getGetCardSign(res.data.memberCode)
           }else{
             self.$toast(res.msg||'保存失败');
           }

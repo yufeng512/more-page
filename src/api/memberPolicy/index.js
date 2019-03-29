@@ -47,3 +47,11 @@ export function Cities(params) {
 export function Districts(params) {
   return fetch(api.Districts, params)
 }
+//获取权限
+export function GetCardSign(params) {
+  return post(api.GetCardSign +'?memberCode='+ params)
+}
+//获取权限
+export function DecryptCode(params) {
+  return post(api.DecryptCode, params)
+}
