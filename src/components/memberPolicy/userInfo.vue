@@ -138,7 +138,7 @@ export default {
         wx.addCard({
           cardList: [{
             cardId: res.data.card_id,
-            cardExt: '{"code":"' + res.data.memberCode + '","openid":"'+localStorage.getItem("openId")+'","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
+            cardExt: '{"code":"' + res.data.memberCode + '","openid":"","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
           }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
           success: function(result) {
             alert('领取成功', result);
