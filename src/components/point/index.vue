@@ -28,7 +28,7 @@ export default {
             encrypt_code: obj.encrypt_code
           }
           var self = this
-          DecryptCode(params).then(res=>{
+          DecryptCode(params).then(function(res){
             alert('res'+JSON.stringify(res))
             if(res.code == 0){
               self.getMemberPoint(res.data.memberCode)
@@ -36,7 +36,7 @@ export default {
           })
         },
         getMemberPoint(no) {
-            getMemberScoreQuery(no).then((res)=>{
+            getMemberScoreQuery(no).then(function(res){
                 alert('res11'+JSON.stringify(res))
                 this.pointList = res
             })
