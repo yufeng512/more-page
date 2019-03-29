@@ -111,7 +111,6 @@ export default {
         var num=str.indexOf("?")
         str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
         var arr=str.split("&"); //各个参数放到数组里
-        alert('res'+JSON.stringify(arr))
         for(var i=0;i < arr.length;i++){
           num=arr[i].split("=");
           if(num[0]=='encrypt_code'){
@@ -121,11 +120,11 @@ export default {
             obj.card_id=num[1]
           }
         }
-        alert('res'+JSON.stringify(obj))
         return obj
       },
       memberCouponList(no) {
         getMemberNoCoupon(no).then(res=>{
+          alert('res111'+JSON.stringify(obj))
           this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
           this.target = res
         })
