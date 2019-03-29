@@ -5,8 +5,8 @@
                 <div class="list-box" v-if="couponList.length>0">
                     <div class="list-item flex-btw" v-for="(item,index) in couponList" :key="index">
                         <div>
-                            <h4>{{item.couponName}}}</h4>
-                            <p>有效期：{{item.beginDate}}-{{item.endDate}} </p>
+                            <h4>{{item.couponName}}</h4>
+                            <p>有效期：{{item.beginDate}} - {{item.endDate}} </p>
                         </div>
                         <div class="item-code flex-column" @click="use(item)">
                             <div class="flex-column">
@@ -62,25 +62,55 @@ export default {
         })
       },
       use(item){
-        this.isShow = true
-        this.title = item.couponName
-        this.beginDate = item.beginDate
-        this.endDate = item.endDate
-        QRCode.toDataURL(item.couponNo).then(url => {
-            this.url = url
-        }).catch(err => {
-            console.error(err)
+        let self = this
+        self.isShow = true
+        self.title = item.couponName
+        self.beginDate = item.beginDate
+        self.endDate = item.endDate
+        var opts = {
+          errorCorrectionLevel: 'H',
+          type: 'image/jpeg',
+          rendererOpts: {
+            quality: 0.3
+          }
+        }
+        
+        QRCode.toDataURL(item.couponNo, opts, function (err, url) {
+          if (err) throw err
+          console.log(url)
+          self.url = url
         })
+        // QRCode.toDataURL(item.couponNo).then(url => {
+        //     self.url = url
+        // }).catch(err => {
+        //   console.error(err)
+        // })
       },
       close(){
         this.isShow = false
+      },
+      getCode() {
+        //encrypt_code=ENCRYPT_CODE&card_id=CARDID
+        var value;
+        var str=location.href; //取得整个地址栏
+        var num=str.indexOf("?")
+        str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+        var arr=str.split("&"); //各个参数放到数组里
+        for(var i=0;i < arr.length;i++){
+          num=arr[i].split("=");
+          if(num[0]=='encrypt_code'){
+            value = num[1]
+          }
+        }
+        return value
       }
     },
     mounted () {
-        let no = localStorage.getItem("memberCode")
+        // let no = localStorage.getItem("memberCode")
+        let no = this.getCode()||'CM000100001334954'
         getMemberNoCoupon(no).then(res=>{
-           this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
-           this.target = res
+          this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
+          this.target = res
         })
     }
 }

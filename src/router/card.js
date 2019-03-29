@@ -1,4 +1,4 @@
-import index from '../components/wxActive/index'
+import index from '../components/card/index'
 
 const routes = [{
     path: '/',

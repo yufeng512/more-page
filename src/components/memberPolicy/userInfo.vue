@@ -106,6 +106,7 @@ export default {
     };
   },
   mounted () {
+    console.log(wx)
     this.getProvincesList()
     if(this.$route.params.mobile){
       this.info.mobile = this.$route.params.mobile
@@ -158,11 +159,10 @@ export default {
           alert('err'+JSON.stringify(err))
         })
       }else{
-        // alert(222222)
         MemberInsert(params).then(res=>{
           // alert('res'+JSON.stringify(res))
           if(res.code == 0){
-            self.$toast("保存成功");
+            self.$toast("注册成功");
             self.setLocal(res.data)
             setTimeout(function(){
               self.$router.push('/')

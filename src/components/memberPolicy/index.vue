@@ -198,7 +198,8 @@ export default {
       localStorage.removeItem("address")
     },
     UrlSearch() {
-      var name,value;
+      //encrypt_code=ENCRYPT_CODE&card_id=CARDID
+      var value;
       var str=location.href; //取得整个地址栏
       var num=str.indexOf("?")
       str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
