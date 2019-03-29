@@ -37,6 +37,7 @@ export default {
         },
         getMemberPoint(no) {
             getMemberScoreQuery(no).then((res)=>{
+                alert('res11'+JSON.stringify(res))
                 this.pointList = res
             })
         },
