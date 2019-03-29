@@ -116,6 +116,7 @@ export default {
             obj.card_id=num[1]
           }
         }
+        alert('res'+JSON.stringify(obj))
         return obj
       }
     },
