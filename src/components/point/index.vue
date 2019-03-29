@@ -61,8 +61,8 @@ export default {
         }
     },
     mounted () {
-        alert('1111111')
-        // this.getDecryptCode()
+        // alert('1111111')
+        this.getDecryptCode()
     }
 }
 </script>
