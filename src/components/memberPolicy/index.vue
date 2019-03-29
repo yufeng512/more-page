@@ -12,7 +12,7 @@
       <button :disabled="isDisabled"  @click="getCode">{{codeText}}</button>
     </div>
     <div class="input-item flex-box">
-      <input type="checkbox" v-model="checked"><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span @click="isOpen(true)">隐私条款</span>，并同意接受其中的所有条款。</p>
+      <el-checkbox v-model="checked"></el-checkbox><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span @click="isOpen(true)">隐私条款</span>，并同意接受其中的所有条款。</p>
     </div>
     <div class="btn-item flex-box">
       <button @click="regiter">注册绑定</button>
@@ -339,6 +339,8 @@ export default {
 .input-item
   margin-top: 20px
   padding: 0 20px
+  .check-box
+    width: 20px
   input
     border: 1px solid #dbdbdb
     height: 30px

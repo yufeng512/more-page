@@ -15,6 +15,7 @@ import {
   DatePicker,
   Message,
   MessageBox,
+  Checkbox,
   Tabs,
   TabPane,
 } from 'element-ui'
@@ -28,6 +29,7 @@ Vue.component(DatePicker.name, DatePicker);
 Vue.prototype.$message = Message;
 Vue.prototype.$msgbox = MessageBox;
 Vue.use(Tabs)
+Vue.use(Checkbox)
 Vue.use(TabPane)
 Vue.use(Toast)
 Vue.use(VueRouter)
