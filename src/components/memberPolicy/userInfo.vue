@@ -284,6 +284,6 @@ export default {
       border-radius: 4px
       color: #ffffff
       height: 32px
-      margin-left: 10px
+      margin-left: 10px  
 </style>
 
