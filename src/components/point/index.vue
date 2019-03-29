@@ -58,10 +58,11 @@ export default {
             }
           }
           return obj
-        },
+        }
     },
     mounted () {
-        this.getDecryptCode()
+        alert('1111111')
+        // this.getDecryptCode()
     }
 }
 </script>
