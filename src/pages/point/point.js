@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import point from './point.vue'
 import '@/styles/index.sass'
 import routes from '../../router/point.js'
-import '@/styles/index.sass'
 import {
   Pagination,
   Tabs,

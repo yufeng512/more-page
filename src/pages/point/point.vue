@@ -6,6 +6,6 @@
 <script>
 
 export default {
-  name: 'customVideo'
+  name: 'point'
 }
 </script>
