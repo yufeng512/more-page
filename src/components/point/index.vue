@@ -27,16 +27,15 @@ export default {
             card_id: obj.card_id,
             encrypt_code: obj.encrypt_code
           }
-          var self = this
-          DecryptCode(params).then(function(res){
+          DecryptCode(params).then( (res)=>{
             alert('res'+JSON.stringify(res))
             if(res.code == 0){
-              self.getMemberPoint(res.data.memberCode)
+              this.getMemberPoint(res.data.memberCode)
             }
           })
         },
         getMemberPoint(no) {
-            getMemberScoreQuery(no).then(function(res){
+            getMemberScoreQuery(no).then((res)=>{
                 alert('res11'+JSON.stringify(res))
                 this.pointList = res
             })
