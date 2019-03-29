@@ -13,6 +13,7 @@
 </template>
 <script>
 import { getMemberScoreQuery } from '@/api/memberCenter/index'
+import { DecryptCode } from '@/api/memberPolicy/index'
 export default {
     data () {
         return {
@@ -20,6 +21,20 @@ export default {
         }
     },
     methods:{
+        getDecryptCode () {
+          let obj = this.getCode()
+          let params = {
+            card_id: obj.card_id,
+            encrypt_code: obj.encrypt_code
+          }
+          let self = this
+          DecryptCode(params).then(res=>{
+            alert('res'+JSON.stringify(res))
+            if(res.code == 0){
+              self.getMemberPoint(res.data.memberCode)
+            }
+          })
+        },
         getMemberPoint(no) {
             getMemberScoreQuery(no).then((res)=>{
                 this.pointList = res
@@ -27,7 +42,7 @@ export default {
         },
         getCode() {
           //encrypt_code=ENCRYPT_CODE&card_id=CARDID
-          var value;
+          var obj={}
           var str=location.href; //取得整个地址栏
           var num=str.indexOf("?")
           str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
@@ -35,16 +50,17 @@ export default {
           for(var i=0;i < arr.length;i++){
             num=arr[i].split("=");
             if(num[0]=='encrypt_code'){
-              value = num[1]
+              obj.encrypt_code=num[1]
+            }
+            if(num[0]=='card_id'){
+              obj.card_id=num[1]
             }
           }
-          return value
-        }
+          return obj
+        },
     },
     mounted () {
-        // let no = localStorage.getItem("memberCode")
-        let no = this.getCode()||'CM000100001334954'
-        this.getMemberPoint(no)
+        this.getDecryptCode()
     }
 }
 </script>
