@@ -6,7 +6,7 @@
 <script>
 
 export default {
-  name: 'customVideo'
+  name: 'serviceIssue'
 }
 </script>
 <style>

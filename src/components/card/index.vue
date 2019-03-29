@@ -54,12 +54,12 @@ export default {
     },
     methods: {
       getDecryptCode () {
-        let obj = this.getCode()
-        let params = {
+        var obj = this.getCode()
+        var params = {
           card_id: obj.card_id,
           encrypt_code: obj.encrypt_code
         }
-        let self = this
+        var self = this
         DecryptCode(params).then(res=>{
           alert('res'+JSON.stringify(res))
           if(res.code == 0){
