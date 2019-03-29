@@ -59,8 +59,12 @@ export default {
           card_id: obj.card_id,
           encrypt_code: obj.encrypt_code
         }
+        let self = this
         DecryptCode(params).then(res=>{
           alert('res'+JSON.stringify(res))
+          if(res.code == 0){
+            self.memberCouponList(res.data.memberCode)
+          }
         })
       },
       handleClick(tab, event) {
@@ -119,16 +123,16 @@ export default {
         }
         alert('res'+JSON.stringify(obj))
         return obj
+      },
+      memberCouponList(no) {
+        getMemberNoCoupon(no).then(res=>{
+          this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
+          this.target = res
+        })
       }
     },
     mounted () {
       this.getDecryptCode()
-        // let no = localStorage.getItem("memberCode")
-        
-        // getMemberNoCoupon(no).then(res=>{
-        //   this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
-        //   this.target = res
-        // })
     }
 }
 </script>
