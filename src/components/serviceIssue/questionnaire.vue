@@ -56,6 +56,7 @@ export default {
         onChange (key) {
           console.log(key)
           this.isShow = true
+          this.info.value1 = []
           if(key == 1 || key == 2) {
             this.isShowList1 = true
             this.isShowList2 = false
