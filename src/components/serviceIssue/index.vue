@@ -22,7 +22,7 @@ export default {
     },
     methods:{
         submit () {
-          this.$router.push('questionnaire')
+          this.isHasPartQues()
         },
         isHasPartQues () {
           var obj = self.UrlSearch()

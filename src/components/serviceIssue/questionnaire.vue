@@ -117,7 +117,7 @@ export default {
             this.info.satisfyOptions = this.selectValue.join(',')
           }
           this.info.openId = localStorage.getItem("openId")
-          this.info.campaignId = localStorage.getItem("campaignId")
+          this.info.campaignid = localStorage.getItem("campaignId")
           addQuestion(this.info).then(res=>{
             if(res.code == 0){
               this.$toast('评价完成');

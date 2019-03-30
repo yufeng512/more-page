@@ -7,8 +7,8 @@ import {
 } from '@/utils/request'
 //当前城市
 export function addQuestion(params) {
-  return fetch(api.addQuestion, params)
+  return post(api.addQuestion, params)
 }
 export function hasPartQues(req) {
-  return post(api.hasPartQues + req.openId + '/' + req.campaignId)
+  return get(api.hasPartQues + req.openId + '/' + req.campaignId)
 }
