@@ -25,11 +25,11 @@ export default {
         submit () {
           let self = this
           var obj = self.UrlSearch()
+          alert('req'+JSON.stringify(obj))
           var req = {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
           }
-          alert('req'+JSON.stringify(req))
           localStorage.setItem("campaignId",obj.campaignId||'') 
           hasPartQues(req).then(res=>{
             alert(JSON.stringify(res))
@@ -48,7 +48,6 @@ export default {
           }
           $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
             success:function(res){
-              alert(JSON.stringify(res))
               if(res.code==0){
                 if(res.data.member){
                   localStorage.setItem("openId",res.data.openId) 
