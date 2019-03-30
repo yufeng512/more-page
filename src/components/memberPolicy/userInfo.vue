@@ -128,7 +128,7 @@ export default {
       GetCardSign(no).then(res=>{
         alert('res'+JSON.stringify(res))
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
             timestamp: res.data.timestamp, // 必填，生成签名的时间戳
             nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
@@ -173,10 +173,10 @@ export default {
         self.$toast("请输入生日！");
         return false
       }
-      params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
-      params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
-      // params.openId = localStorage.getItem("openId")
-      // params.unionId = localStorage.getItem("unionId")
+      // params.openId = localStorage.getItem("openId")||'od0aPwkytWYTQ8YE0J3y6awM0Nts'
+      // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
+      params.openId = localStorage.getItem("openId")
+      params.unionId = localStorage.getItem("unionId")
       // alert('res'+JSON.stringify(params))
       if (params.id){
         MemberUpdate(params).then(res=>{
