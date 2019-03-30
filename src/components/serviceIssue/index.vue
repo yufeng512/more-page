@@ -23,7 +23,8 @@ export default {
     },
     methods:{
         submit () {
-          var obj = this.UrlSearch()
+          let self = this
+          var obj = self.UrlSearch()
           var req = {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
@@ -33,9 +34,9 @@ export default {
           hasPartQues(req).then(res=>{
             alert(JSON.stringify(res))
             if(res){
-              this.$toast('您已参与过该活动评价');
+              self.$toast('您已参与过该活动评价');
             }else{
-              this.$router.push('questionnaire')
+              self.$router.push('questionnaire')
             }
           })
         },
@@ -52,10 +53,10 @@ export default {
                 if(res.data.member){
                   localStorage.setItem("openId",res.data.openId) 
                 }else{
-                  this.$toast('登陆失败');
+                  self.$toast('登陆失败');
                 }
               }else{
-                this.$toast('登陆失败');
+                self.$toast('登陆失败');
               }
             },
             error:function(e){
