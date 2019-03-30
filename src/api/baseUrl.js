@@ -20,7 +20,7 @@ export default {
     //会员注册
     Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
     CodeVerify: BASEAPI + 'mobile/code/verify', //校验短信验证码接口
-    Login: BASEAPI + 'mobile/auth/login', //校验短信验证码接口
+    Login: BASEAPI + 'mobile/auth/login', //登陆
     //会员中心
     MemberInfo: BASEAPI + 'mobile/member/queryByMobile/', //会员信息
     Querypoint: BASEAPI + 'mobile/scoreQuery', //积分信息
@@ -31,4 +31,8 @@ export default {
 
     GetCardSign: BASEAPI + 'mobile/wx/getCardSign', //会员卡param memberCode 签名
     DecryptCode: BASEAPI + 'mobile/wx/decryptCode', //会员param card_id, encrypt_code
+
+    //问卷
+    addQuestion: BASEAPI + 'mobile/member/addQuestion', //提交问卷    
+    hasPartQues: BASEAPI + '/mobile/member/hasPartQues/', //判断是否
 }

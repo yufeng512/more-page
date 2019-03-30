@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import serviceIssue from './serviceIssue.vue'
 import '@/styles/index.sass'
 import routes from '../../router/serviceIssue.js'
+import Toast from '@/components/Toast'
+Vue.use(Toast);
 import {
   Radio,
   RadioGroup,

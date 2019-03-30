@@ -61,8 +61,7 @@
 import $ from 'jquery'
 import privacy from './privacy'
 import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
-import { Login, ProvincesList, Cities, Districts,} from '@/api/memberPolicy/index'
-import { Message } from 'element-ui'
+import { Login } from '@/api/memberPolicy/index'
 
 export default {
   data () {
