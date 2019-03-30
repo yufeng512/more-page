@@ -23,8 +23,6 @@ export default {
     },
     methods:{
         submit () {
-          var obj = this.UrlSearch()
-          alert('333'+JSON.stringify(obj))
           this.isHasPartQues()
         },
         isHasPartQues () {
@@ -34,7 +32,6 @@ export default {
             campaignId: obj.campaignId
           }
           localStorage.setItem("campaignId",obj.campaignId||'') 
-          alert(JSON.stringify(req))
           hasPartQues(req).then(res=>{
             alert(JSON.stringify(res))
             if(res){
@@ -47,10 +44,8 @@ export default {
         isLogin (){
           let self = this
           let obj = self.UrlSearch()
-          alert('obj'+JSON.stringify(obj))
-          self.code = obj.code
           let params ={
-            code: code
+            code: obj.code
           }
           $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
             success:function(res){
@@ -77,7 +72,7 @@ export default {
           var num=str.indexOf("?")
           str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
           var arr=str.split("&"); //各个参数放到数组里
-          alert('res11'+JSON.stringify(arr))
+          // alert('res11'+JSON.stringify(arr))
           for(var i=0;i < arr.length;i++){
             num=arr[i].split("=");
             if(num[0]=='code'){
