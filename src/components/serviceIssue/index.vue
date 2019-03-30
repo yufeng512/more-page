@@ -23,9 +23,6 @@ export default {
     },
     methods:{
         submit () {
-          this.isHasPartQues()
-        },
-        isHasPartQues () {
           var obj = this.UrlSearch()
           var req = {
             openId: localStorage.getItem("openId"),
