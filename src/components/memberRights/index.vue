@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="warpper">
     <div class="img-box">
       <img src="@/assets/memberRights/bg.png" alt="">
     </div>
@@ -20,6 +20,10 @@ export default {
 }
 </script>
 <style scoped>
+.warpper{
+  height: 100%;
+  background: #ffffff
+}
 .img-btn img,
 .img-box img{
   width: 100%;
