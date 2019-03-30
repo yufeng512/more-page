@@ -46,21 +46,21 @@
             <div class="btn-box flex-btw">
                 <div class="btn-item flex-column" @click="goPage('pointHistory')">
                     <div class="img-box flex-column">
-                        <img src="@/assets/memberCenter/member-info.png" alt="">
+                        <img src="@/assets/memberCenter/search.png" alt="">
                     </div>
                     <p>积分历史</p>
                 </div>
                 <div class="btn-item flex-column">
                     <div class="img-box flex-column" @click="goPage('orderHistory')">
-                        <img src="@/assets/memberCenter/point.png" alt="">
+                        <img src="@/assets/memberCenter/money.png" alt="">
                     </div>
                     <p>消费历史</p>
                 </div>
                 <div class="btn-item flex-column">
-                    <!-- <div class="img-box flex-column" @click="goPage('')">
-                        <img src="@/assets/memberCenter/card.png" alt="">
+                    <div class="img-box flex-column" @click="goStore">
+                        <img src="@/assets/memberCenter/store.png" alt="">
                     </div>
-                    <p>卡券包</p> -->
+                    <p>附近门店</p>
                 </div>
             </div>
         </div>
@@ -92,6 +92,9 @@ export default {
             if(str!=''){
                 this.$router.push(str)
             }
+        },
+        goStore () {
+            window.location.href = 'https://crm.eloccitane.com/wmth5/storeSearch.html'
         },
         close(){
             this.isShow = false

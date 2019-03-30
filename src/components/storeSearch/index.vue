@@ -114,8 +114,9 @@ export default {
                     latitude:this.latitude,
                     city: this.currentLocation
                 }
-            console.log(params)
+            alert('params'+JSON.stringify(params))
             getCounterList(params).then(res=>{
+                alert('res'+JSON.stringify(res))
                 console.log(res.data)
                 res.data.forEach(item=>{
                     let option = { lat: item.latitude, lng: item.longitude }
@@ -131,10 +132,10 @@ export default {
             let obj={}
             Provinces().then((res)=>{ 
                 res.data.forEach((item)=>{
-                    Cities({provinceCode:item.code}).then(r=>{
+                    Cities({province:item.text}).then(r=>{
                         let arr = []
-                        r.data.forEach((i)=>{ arr.push(i.name) })
-                        obj[item.name] =arr
+                        r.data.forEach((i)=>{ arr.push(i.text) })
+                        obj[item.text] =arr
                         address = obj
                         this.citySlots[0].values = Object.keys(address)
                         this.citySlots[2].values = Object.values(address)[0]

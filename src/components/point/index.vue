@@ -29,7 +29,7 @@ export default {
             encrypt_code: obj.encrypt_code
           }
           DecryptCode(params).then( (res)=>{
-            alert('res'+JSON.stringify(res))
+            // alert('res'+JSON.stringify(res))
             if(res.code == 0){
               this.getMemberPoint(res.data.memberCode)
             }
@@ -38,10 +38,10 @@ export default {
         getMemberPoint(no) {
             getMemberScoreQuery(no).then((res)=>{
                 // alert('res11'+JSON.stringify(res))
-                this.pointList = res
                 if(res.length>0){
+                  this.pointList = res
                   this.isShow = false
-                }else {
+                } else {
                   this.isShow = true
                 }
             })

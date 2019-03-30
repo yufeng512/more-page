@@ -42,6 +42,7 @@ export default {
     },
     mounted () {
         let no = localStorage.getItem("memberCode")
+        alert(no)
         this.getMemberOrder(no)
     }
 }

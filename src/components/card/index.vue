@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-else>
+                <div v-show="isShowCard">
                     <p>当前没有卡券</p>
                 </div>
             </el-tab-pane>
@@ -44,6 +44,7 @@ export default {
             tags:[ {name:'未使用'}, {name:'已使用'}, {name:'已过期'}],
             activeName: '',
             isShow: false,
+            isShowCard: false,
             url: '',
             target: [],
             couponList: [],
@@ -59,11 +60,10 @@ export default {
           card_id: obj.card_id,
           encrypt_code: obj.encrypt_code
         }
-        var self = this
         DecryptCode(params).then(res=>{
           // alert('res'+JSON.stringify(res))
           if(res.code == 0){
-            self.memberCouponList(res.data.memberCode)
+            this.memberCouponList(res.data.memberCode)
           }
         })
       },
@@ -120,8 +120,12 @@ export default {
       memberCouponList(no) {
         getMemberNoCoupon(no).then(res=>{
           // alert('res111'+JSON.stringify(obj))
-          this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
-          this.target = res
+          if(res.length>0){
+            this.target = res
+            this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
+          }else{
+            this.isShowCard = true
+          }
         })
       }
     },

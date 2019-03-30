@@ -100,30 +100,6 @@ export default {
     changeInfo () {
         this.$router.push({name:'userInfo',params:{mobile: this.mobile}})
     },
-    getData () {
-      let self = this
-      ProvincesList().then(res=>{
-        res.data.forEach((item)=>{
-          if(item.code == self.province){
-            self.province = item.name
-          }
-        })
-      })
-      Cities({provinceCode: self.province}).then(res=>{
-        res.data.forEach((item)=>{
-          if(item.code == self.city){
-            self.city = item.name
-          }
-        })
-      })
-      Districts({cityCode: self.city}).then(res=>{
-        res.data.forEach((item)=>{
-          if(item.code == self.region){
-            self.region = item.name
-          }
-        })
-      })
-    },
     isLogin (){
       let self = this
       let code = self.UrlSearch()
@@ -141,23 +117,22 @@ export default {
               self.isInfo = true
               self.name = res.data.member.name
               self.mobile = res.data.member.mobile
-              self.gender = res.data.member.gender
+              self.gender = res.data.member.six
               self.birthday = res.data.member.birthday
               self.province = res.data.member.province||''
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
-              self.address = res.data.member.address||''
+              self.address = res.data.member.memberAddress||''
               localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
               localStorage.setItem("mobile",res.data.member.mobile)
-              localStorage.setItem("gender",res.data.member.gender)
+              localStorage.setItem("gender",res.data.member.six)
               localStorage.setItem("birthday",res.data.member.birthday)
               localStorage.setItem("province",res.data.member.province||'')
               localStorage.setItem("city",res.data.member.city||'')
               localStorage.setItem("region",res.data.member.region||'')
-              localStorage.setItem("address",res.data.member.address||'')
-              self.getData()
+              localStorage.setItem("address",res.data.member.memberAddress||'')
             }else{
               self.setRemoveLocal()
               self.isRegister = true
@@ -173,7 +148,6 @@ export default {
               self.city = localStorage.getItem("city")||''
               self.region = localStorage.getItem("region")||''
               self.address = localStorage.getItem("address")||''
-              self.getData()
             }else{
               self.setRemoveLocal()
               self.isRegister = true

@@ -29,6 +29,6 @@ export default {
     MemberScoreQuery: BASEAPI + 'mobile/member/scoreQuery', //会员卡号积分查询
     MemberOrderQuery: BASEAPI + 'mobile/member/orderQuery', //会员卡号消费查询
 
-    GetCardSign: BASEAPI + 'mobile/wx/getCardSign', //会员卡param memberCode
+    GetCardSign: BASEAPI + 'mobile/wx/getCardSign', //会员卡param memberCode 签名
     DecryptCode: BASEAPI + 'mobile/wx/decryptCode', //会员param card_id, encrypt_code
 }
