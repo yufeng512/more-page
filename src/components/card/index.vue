@@ -61,7 +61,7 @@ export default {
         }
         var self = this
         DecryptCode(params).then(res=>{
-          alert('res'+JSON.stringify(res))
+          // alert('res'+JSON.stringify(res))
           if(res.code == 0){
             self.memberCouponList(res.data.memberCode)
           }
@@ -92,14 +92,9 @@ export default {
         
         QRCode.toDataURL(item.couponNo, opts, function (err, url) {
           if (err) throw err
-          console.log(url)
+          // console.log(url)
           self.url = url
         })
-        // QRCode.toDataURL(item.couponNo).then(url => {
-        //     self.url = url
-        // }).catch(err => {
-        //   console.error(err)
-        // })
       },
       close(){
         this.isShow = false
@@ -124,7 +119,7 @@ export default {
       },
       memberCouponList(no) {
         getMemberNoCoupon(no).then(res=>{
-          alert('res111'+JSON.stringify(obj))
+          // alert('res111'+JSON.stringify(obj))
           this.couponList = _.filter(res,(item)=>{ return item.status == 1 })
           this.target = res
         })

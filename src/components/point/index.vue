@@ -6,7 +6,7 @@
                 <p class="flex-btw"><span>积分：{{item.score}}</span><span>交易时间：{{item.transDate}}</span></p>
             </div>
         </div>
-        <div v-else>
+        <div v-show='isShow'>
             <p>当前没有积分历史</p>
         </div>
     </div>
@@ -17,7 +17,8 @@ import { DecryptCode } from '@/api/memberPolicy/index'
 export default {
     data () {
         return {
-            pointList: []
+            pointList: [],
+            isShow: false
         }
     },
     methods:{
@@ -36,8 +37,13 @@ export default {
         },
         getMemberPoint(no) {
             getMemberScoreQuery(no).then((res)=>{
-                alert('res11'+JSON.stringify(res))
+                // alert('res11'+JSON.stringify(res))
                 this.pointList = res
+                if(res.length>0){
+                  this.isShow = false
+                }else {
+                  this.isShow = true
+                }
             })
         },
         getCode() {
@@ -47,7 +53,7 @@ export default {
           var num=str.indexOf("?")
           str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
           var arr=str.split("&"); //各个参数放到数组里
-          alert('res11'+JSON.stringify(arr))
+          // alert('res11'+JSON.stringify(arr))
           for(var i=0;i < arr.length;i++){
             num=arr[i].split("=");
             if(num[0]=='encrypt_code'){
