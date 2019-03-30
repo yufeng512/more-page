@@ -46,7 +46,7 @@
             <div class="btn-box flex-btw">
                 <div class="btn-item flex-column" @click="goPage('pointHistory')">
                     <div class="img-box flex-column">
-                        <img src="@/assets/memberCenter/search.png" alt="">
+                        <img src="@/assets/memberCenter/point-search.png" alt="">
                     </div>
                     <p>积分历史</p>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="btn-item flex-column">
                     <div class="img-box flex-column" @click="goStore">
-                        <img src="@/assets/memberCenter/store.png" alt="">
+                        <img src="@/assets/memberCenter/address.png" alt="">
                     </div>
                     <p>附近门店</p>
                 </div>
@@ -167,7 +167,7 @@ export default {
         }
     },
     mounted () {
-        this.isLogin()
+        // this.isLogin()
         // let mobile = '13818645674'
         // this.getMobileInfo(mobile)
     }
@@ -202,9 +202,9 @@ export default {
   height: 80px
   flex: 1
   .img-box
-    height: 30px
+    height: 40px
     img
-      width: 35%
+      width: 30%
   p
     font-size: 16px
     padding: 10px 0
