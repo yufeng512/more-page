@@ -23,12 +23,12 @@ export default {
     },
     methods:{
         submit () {
-          var obj = self.UrlSearch()
+          var obj = this.UrlSearch()
           alert('333'+JSON.stringify(obj))
           this.isHasPartQues()
         },
         isHasPartQues () {
-          var obj = self.UrlSearch()
+          var obj = this.UrlSearch()
           var req = {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
