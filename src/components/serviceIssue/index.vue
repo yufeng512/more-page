@@ -30,6 +30,7 @@ export default {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
           }
+          alert('req'+JSON.stringify(req))
           localStorage.setItem("campaignId",obj.campaignId||'') 
           hasPartQues(req).then(res=>{
             alert(JSON.stringify(res))
@@ -77,7 +78,7 @@ export default {
               obj.code=num[1]
             }
             if(num[0]=='campaignId'){
-              obj.campaginId=num[1]
+              obj.campaignId=num[1]
             }
           }
           return obj
