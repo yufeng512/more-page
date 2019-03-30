@@ -5,17 +5,17 @@
       <img src="@/assets/memberPolicy/logo.jpg" alt="">
     </div>
     <div class="input-item flex-box">
-      <input type="number" v-model="phone" placeholder="请输入您的手机号码">
+      <el-input type="number" v-model="phone" placeholder="请输入您的手机号码" size="small"></el-input>
     </div>
     <div class="input-item flex-box">
-      <input type="number" v-model="code" placeholder="请输入验证码">
-      <button :disabled="isDisabled"  @click="getCode">{{codeText}}</button>
+      <el-input type="number" v-model="code" placeholder="请输入验证码" size="small"></el-input>
+      <el-button :disabled="isDisabled"  @click="getCode" type="primary">{{codeText}}</el-button>
     </div>
     <div class="input-item flex-box">
-      <el-checkbox v-model="checked"></el-checkbox><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span @click="isOpen(true)">隐私条款</span>，并同意接受其中的所有条款。</p>
+      <el-checkbox v-model="checked" text-color="#f8bc32"></el-checkbox><p>我已阅读和了解普罗旺斯欧舒丹官方微信的<span @click="isOpen(true)">隐私条款</span>，并同意接受其中的所有条款。</p>
     </div>
     <div class="btn-item flex-box">
-      <button @click="regiter">注册绑定</button>
+      <el-button @click="regiter" type="primary">注册绑定</el-button>
     </div>
   </div>
   
@@ -47,7 +47,7 @@
           <span>{{address}}</span>
       </div>
     </div>
-    <button @click="changeInfo">修改我的信息</button>
+    <el-button @click="changeInfo" type="primary">修改我的信息</el-button>
   </div>
   <div class="popup" v-if="isShow">
     <div class="content">
@@ -306,7 +306,6 @@ export default {
     border: #999999
     padding: 0 20px
     border-radius: 4px
-    background: #999999
     color: #ffffff
     height: 32px
     flex: 1
@@ -330,7 +329,6 @@ export default {
     border: #999999
     padding: 0 20px
     border-radius: 4px
-    background: #999999
     color: #ffffff
     height: 32px
     margin-left: 10px
@@ -338,7 +336,7 @@ export default {
     font-size: 12px
     margin-left: 6px
     span
-      color: rgba(47,117,181,1)
+      color: #f8bc32
 .popup
   position: fixed
   width: 100%

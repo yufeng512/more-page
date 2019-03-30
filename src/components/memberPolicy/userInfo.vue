@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="btn-item flex-box">
-      <button @click="save">提交信息</button>
+      <el-button type="primary" @click="save">提交信息</el-button>
     </div>
   </div>
 </template>
@@ -272,11 +272,8 @@ export default {
   padding: 0 20px
   button
     outline: none
-    border: 1px solid #dcdfe6
     padding: 0 20px
     border-radius: 4px
-    background: none
-    color: #666666
     height: 32px
     flex: 1
     margin-bottom: 20px
@@ -310,13 +307,5 @@ export default {
       text-indent: 6px
       display: block
       font-size: 12px
-    button
-      outline: none
-      border: 1px solid #999999
-      padding: 0 20px
-      border-radius: 4px
-      color: #ffffff
-      height: 32px
-      margin-left: 10px  
 </style>
 
