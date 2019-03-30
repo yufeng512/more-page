@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+import $ from 'jquery'
 import { hasPartQues } from '@/api/common.js'
 import { Login } from '@/api/memberPolicy/index'
 export default {
