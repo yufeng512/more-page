@@ -26,13 +26,13 @@ export default {
           let self = this
           var obj = self.UrlSearch()
           alert('obj'+JSON.stringify(obj))
-          var req = {
+          var params = {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
           }
-          alert('req'+JSON.stringify(req))
+          alert('req'+JSON.stringify(params))
           localStorage.setItem("campaignId",obj.campaignId||'') 
-          hasPartQues(req).then(res=>{
+          hasPartQues(params).then(res=>{
             alert(JSON.stringify(res))
             if(res){
               self.$toast('您已参与过该活动评价');

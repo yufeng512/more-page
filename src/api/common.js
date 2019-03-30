@@ -10,5 +10,5 @@ export function addQuestion(params) {
   return post(api.addQuestion, params)
 }
 export function hasPartQues(req) {
-  return get(api.hasPartQues + req.openId + '/' + req.campaignId)
+  return fetch(api.hasPartQues + req.openId + '/' + req.campaignId)
 }
