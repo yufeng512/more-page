@@ -25,7 +25,7 @@ export default {
         submit () {
           let self = this
           var obj = self.UrlSearch()
-          alert('req'+JSON.stringify(obj))
+          alert('obj'+JSON.stringify(obj))
           var req = {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
