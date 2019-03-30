@@ -3,7 +3,7 @@
         <div class="bg">
           <img src="@/assets/quest_bg.png" alt="">
         </div>
-        <div class="container">
+        <div class="container" v-if="isShowText">
           <p>感谢您近期光临欧舒丹，根据您此次的购物体验，您是否愿意推举欧舒丹给您的家人或朋友？</p>
           <div>
               <el-radio-group v-model="info.buyFeel" @change="onChange" >
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="text-box">
+        <div class="text-box" v-else>
           感谢您参与此次活动评价，我们会再努力的！
         </div>
     </div>
@@ -52,6 +52,7 @@ export default {
             otherRemark: '',
             points: '',
           },
+          isShowText: true,
           selectValue: [],
           list: [],
           isShow: false,
@@ -121,6 +122,7 @@ export default {
           addQuestion(this.info).then(res=>{
             if(res.code == 0){
               this.$toast('评价完成');
+              this.isShowText = false
             }else{
               this.$toast('评价失败');
             }
