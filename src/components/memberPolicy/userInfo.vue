@@ -126,7 +126,7 @@ export default {
   methods:{
     getGetCardSign (no) {
       GetCardSign(no).then(res=>{
-        alert('res'+JSON.stringify(res))
+        // alert('res'+JSON.stringify(res))
         wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
@@ -141,11 +141,11 @@ export default {
             cardExt: '{"code":"' + res.data.memberCode + '","openid":"","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
           }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
           success: function(result) {
-            alert('领取成功', result);
+            // alert('领取成功', result);
             window.location.href="http://wmtuat.eloccitane.com/memberCenter/memberCenter.html"
           },
           fail: function(res) {
-            alert('领取失败', res);
+            // alert('领取失败', res);
           },
           complete: function() {
 
@@ -155,7 +155,7 @@ export default {
           // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
         });
         wx.error(function(res){
-          alert('res2'+JSON.stringify(res))
+          // alert('res2'+JSON.stringify(res))
           // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
         });
       })
@@ -184,7 +184,8 @@ export default {
           if(res.code == 0){
             self.$toast("更新成功");
             setTimeout(function(){
-              self.$router.push('/')
+              // self.$router.push('/')
+              window.location.href="http://wmtuat.eloccitane.com/memberCenter/memberCenter.html"
             },2000)
             self.setLocal(res.data)
           }else{
