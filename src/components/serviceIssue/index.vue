@@ -23,6 +23,8 @@ export default {
     },
     methods:{
         submit () {
+          var obj = self.UrlSearch()
+          alert('333'+JSON.stringify(obj))
           this.isHasPartQues()
         },
         isHasPartQues () {
