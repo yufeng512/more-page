@@ -45,6 +45,7 @@ export default {
         isLogin (){
           let self = this
           let obj = self.UrlSearch()
+          alert('obj'+JSON.stringify(obj))
           self.code = obj.code
           let params ={
             code: code
