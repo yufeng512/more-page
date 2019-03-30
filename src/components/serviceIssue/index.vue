@@ -77,13 +77,13 @@ export default {
           var num=str.indexOf("?")
           str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
           var arr=str.split("&"); //各个参数放到数组里
-          // alert('res11'+JSON.stringify(arr))
+          alert('res11'+JSON.stringify(arr))
           for(var i=0;i < arr.length;i++){
             num=arr[i].split("=");
             if(num[0]=='code'){
               obj.code=num[1]
             }
-            if(num[0]=='campaginId'){
+            if(num[0]=='campaignId'){
               obj.campaginId=num[1]
             }
           }
