@@ -31,6 +31,7 @@ export default {
             openId: localStorage.getItem("openId"),
             campaignId: obj.campaignId
           }
+          alert('req'+JSON.stringify(req))
           localStorage.setItem("campaignId",obj.campaignId||'') 
           hasPartQues(req).then(res=>{
             alert(JSON.stringify(res))
