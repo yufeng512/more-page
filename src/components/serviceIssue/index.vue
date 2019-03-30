@@ -70,7 +70,7 @@ export default {
             }
           })
         },
-        getCode() {
+        UrlSearch() {
           //encrypt_code=ENCRYPT_CODE&card_id=CARDID
           var obj={}
           var str=location.href; //取得整个地址栏
