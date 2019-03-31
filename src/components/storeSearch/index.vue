@@ -114,9 +114,9 @@ export default {
                     latitude:this.latitude,
                     city: this.currentLocation
                 }
-            alert('params'+JSON.stringify(params))
+            // alert('params'+JSON.stringify(params))
             getCounterList(params).then(res=>{
-                alert('res'+JSON.stringify(res))
+                // alert('res'+JSON.stringify(res))
                 console.log(res.data)
                 res.data.forEach(item=>{
                     let option = { lat: item.latitude, lng: item.longitude }
@@ -196,7 +196,7 @@ export default {
             map.openInfoWindow(infoWindow, map.getCenter());//开启信息窗口
         },
         goDetails () {
-            alert(this.address)
+            // alert(this.address)
             console.log(this.currentLocation)
             location.href = 'https://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination='+this.address+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
         }

@@ -95,7 +95,6 @@ export default {
         },
         goStore () {
             window.location.href = 'https://crm.eloccitane.com/wmth5/storeSearch.html'
-            // window.location.href = 'https://crm.eloccitane.com/wmth5/storeSearch.html'
         },
         close(){
             this.isShow = false
@@ -118,22 +117,22 @@ export default {
             }
             $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
                 success:function(res){
-                alert(JSON.stringify(res))
+                // alert(JSON.stringify(res))
                 if(res.code==0){
                     if(res.data.member){
                         localStorage.setItem("isMemberCenter",true)
                         localStorage.setItem("mobile",res.data.member.mobile)
                         self.getMobileInfo(res.data.member.mobile)
                     }else{
-                        window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        // window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                     }
                 }else {
                     if(localStorage.getItem("isMemberCenter")){
                         self.getMobileInfo(localStorage.getItem("mobile"))
                     }else{
-                        window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        // window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                     }
                 }
                 },

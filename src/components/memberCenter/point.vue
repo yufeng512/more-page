@@ -1,5 +1,5 @@
 <template>
-    <div>积分更新中...</div>
+    <div>敬请期待...</div>
 </template>
 <script>
 import { getMemberScoreQuery } from '@/api/memberCenter/index'
