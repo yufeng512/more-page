@@ -19,8 +19,12 @@
                     <span>{{info.gradeDesc}}</span>
                 </div>
                 <div class="info-item">
-                    <span>积分:</span>
-                    <span>{{info.point}}</span>
+                    <span>会员积分:</span>
+                    <span>{{info.point?info.point:0}}</span>
+                </div>
+                <div class="info-item" >
+                    <span>天猫积分:</span>
+                    <span>{{info.tmallPoint?info.tmallPoint:'0'}}</span>
                 </div>
             </div>
             <div class="btn-box flex-btw">
@@ -201,9 +205,11 @@ export default {
     display: flex
     justify-content: flex-start
     span
-        color: #666666
-        &:first-child
-        width: 25%
+      color: #666666
+      &:first-child
+        width: 30%
+      &:last-child
+        width: 70%
 .btn-box
   border-bottom: 1px solid #dbdbdb
 .btn-item

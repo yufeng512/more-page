@@ -23,12 +23,12 @@
                 <span>{{info.gradeDesc}}</span>
             </div>
             <div class="info-item">
-                <span>积分:</span>
-                <span>{{info.point}}</span>
+                <span>会员积分:</span>
+                <span>{{info.point?info.point:0}}</span>
             </div>
             <div class="info-item" >
                 <span>天猫积分:</span>
-                <span>{{info.tmallPoint}}</span>
+                <span>{{info.tmallPoint?info.tmallPoint:'0'}}</span>
             </div>
             <div class="info-item">
                 <span>省市区:</span>
@@ -87,5 +87,7 @@ export default {
   span
     color: #666666
     &:first-child
-      width: 25%
+      width: 30%
+    &:last-child
+      width: 70%
 </style>

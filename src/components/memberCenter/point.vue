@@ -1,5 +1,5 @@
 <template>
-    <div>敬请期待...</div>
+    <div>即将上线,敬请期待...</div>
 </template>
 <script>
 import { getMemberScoreQuery } from '@/api/memberCenter/index'
