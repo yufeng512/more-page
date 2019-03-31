@@ -121,7 +121,7 @@ export default {
               self.province = res.data.member.province||''
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
-              self.address = res.data.member.address||''
+              self.address = res.data.member.memberAddress||''
               localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
