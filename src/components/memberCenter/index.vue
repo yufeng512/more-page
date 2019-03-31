@@ -124,18 +124,18 @@ export default {
                             localStorage.setItem("mobile",res.data.member.mobile)
                             self.getMobileInfo(res.data.member.mobile)
                         }
-                        // else{
-                        //     window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        //     // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
-                        // }
+                        else{
+                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                            // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        }
                     }else {
                         if(localStorage.getItem("isMemberCenter")){
                             self.getMobileInfo(localStorage.getItem("mobile"))
                         }
-                        // else{
-                        //     window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        //     // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
-                        // }
+                        else{
+                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                            // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        }
                     }
                 },
                 error:function(e){
@@ -165,6 +165,9 @@ export default {
                     this.info = res.data
                     // localStorage.setItem("memberCode",'C0004500000019851')
                     localStorage.setItem("memberCode",res.data.memberCode)
+                }else{
+                    window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                    // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                 }
             })
         }
@@ -176,8 +179,6 @@ export default {
         }else {
             this.getMobileInfo(mobile)
         }
-        // let mobile = '13818645674'
-        // this.getMobileInfo(mobile)
     }
 }
 </script>
