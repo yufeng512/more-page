@@ -157,20 +157,7 @@ export default {
             }
             return value
         },
-        UrlMobile() {
-            var name,value;
-            var str=location.href; //取得整个地址栏
-            var num=str.indexOf("?")
-            str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
-            var arr=str.split("&"); //各个参数放到数组里
-            for(var i=0;i < arr.length;i++){
-                num=arr[i].split("=");
-                if(num[0]=='mobile'){
-                value = num[1]
-                }
-            }
-            return value
-        },
+        
         getMobileInfo (mobile){
             getMemberInfo(mobile).then(res=>{
                 // alert(JSON.stringify(res))
@@ -183,12 +170,11 @@ export default {
         }
     },
     mounted () {
-        let mobile = this.UrlMobile()
-        alert(JSON.stringify(mobile))
-        if(mobile!==''){
-            this.getMobileInfo(mobile)
-        }else {
+        let mobile = localStorage.getItem('mobile')
+        if(mobile==''){
             this.isLogin()
+        }else {
+            this.getMobileInfo(mobile)
         }
         // let mobile = '13818645674'
         // this.getMobileInfo(mobile)
