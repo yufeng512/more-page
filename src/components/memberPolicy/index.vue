@@ -60,7 +60,7 @@
 <script>
 import $ from 'jquery'
 import privacy from './privacy'
-import { MemberInsert, Send,CodeVerify } from '@/api/memberPolicy/index'
+import { MemberInsert, Send, CodeVerify } from '@/api/memberPolicy/index'
 import { Login } from '@/api/memberPolicy/index'
 
 export default {
@@ -116,22 +116,22 @@ export default {
               self.isInfo = true
               self.name = res.data.member.name
               self.mobile = res.data.member.mobile
-              self.gender = res.data.member.six
+              self.gender = res.data.member.sex
               self.birthday = res.data.member.birthday
               self.province = res.data.member.province||''
               self.city = res.data.member.city||''
               self.region = res.data.member.region||''
-              self.address = res.data.member.memberAddress||''
+              self.address = res.data.member.address||''
               localStorage.setItem("isMember",true)
               localStorage.setItem("id",res.data.member.id)
               localStorage.setItem("name",res.data.member.name)
               localStorage.setItem("mobile",res.data.member.mobile)
-              localStorage.setItem("gender",res.data.member.six)
+              localStorage.setItem("gender",res.data.member.sex)
               localStorage.setItem("birthday",res.data.member.birthday)
               localStorage.setItem("province",res.data.member.province||'')
               localStorage.setItem("city",res.data.member.city||'')
               localStorage.setItem("region",res.data.member.region||'')
-              localStorage.setItem("address",res.data.member.memberAddress||'')
+              localStorage.setItem("address",res.data.member.address||'')
             }else{
               self.setRemoveLocal()
               self.isRegister = true
