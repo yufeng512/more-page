@@ -20,6 +20,7 @@ export default {
     //会员注册
     Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
     CodeVerify: BASEAPI + 'mobile/code/verify', //校验短信验证码接口
+    CheckBind: BASEAPI + 'mobile/member/checkBind', //校验短信验证码接口
     Login: BASEAPI + 'mobile/auth/login', //登陆
     //会员中心
     MemberInfo: BASEAPI + 'mobile/member/queryByMobile/', //会员信息

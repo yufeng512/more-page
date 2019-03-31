@@ -7,6 +7,10 @@ export function getMapJson(url) {
 export function MemberInsert(params) {
   return post(api.MemberInsert, params)
 }
+//会员绑定
+export function MemberCheckBind(params) {
+  return post(api.CheckBind, params)
+}
 //会员新增
 export function Login(params) {
   return post(api.Login, params)

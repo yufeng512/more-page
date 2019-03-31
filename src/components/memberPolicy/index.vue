@@ -60,7 +60,7 @@
 <script>
 import $ from 'jquery'
 import privacy from './privacy'
-import { MemberInsert, Send, CodeVerify } from '@/api/memberPolicy/index'
+import { MemberInsert, Send, MemberCheckBind } from '@/api/memberPolicy/index'
 import { Login } from '@/api/memberPolicy/index'
 
 export default {
@@ -230,10 +230,8 @@ export default {
     },
     regiter () {
       let self = this
-      let params = {
-        mobile: self.phone,
-        code: self.code
-      }
+      let params = {}
+      
       if(!self.isPoneAvailable(self.phone)){
         self.$toast('请输入11位有效手机号码');
         return false
@@ -245,17 +243,19 @@ export default {
         self.$toast('请勾选隐私条款！');
         return false
       }
-      CodeVerify(params).then(res=>{
-        // alert(JSON.stringify(res))
+      params.mobile = self.phone
+      params.code = self.code
+      params.openId = localStorage.getItem("openId")
+      params.unionId = localStorage.getItem("unionId")
+      MemberCheckBind(params).then(res=>{
+        alert(JSON.stringify(res))
         if(res.code == 0){
-          if(res.data == 1){
-            self.$toast(res.msg||'短信验证成功');
-            setTimeout(function(){
-              self.$router.push({name:'userInfo',params:{mobile: self.phone}})
-            },1500)
-          }else{
-            self.$toast(res.msg||'验证错误');
-          }
+          self.$toast(res.msg||'绑定成功');
+          setTimeout(function(){
+            self.$router.push({name:'userInfo',params:{mobile: self.phone}})
+          },1500)
+        }else if(res.code == 1){
+
         }else{
           self.$toast(res.msg);
         }
