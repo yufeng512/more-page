@@ -244,7 +244,7 @@ export default {
         return false
       }
       params.mobile = self.phone
-      params.code = self.code
+      params.msgCode = self.code
       params.openId = localStorage.getItem("openId")
       params.unionId = localStorage.getItem("unionId")
       MemberCheckBind(params).then(res=>{
