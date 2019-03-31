@@ -80,6 +80,14 @@
     <div class="btn-item flex-box">
       <button @click="save">提交信息</button>
     </div>
+    <div class="popup" v-if="isShow">
+            <div class="content">
+                <img class="close" src="@/assets/close.png" alt="" @click="close">
+                <h4>提示</h4>
+                <p>您有卡券未领取,是否领取</p>
+                <el-button type="primary" @click="getCard">领取</el-button>
+            </div>
+        </div>
   </div>
 </template>
 <script>
@@ -99,10 +107,12 @@ export default {
         region: '',
         address:''
       },
+      isShow: false,
       sexList: [{ label: "男", value: '1'}, { label: "女", value: '2' }],
       provinces: [],
       citys: [],
-      regions: []
+      regions: [],
+      memberCode: ''
     };
   },
   mounted () {
@@ -124,6 +134,9 @@ export default {
     }
   },
   methods:{
+    getCard () {
+      this.getGetCardSign(this.memberCode)
+    },
     getGetCardSign (no) {
       GetCardSign(no).then(res=>{
         // alert('res'+JSON.stringify(res))
@@ -200,7 +213,10 @@ export default {
           if(res.code == 0){
             self.$toast("注册成功");
             self.setLocal(res.data)
-            self.getGetCardSign(res.data.memberCode)
+            self.memberCode = res.data.memberCode
+            setTimeout(function(){
+              self.isShow = true
+            },2000)
           }else{
             self.$toast(res.msg||'保存失败');
           }
@@ -256,6 +272,10 @@ export default {
         this.regions = res.data
         this.info.region =  this.regions[0].text
       })
+    },
+    close () {
+      this.isShow = false
+      window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
     },
     choseBlock (e) { }
   }
@@ -317,6 +337,37 @@ export default {
       border-radius: 4px
       color: #ffffff
       height: 32px
-      margin-left: 10px  
+      margin-left: 10px
+.popup
+  position: fixed
+  width: 100%
+  height: 100%
+  top: 0
+  background: rgba(0,0,0,0.7)
+  z-index: 9999
+  .content
+    width: 70%
+    margin-left: 15%
+    margin-top: 50%
+    height: 160px
+    padding: 5px 0 10px
+    background: #ffffff
+    border-radius: 4px
+    text-align: center
+    .close 
+      position: absolute
+      right: 16%
+    h4
+      font-size: 18px
+      margin: 20px 0 15px
+      text-align: center
+    p
+      text-align: center
+      font-size: 16px
+      margin: 20px 0 25px
+      color: #333 
+    button
+      width: 120px
+
 </style>
 
