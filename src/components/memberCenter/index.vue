@@ -184,6 +184,7 @@ export default {
     },
     mounted () {
         let mobile = this.UrlMobile()
+        alert(JSON.stringify(mobile))
         if(mobile!==''){
             this.getMobileInfo(mobile)
         }else {
