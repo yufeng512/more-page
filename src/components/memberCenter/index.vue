@@ -1,0 +1,242 @@
+<template>
+    <div>
+        <div class="member-box">
+            <img src="@/assets/memberCenter/logo.jpg" alt="">
+            <div class="card-code"  @click="use">
+                <img  src="@/assets/qrcode.png" alt="">
+            </div>
+            <div class="info-box">
+                <div class="info-item">
+                    <span>姓名:</span>
+                    <span>{{info.name}}</span>
+                </div>
+                <div class="info-item">
+                    <span>手机:</span>
+                    <span>{{info.mobile}}</span>
+                </div>
+                <div class="info-item">
+                    <span>等级:</span>
+                    <span>{{info.gradeDesc}}</span>
+                </div>
+                <div class="info-item">
+                    <span>积分:</span>
+                    <span>{{info.point}}</span>
+                </div>
+            </div>
+            <div class="btn-box flex-btw">
+                <div class="btn-item flex-column" @click="goPage('info')">
+                    <div class="img-box flex-column">
+                        <img src="@/assets/memberCenter/member-info.png" alt="">
+                    </div>
+                    <p>会员信息</p>
+                </div>
+                <div class="btn-item flex-column">
+                    <div class="img-box flex-column" @click="goPage('point')">
+                        <img src="@/assets/memberCenter/point.png" alt="">
+                    </div>
+                    <p>积分商城</p>
+                </div>
+                <div class="btn-item flex-column">
+                    <div class="img-box flex-column" @click="goPage('card')">
+                        <img src="@/assets/memberCenter/card.png" alt="">
+                    </div>
+                    <p>卡券包</p>
+                </div>
+            </div>
+            <div class="btn-box flex-btw">
+                <div class="btn-item flex-column" @click="goPage('pointHistory')">
+                    <div class="img-box flex-column">
+                        <img src="@/assets/memberCenter/search.png" alt="">
+                    </div>
+                    <p>积分历史</p>
+                </div>
+                <div class="btn-item flex-column">
+                    <div class="img-box flex-column" @click="goPage('orderHistory')">
+                        <img src="@/assets/memberCenter/money.png" alt="">
+                    </div>
+                    <p>消费历史</p>
+                </div>
+                <div class="btn-item flex-column">
+                    <div class="img-box flex-column" @click="goStore">
+                        <img src="@/assets/memberCenter/store.png" alt="">
+                    </div>
+                    <p>附近门店</p>
+                </div>
+            </div>
+        </div>
+        <div class="popup" v-if="isShow">
+            <div class="content">
+                <img class="close" src="@/assets/close.png" alt="" @click="close">
+                <h4>会员卡</h4>
+                <img class="" :src="url" alt="">
+                <p>二维码</p>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import $ from 'jquery'
+import { getMemberInfo } from '@/api/memberCenter/index'
+import QRCode from 'qrcode'
+export default {
+    data () {
+        return {
+            info: {
+
+            },
+            isShow: false
+        }
+    },
+    methods: {
+        goPage(str){
+            if(str!=''){
+                this.$router.push(str)
+            }
+        },
+        goStore () {
+            window.location.href = 'https://crm.eloccitane.com/wmth5/storeSearch.html'
+        },
+        close(){
+            this.isShow = false
+        },
+        use(){
+            this.isShow = true
+            QRCode.toDataURL(this.info.memberCode).then(url => {
+                this.url = url
+                console.log(url)
+            }).catch(err => {
+                console.error(err)
+            })
+        },
+        isLogin (){
+            let self = this
+            let code = self.UrlSearch()
+            self.code = code
+            let params ={
+                code: code
+            }
+            $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
+                success:function(res){
+                // alert(JSON.stringify(res))
+                if(res.code==0){
+                    if(res.data.member){
+                        localStorage.setItem("isMemberCenter",true)
+                        localStorage.setItem("mobile",res.data.member.mobile)
+                        self.getMobileInfo(res.data.member.mobile)
+                    }else{
+                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                    }
+                }else {
+                    if(localStorage.getItem("isMemberCenter")){
+                        self.getMobileInfo(localStorage.getItem("mobile"))
+                    }else{
+                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                    }
+                }
+                },
+                error:function(e){
+                    alert(e)
+                }
+            })
+        },
+        UrlSearch() {
+            var name,value;
+            var str=location.href; //取得整个地址栏
+            var num=str.indexOf("?")
+            str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+            var arr=str.split("&"); //各个参数放到数组里
+            for(var i=0;i < arr.length;i++){
+                num=arr[i].split("=");
+                if(num[0]=='code'){
+                value = num[1]
+                }
+            }
+            return value
+        },
+        getMobileInfo (mobile){
+            getMemberInfo(mobile).then(res=>{
+                // alert(JSON.stringify(res))
+                if(res.code == 0){
+                    this.info = res.data
+                    // localStorage.setItem("memberCode",'C0004500000019851')
+                    localStorage.setItem("memberCode",res.data.memberCode)
+                }
+            })
+        }
+    },
+    mounted () {
+        this.isLogin()
+        // let mobile = '13818645674'
+        // this.getMobileInfo(mobile)
+    }
+}
+</script>
+
+<style lang="sass" scoped>
+.member-box
+  padding: 10px 15px
+  .card-code
+    position: absolute
+    width: 40px
+    right: 40px
+    top: 60px
+  img
+    width: 100%
+.info-box
+  margin-bottom: 20px
+  .info-item
+    padding: 20px 12px 8px
+    border-bottom: 1px solid #dbdbdb
+    display: flex
+    justify-content: flex-start
+    span
+        color: #666666
+        &:first-child
+        width: 25%
+.btn-box
+  border-bottom: 1px solid #dbdbdb
+.btn-item
+  padding-top: 10px
+  height: 80px
+  flex: 1
+  .img-box
+    height: 30px
+    img
+      width: 35%
+  p
+    font-size: 16px
+    padding: 10px 0
+    color: #666666
+  &:nth-child(2)
+    border-left: 1px solid #dbdbdb
+    border-right: 1px solid #dbdbdb 
+.popup
+  position: fixed
+  width: 100%
+  height: 100%
+  top: 0
+  background: rgba(0,0,0,0.7)
+  z-index: 9999
+  .content
+    width: 60%
+    margin-left: 20%
+    margin-top: 50%
+    height: 200px
+    padding: 5px 0 10px
+    background: #ffffff
+    border-radius: 4px
+    text-align: center
+    .close 
+      position: absolute
+      right: 21%
+    h4
+      font-size: 18px
+      margin: 10px 0
+      text-align: center
+    p
+      text-align: center
+      font-size: 14px
+      color: #999999
+</style>
