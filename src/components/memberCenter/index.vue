@@ -117,23 +117,25 @@ export default {
             }
             $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
                 success:function(res){
-                    alert(JSON.stringify(res))
+                    // alert(JSON.stringify(res))
                     if(res.code==0){
                         if(res.data.member){
                             localStorage.setItem("isMemberCenter",true)
                             localStorage.setItem("mobile",res.data.member.mobile)
                             self.getMobileInfo(res.data.member.mobile)
-                        }else{
-                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                            // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                         }
+                        // else{
+                        //     window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        //     // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        // }
                     }else {
                         if(localStorage.getItem("isMemberCenter")){
                             self.getMobileInfo(localStorage.getItem("mobile"))
-                        }else{
-                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                            // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                         }
+                        // else{
+                        //     window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                        //     // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                        // }
                     }
                 },
                 error:function(e){
@@ -155,6 +157,20 @@ export default {
             }
             return value
         },
+        UrlMobile() {
+            var name,value;
+            var str=location.href; //取得整个地址栏
+            var num=str.indexOf("?")
+            str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+            var arr=str.split("&"); //各个参数放到数组里
+            for(var i=0;i < arr.length;i++){
+                num=arr[i].split("=");
+                if(num[0]=='mobile'){
+                value = num[1]
+                }
+            }
+            return value
+        },
         getMobileInfo (mobile){
             getMemberInfo(mobile).then(res=>{
                 // alert(JSON.stringify(res))
@@ -167,7 +183,12 @@ export default {
         }
     },
     mounted () {
-        this.isLogin()
+        let mobile = this.UrlMobile()
+        if(mobile!==''){
+            this.getMobileInfo(mobile)
+        }else {
+            this.isLogin()
+        }
         // let mobile = '13818645674'
         // this.getMobileInfo(mobile)
     }
