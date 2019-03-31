@@ -251,9 +251,9 @@ export default {
         alert(JSON.stringify(res))
         if(res.code == 0){
           self.$toast(res.msg||'绑定成功');
-          setTimeout(function(){
-            self.$router.push({name:'userInfo',params:{mobile: self.phone}})
-          },1500)
+          // setTimeout(function(){
+          //   self.$router.push({name:'userInfo',params:{mobile: self.phone}})
+          // },1500)
         }else if(res.code == 1){
 
         }else{
