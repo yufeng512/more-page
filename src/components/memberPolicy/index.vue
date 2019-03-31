@@ -131,7 +131,7 @@ export default {
               localStorage.setItem("province",res.data.member.province||'')
               localStorage.setItem("city",res.data.member.city||'')
               localStorage.setItem("region",res.data.member.region||'')
-              localStorage.setItem("address",res.data.member.address||'')
+              localStorage.setItem("address",res.data.member.memberAddress||'')
             }else{
               self.setRemoveLocal()
               self.isRegister = true
