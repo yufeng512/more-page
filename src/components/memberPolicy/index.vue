@@ -251,6 +251,9 @@ export default {
         alert(JSON.stringify(res))
         if(res.code == 0){
           self.$toast(res.msg||'已绑定成功');
+          setTimeout(function(){
+            window.location.href = 'http://wmtuat.eloccitane.com/memberCenter/memberCenter.html'
+          },1500)
         }else if(res.code == 6){
           self.$toast(res.msg);
           setTimeout(function(){
