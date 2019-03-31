@@ -199,7 +199,19 @@ export default {
             // alert(this.address)
             console.log(this.currentLocation)
             location.href = 'https://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination='+this.address+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
-        }
+        },
+        handler (e) {
+            e.preventDefault();
+        }	
+    },
+    watch: {
+        popupVisible(val) {
+            if (val) {
+                document.addEventListener('touchmove', this.handler, false)
+            } else {
+                document.removeEventListener('touchmove', this.handler, false)
+            }
+        }  
     }
 }
 </script>
@@ -221,7 +233,7 @@ export default {
     position: fixed;
     left: 4%;
     top: 10px;
-    z-index: 2;
+    z-index: 99;
     width: 92%;
     border: 1px solid #dbdbdb;
     border-radius: 4px;

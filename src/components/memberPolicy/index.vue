@@ -252,7 +252,7 @@ export default {
           self.$toast(res.msg||'已绑定成功');
           localStorage.setItem('mobile',res.data.mobile)
           setTimeout(function(){
-            window.location.href = 'http://wmtuat.eloccitane.com/memberCenter/memberCenter.html'
+            window.location.href = 'https://crm.eloccitane.com/memberCenter/memberCenter.html'
           },1500)
         }else if(res.code == 6){
           self.$toast(res.msg);
