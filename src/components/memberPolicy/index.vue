@@ -250,12 +250,12 @@ export default {
       MemberCheckBind(params).then(res=>{
         alert(JSON.stringify(res))
         if(res.code == 0){
-          self.$toast(res.msg||'绑定成功');
-          // setTimeout(function(){
-          //   self.$router.push({name:'userInfo',params:{mobile: self.phone}})
-          // },1500)
-        }else if(res.code == 1){
-
+          self.$toast(res.msg||'已绑定成功');
+        }else if(res.code == 6){
+          self.$toast(res.msg);
+          setTimeout(function(){
+            self.$router.push({name:'userInfo',params:{mobile: self.phone}})
+          },1500)
         }else{
           self.$toast(res.msg);
         }
