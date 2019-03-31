@@ -248,7 +248,8 @@ export default {
       params.openId = localStorage.getItem("openId")
       params.unionId = localStorage.getItem("unionId")
       MemberCheckBind(params).then(res=>{
-        // alert(JSON.stringify(res))
+        alert(JSON.stringify(res))
+        alert(JSON.stringify(res.mobile))
         if(res.code == 0){
           self.$toast(res.msg||'已绑定成功');
           localStorage.setItem('mobile',res.mobile)
