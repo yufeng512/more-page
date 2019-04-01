@@ -193,8 +193,8 @@ export default {
   .card-code
     position: absolute
     width: 40px
-    right: 40px
-    top: 60px
+    left: 30px
+    top: 35px
   img
     width: 100%
 .info-box
