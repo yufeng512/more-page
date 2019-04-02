@@ -108,11 +108,11 @@ export default {
                             type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                             success: function (res) {
                                 alert(JSON.stringify(res))
-                                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                                self.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                                self.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                                 let params = {
-                                    longitude: res.latitude,
-                                    latitude: res.longitude
+                                    longitude:self.longitude,
+                                    latitude:self.latitude
                                 }
                                 self.getCurrentCity(params)
                             }
