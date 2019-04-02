@@ -210,7 +210,7 @@ export default {
             this.currentLocation = values[1]
         },
         doSearch () {
-            alert(1)
+            alert(this.currentLocation)
             map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
