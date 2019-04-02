@@ -103,9 +103,11 @@ export default {
                             // alert('res222'+JSON.stringify(r))
                             self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
                             self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
-                            let option = { lat: self.latitude, lng: self.longitude }
-                            let point = new BMap.Point(option.lng, option.lat)
-                            let marker = new BMap.Marker(point);
+                            // let option = { lat: self.latitude, lng: self.longitude }
+                            // let point = new BMap.Point(option.lng, option.lat)
+                            // let marker = new BMap.Marker(point);
+                            // map.addOverlay(marker)
+                            // map.centerAndZoom(point,11)
                             let params = {
                                 longitude: self.longitude,
                                 latitude: self.latitude
@@ -208,6 +210,7 @@ export default {
             this.currentLocation = values[1]
         },
         doSearch () {
+            alert(1)
             map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
