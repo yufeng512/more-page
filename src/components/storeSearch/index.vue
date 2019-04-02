@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-box" v-else>
+        <div class="panel-box" v-if="isShow">
             <div style="text-align: center: color: #666666;font-size: 14px;line-height:32px;">当前门店没有查询到相关的门店信息！</div>
         </div>
         <div class="select-box" @click="choiceArea">
@@ -53,6 +53,7 @@ export default {
             address: '',
             detailUrl: '',
             popupVisible: false,
+            isShow: false,
             latitude: '',
             longitude: '',
             targetLatitude: '',
@@ -86,7 +87,7 @@ export default {
             map = new BMap.Map("map",{enableMapClick:false });
             getlocalAPi({
                     originId:'gh_25a25c44baba',
-                    url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
+                    url: 'https://crm.eloccitane.com/wmth5/storeSearch.html'
             }).then(res=>{
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -101,7 +102,6 @@ export default {
                     wx.getLocation({
                         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
                         success: function (r) {
-                            alert(JSON.stringify(r))
                             self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
                             self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
                             var mk = new BMap.Marker({lat:self.latitude,lng:self.longitude});
@@ -161,13 +161,18 @@ export default {
             getCounterList(params).then(res=>{
                 console.log(res.data)
                 // alert('paramsres'+JSON.stringify(res))
-                res.data.forEach(item=>{
-                    let option = { lat: item.latitude, lng: item.longitude }
-                    let point = new BMap.Point(option.lng, option.lat)
-                    let marker = new BMap.Marker(point);
-                    map.addOverlay(marker);
-                })
-                this.panelList = res.data
+                if(res.data.length>0){
+                    this.isShow = false
+                    res.data.forEach(item=>{
+                        let option = { lat: item.latitude, lng: item.longitude }
+                        let point = new BMap.Point(option.lng, option.lat)
+                        let marker = new BMap.Marker(point);
+                        map.addOverlay(marker);
+                    })
+                    this.panelList = res.data
+                }else{
+                    this.isShow = true
+                }
                 
             })
         },
