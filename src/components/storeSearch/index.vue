@@ -102,7 +102,7 @@ export default {
             GetCardSign(localStorage.getItem('memberCode')).then(res=>{
                 // alert('res'+JSON.stringify(res))
                 wx.config({
-                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
                     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
