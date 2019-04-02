@@ -2,7 +2,7 @@
     <div class="map-warpper">
         <div class="map-box" id="map">
         </div>
-        <div class="panel-box">
+        <div class="panel-box" v-if="panelList.length>0">
             <div class="panel-item" v-for="(item,index) in panelList" :key="index" @click="infohtmlset(item,index)">
                 <div class="logo-box">
                     <img src="@/assets/logo.jpg" alt="">
@@ -17,6 +17,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="panel-box" v-else>
+            <div style="text-align: center: color: #666666;font-size: 14px;line-height:32px;">当前门店没有查询到相关的门店信息！</div>
         </div>
         <div class="select-box" @click="choiceArea">
             <div class="img-box"><img src="@/assets/address.png" alt=""></div>
@@ -141,7 +144,7 @@ export default {
     methods: {
         getCurrentCity (params) {
             CurrentCity(params).then((res)=>{ 
-                alert('res222'+JSON.stringify(res))
+                // alert('res222'+JSON.stringify(res))
                 this.currentLocation = res.data.name
                 this.areaText = res.data.name
                 this.doSearch()
@@ -154,10 +157,10 @@ export default {
                     latitude: this.latitude,
                     city: this.currentLocation
                 }
-            alert('params111'+JSON.stringify(params))
+            // alert('params111'+JSON.stringify(params))
             getCounterList(params).then(res=>{
                 console.log(res.data)
-                alert('paramsres'+JSON.stringify(res))
+                // alert('paramsres'+JSON.stringify(res))
                 res.data.forEach(item=>{
                     let option = { lat: item.latitude, lng: item.longitude }
                     let point = new BMap.Point(option.lng, option.lat)
