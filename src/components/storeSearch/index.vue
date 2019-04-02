@@ -85,9 +85,8 @@ export default {
                     originId:'gh_25a25c44baba',
                     url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
             }).then(res=>{
-                alert('res'+JSON.stringify(res))
                 wx.config({
-                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: res.appId, // 必填，公众号的唯一标识
                     timestamp: res.timestamp, // 必填，生成签名的时间戳
                     nonceStr: res.nonceStr, // 必填，生成签名的随机串
@@ -142,7 +141,7 @@ export default {
     methods: {
         getCurrentCity (params) {
             CurrentCity(params).then((res)=>{
-                console.log(res.data)
+                alert('res'+JSON.stringify(res.data))
                 this.currentLocation = res.data.name
                 this.areaText = res.data.name
                 this.doSearch()
@@ -155,9 +154,9 @@ export default {
                     latitude:this.latitude,
                     city: this.currentLocation
                 }
-            // alert('params'+JSON.stringify(params))
+            alert('params'+JSON.stringify(params))
             getCounterList(params).then(res=>{
-                // alert('res'+JSON.stringify(res))
+                alert('res'+JSON.stringify(res))
                 console.log(res.data)
                 res.data.forEach(item=>{
                     let option = { lat: item.latitude, lng: item.longitude }
