@@ -84,7 +84,7 @@ export default {
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
             getlocalAPi({
-                    originId:'gh_25a25c44baba',
+                    originId:'gh_4b16ea1dcc6f',
                     url: 'https://crm.eloccitane.com/wmth5/storeSearch.html'
             }).then(res=>{
                 wx.config({
