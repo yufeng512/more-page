@@ -96,6 +96,7 @@ export default {
                     }
                     self.getCurrentCity(params)
                 }else {
+                    alert('您的浏览器不支持地图定位')
                 }
             },{enableHighAccuracy: false})
             GetCardSign(localStorage.getItem('memberCode')).then(res=>{
@@ -110,10 +111,10 @@ export default {
                 });
                 wx.getLocation({
                     type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                    success: function (res) {
-                        // alert(JSON.stringify(res))
-                        self.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        self.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    success: function (r) {
+                        alert(JSON.stringify(r))
+                        self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
+                        self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
                         let params = {
                             longitude:self.longitude,
                             latitude:self.latitude
