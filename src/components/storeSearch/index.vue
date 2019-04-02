@@ -140,8 +140,7 @@ export default {
     },
     methods: {
         getCurrentCity (params) {
-            CurrentCity(params).then((res)=>{
-                alert('res'+JSON.stringify(res.data))
+            CurrentCity(params).then((res)=>{ 
                 this.currentLocation = res.name
                 this.areaText = res.name
                 this.doSearch()
@@ -150,14 +149,14 @@ export default {
         },
         counterList () {
             let params = {
-                    longitude:this.longitude,
-                    latitude:this.latitude,
+                    longitude: this.longitude,
+                    latitude: this.latitude,
                     city: this.currentLocation
                 }
-            alert('params'+JSON.stringify(params))
+            alert('params111'+JSON.stringify(params))
             getCounterList(params).then(res=>{
-                alert('res'+JSON.stringify(res))
                 console.log(res.data)
+                alert('paramsres'+JSON.stringify(res))
                 res.data.forEach(item=>{
                     let option = { lat: item.latitude, lng: item.longitude }
                     let point = new BMap.Point(option.lng, option.lat)
