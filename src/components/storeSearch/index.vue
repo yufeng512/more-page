@@ -105,8 +105,8 @@ export default {
                                 map.addOverlay(mk);
                                 map.panTo({lat:self.latitude,lng:self.longitude});
                             let params = {
-                                longitude:self.longitude,
-                                latitude:self.latitude
+                                longitude: self.longitude,
+                                latitude: self.latitude
                             }
                             self.getCurrentCity(params)
                         },
@@ -142,8 +142,8 @@ export default {
         getCurrentCity (params) {
             CurrentCity(params).then((res)=>{
                 alert('res'+JSON.stringify(res.data))
-                this.currentLocation = res.data.name
-                this.areaText = res.data.name
+                this.currentLocation = res.name
+                this.areaText = res.name
                 this.doSearch()
                 this.counterList()
             })
