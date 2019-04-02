@@ -141,6 +141,7 @@ export default {
     methods: {
         getCurrentCity (params) {
             CurrentCity(params).then((res)=>{ 
+                alert('res222'+JSON.stringify(res))
                 this.currentLocation = res.name
                 this.areaText = res.name
                 this.doSearch()
