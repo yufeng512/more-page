@@ -80,25 +80,25 @@ export default {
         
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
-            let geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function(r){
-                if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                    // alert(77777)
-                    var mk = new BMap.Marker(r.point);
-                    map.addOverlay(mk);
-                    map.panTo(r.point);
-                    self.latitude = r.point.lat
-                    self.longitude = r.point.lng
-                    // console.log('您的位置：'+r.point.lng+','+r.point.lat);
-                    let params = {
-                        longitude:self.longitude,
-                        latitude:self.latitude
-                    }
-                    self.getCurrentCity(params)
-                }else {
-                    alert('您的浏览器不支持地图定位')
-                }
-            },{enableHighAccuracy: false})
+            // let geolocation = new BMap.Geolocation();
+            // geolocation.getCurrentPosition(function(r){
+            //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            //         // alert(77777)
+            //         var mk = new BMap.Marker(r.point);
+            //         map.addOverlay(mk);
+            //         map.panTo(r.point);
+            //         self.latitude = r.point.lat
+            //         self.longitude = r.point.lng
+            //         // console.log('您的位置：'+r.point.lng+','+r.point.lat);
+            //         let params = {
+            //             longitude:self.longitude,
+            //             latitude:self.latitude
+            //         }
+            //         self.getCurrentCity(params)
+            //     }else {
+            //         alert('您的浏览器不支持地图定位')
+            //     }
+            // },{enableHighAccuracy: false})
             GetCardSign(localStorage.getItem('memberCode')).then(res=>{
                 // alert('res'+JSON.stringify(res))
                 wx.config({
