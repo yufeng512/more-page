@@ -36,4 +36,6 @@ export default {
     //问卷
     addQuestion: BASEAPI + 'mobile/member/addQuestion', //提交问卷    
     hasPartQues: BASEAPI + 'mobile/member/hasPartQues/', //判断是否
+    localAPi: 'http://wmtuat.eloccitane.com/weixin/wechat/auth/jsapi_signature',
+
 }

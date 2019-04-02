@@ -33,7 +33,7 @@
 </template>
 <script>
 import { CurrentCity, getCounterList, Provinces, Cities} from '@/api/storeSearch/index'
-import { GetCardSign } from '@/api/memberPolicy'
+import { getlocalAPi } from '@/api/common'
 var local,
     map,
     infoWindow,
@@ -77,65 +77,60 @@ export default {
     },
     mounted(){
         let self = this
-        
-        setTimeout(()=>{
-            map = new BMap.Map("map",{enableMapClick:false });
-            let geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function(r){
-                if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                    var mk = new BMap.Marker(r.point);
-                    map.addOverlay(mk);
-                    map.panTo(r.point);
-                    self.latitude = r.point.lat
-                    self.longitude = r.point.lng
-                    // console.log('您的位置：'+r.point.lng+','+r.point.lat);
-                    let params = {
-                        longitude:self.longitude,
-                        latitude:self.latitude
-                    }
-                    self.getCurrentCity(params)
-                }else {
-                    alert('您的浏览器不支持地图定位')
-                }
-            },{enableHighAccuracy: false})
-            GetCardSign({
+        getlocalAPi({
                 originId:'gh_25a25c44baba',
                 url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
-            }).then(res=>{
-                alert('res'+JSON.stringify(res))
-                wx.config({
-                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
-                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                    nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
-                    signature: res.data.signature,// 必填，签名
-                    jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
-                });
-                wx.ready(function(){
-                    wx.getLocation({
-                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                        success: function (r) {
-                            alert(JSON.stringify(r))
-                            self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
-                            self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
-                            let params = {
-                                longitude:self.longitude,
-                                latitude:self.latitude
-                            }
-                            self.getCurrentCity(params)
-                        },
-                        fail: function (e) {
-                        alert('fail') 
-                        },
-                        complete: function () {
-                            alert('complete')
-                        },
-                        cancel: function () {
-                            alert('cancel')
-                        }
-                    })
-                })
-            })
+        }).then(res=>{
+            alert('res'+JSON.stringify(res))
+            // wx.config({
+            //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            //     appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
+            //     timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+            //     nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
+            //     signature: res.data.signature,// 必填，签名
+            //     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
+            // });
+            // wx.ready(function(){
+            //     wx.getLocation({
+            //         type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            //         success: function (r) {
+            //             alert(JSON.stringify(r))
+            //             self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
+            //             self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
+            //             let params = {
+            //                 longitude:self.longitude,
+            //                 latitude:self.latitude
+            //             }
+            //             self.getCurrentCity(params)
+            //         },
+            //         fail: function (e) {
+            //             alert('fail') 
+            //         }
+            //     })
+            // })
+        })
+        
+        setTimeout(()=>{
+            // map = new BMap.Map("map",{enableMapClick:false });
+            // let geolocation = new BMap.Geolocation();
+            // geolocation.getCurrentPosition(function(r){
+            //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            //         var mk = new BMap.Marker(r.point);
+            //         map.addOverlay(mk);
+            //         map.panTo(r.point);
+            //         self.latitude = r.point.lat
+            //         self.longitude = r.point.lng
+            //         // console.log('您的位置：'+r.point.lng+','+r.point.lat);
+            //         let params = {
+            //             longitude:self.longitude,
+            //             latitude:self.latitude
+            //         }
+            //         self.getCurrentCity(params)
+            //     }else {
+            //         alert('您的浏览器不支持地图定位')
+            //     }
+            // },{enableHighAccuracy: false})
+            
         },600)
     },
     methods: {
