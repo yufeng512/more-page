@@ -210,8 +210,8 @@ export default {
             this.currentLocation = values[1]
         },
         doSearch () {
-            alert(this.currentLocation)
-            map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
+            let point = new BMap.Point(this.longitude, this.latitude)
+            map.centerAndZoom(point,11);  //设置地图的中心点：
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
             let option = { map:map, autoViewport:false, selectFirstResult: false }
