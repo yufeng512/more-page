@@ -77,43 +77,48 @@ export default {
     },
     mounted(){
         let self = this
-        getlocalAPi({
-                originId:'gh_25a25c44baba',
-                url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
-        }).then(res=>{
-            alert('res'+JSON.stringify(res))
-            wx.config({
-                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                appId: res.appId, // 必填，公众号的唯一标识
-                timestamp: res.timestamp, // 必填，生成签名的时间戳
-                nonceStr: res.nonceStr, // 必填，生成签名的随机串
-                signature: res.signature,// 必填，签名
-                url: res.url,
-                jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
-            });
-            wx.ready(function(){
-                wx.getLocation({
-                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                    success: function (r) {
-                        alert(JSON.stringify(r))
-                        self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
-                        let params = {
-                            longitude:self.longitude,
-                            latitude:self.latitude
-                        }
-                        self.getCurrentCity(params)
-                    },
-                    fail: function (e) {
-                        alert('fail') 
-                    }
-                })
-            })
-        })
+        
         
         setTimeout(()=>{
-            // map = new BMap.Map("map",{enableMapClick:false });
+            map = new BMap.Map("map",{enableMapClick:false });
+            getlocalAPi({
+                    originId:'gh_25a25c44baba',
+                    url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
+            }).then(res=>{
+                alert('res'+JSON.stringify(res))
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.appId, // 必填，公众号的唯一标识
+                    timestamp: res.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.nonceStr, // 必填，生成签名的随机串
+                    signature: res.signature,// 必填，签名
+                    url: res.url,
+                    jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
+                });
+                wx.ready(function(){
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (r) {
+                            alert(JSON.stringify(r))
+                            self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            var mk = new BMap.Marker({lat:self.latitude,lng:self.longitude});
+                                map.addOverlay(mk);
+                                map.panTo({lat:self.latitude,lng:self.longitude});
+                            let params = {
+                                longitude:self.longitude,
+                                latitude:self.latitude
+                            }
+                            self.getCurrentCity(params)
+                        },
+                        fail: function (e) {
+                            alert('fail') 
+                        }
+                    })
+                })
+            })
             // let geolocation = new BMap.Geolocation();
+
             // geolocation.getCurrentPosition(function(r){
             //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
             //         var mk = new BMap.Marker(r.point);
