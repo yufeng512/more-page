@@ -100,7 +100,7 @@ export default {
             },{enableHighAccuracy: false})
             GetCardSign({
                 originId:'gh_25a25c44baba',
-                url: 'wmtuat.eloccitane.com'
+                url: 'http://wmtuat.eloccitane.com/wmth5/storeSearch.html'
             }).then(res=>{
                 alert('res'+JSON.stringify(res))
                 wx.config({
