@@ -83,7 +83,7 @@ export default {
             let geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function(r){
                 if(this.getStatus() == BMAP_STATUS_SUCCESS){
-                    alert(77777)
+                    // alert(77777)
                     var mk = new BMap.Marker(r.point);
                     map.addOverlay(mk);
                     map.panTo(r.point);
@@ -100,7 +100,7 @@ export default {
                 }
             },{enableHighAccuracy: false})
             GetCardSign(localStorage.getItem('memberCode')).then(res=>{
-                alert('res'+JSON.stringify(res))
+                // alert('res'+JSON.stringify(res))
                 wx.config({
                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                     appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
@@ -120,6 +120,15 @@ export default {
                             latitude:self.latitude
                         }
                         self.getCurrentCity(params)
+                    },
+                    fail: function (e) {
+                       alert('fail') 
+                    },
+                    complete: function () {
+                        alert('complete')
+                    },
+                    cancel: function () {
+                        alert('cancel')
                     }
                 })
             })
