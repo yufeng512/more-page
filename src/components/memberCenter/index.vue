@@ -124,21 +124,20 @@ export default {
                     // alert(JSON.stringify(res))
                     if(res.code==0){
                         if(res.data.member){
-                            localStorage.setItem("isMemberCenter",true)
                             localStorage.setItem("mobile",res.data.member.mobile)
                             self.getMobileInfo(res.data.member.mobile)
                         }
                         else{
-                            //window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                             window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                            //  window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                         }
                     }else {
-                        if(localStorage.getItem("isMemberCenter")){
+                        if(localStorage.getItem("isMember")){
                             self.getMobileInfo(localStorage.getItem("mobile"))
                         }
                         else{
-                            //window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                            window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                            window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                            // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                         }
                     }
                 },
@@ -170,19 +169,20 @@ export default {
                     // localStorage.setItem("memberCode",'C0004500000019851')
                     localStorage.setItem("memberCode",res.data.memberCode)
                 }else{
-                    //window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                    window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
+                    window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
+                    // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                 }
             })
         }
     },
     mounted () {
-        let mobile = localStorage.getItem('mobile')
-        if(mobile==''){
-            this.isLogin()
-        }else {
-            this.getMobileInfo(mobile)
-        }
+        this.isLogin()
+        // let mobile = localStorage.getItem('mobile')
+        // console.log(mobile)
+        // if(mobile==''){
+        // }else {
+        //     this.getMobileInfo(mobile)
+        // }
     }
 }
 </script>
