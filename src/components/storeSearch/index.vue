@@ -142,8 +142,8 @@ export default {
         getCurrentCity (params) {
             CurrentCity(params).then((res)=>{ 
                 alert('res222'+JSON.stringify(res))
-                this.currentLocation = res.name
-                this.areaText = res.name
+                this.currentLocation = res.data.name
+                this.areaText = res.data.name
                 this.doSearch()
                 this.counterList()
             })
