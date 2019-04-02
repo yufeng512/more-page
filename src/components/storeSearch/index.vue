@@ -122,7 +122,7 @@ export default {
                         self.getCurrentCity(params)
                     },
                     fail: function (e) {
-                       alert('fail') 
+                    alert('fail') 
                     },
                     complete: function () {
                         alert('complete')
