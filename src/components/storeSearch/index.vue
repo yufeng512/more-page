@@ -77,6 +77,30 @@ export default {
     },
     mounted(){
         let self = this
+        GetCardSign(localStorage.getItem('memberCode')).then(res=>{
+            alert('res'+JSON.stringify(res))
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
+                timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
+                signature: res.data.signature,// 必填，签名
+                jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
+            });
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function (res) {
+                    alert(JSON.stringify(res))
+                    self.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    self.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    let params = {
+                        longitude:self.longitude,
+                        latitude:self.latitude
+                    }
+                    self.getCurrentCity(params)
+                }
+            })
+        })
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
             let geolocation = new BMap.Geolocation();
@@ -95,29 +119,6 @@ export default {
                     }
                     self.getCurrentCity(params)
                 }else {
-                    GetCardSign(localStorage.getItem('memberCode')).then(res=>{
-                        wx.config({
-                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                            appId: 'wx60671049a2f3e0f4', // 必填，公众号的唯一标识
-                            timestamp: res.data.timestamp, // 必填，生成签名的时间戳
-                            nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
-                            signature: res.data.signature,// 必填，签名
-                            jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
-                        });
-                        wx.getLocation({
-                            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                            success: function (res) {
-                                alert(JSON.stringify(res))
-                                self.latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                                self.longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                                let params = {
-                                    longitude:self.longitude,
-                                    latitude:self.latitude
-                                }
-                                self.getCurrentCity(params)
-                            }
-                        })
-                    })
                 }
             },{enableHighAccuracy: false})
         },600)
