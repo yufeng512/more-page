@@ -109,27 +109,29 @@ export default {
                     signature: res.data.signature,// 必填，签名
                     jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表
                 });
-                wx.getLocation({
-                    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                    success: function (r) {
-                        alert(JSON.stringify(r))
-                        self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
-                        let params = {
-                            longitude:self.longitude,
-                            latitude:self.latitude
+                wx.ready(function(){
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (r) {
+                            alert(JSON.stringify(r))
+                            self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            let params = {
+                                longitude:self.longitude,
+                                latitude:self.latitude
+                            }
+                            self.getCurrentCity(params)
+                        },
+                        fail: function (e) {
+                        alert('fail') 
+                        },
+                        complete: function () {
+                            alert('complete')
+                        },
+                        cancel: function () {
+                            alert('cancel')
                         }
-                        self.getCurrentCity(params)
-                    },
-                    fail: function (e) {
-                    alert('fail') 
-                    },
-                    complete: function () {
-                        alert('complete')
-                    },
-                    cancel: function () {
-                        alert('cancel')
-                    }
+                    })
                 })
             })
         },600)
