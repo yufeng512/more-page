@@ -137,10 +137,6 @@ export default {
                         if(localStorage.getItem("isMember")){
                             self.getMobileInfo(localStorage.getItem("mobile"))
                         }
-                        else{
-                            // window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                            window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
-                        }
                     }
                 },
                 error:function(e){
