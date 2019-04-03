@@ -2,7 +2,7 @@ import Vue from 'Vue'
 import VueRouter from 'vue-router'
 import pointShop from './pointShop.vue'
 import routes from '@/router/pointShop.js'
-import store from '../../store'
+import store from '@/store'
 import '@/styles/index.sass'
 import {
   Tabs,

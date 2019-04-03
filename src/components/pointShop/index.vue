@@ -20,7 +20,6 @@ export default {
         // let no = localStorage.getItem("memberCode")
         // this.getMemberPoint(no)
         this.getMemberPoint('CNL000000451')
-        console.log(this.store.state)
     }
 }
 </script>
