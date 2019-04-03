@@ -250,6 +250,7 @@ export default {
       MemberCheckBind(params).then(res=>{
         if(res.code == 0){
           self.$toast(res.msg||'已绑定成功');
+          localStorage.setItem("isMember",true)
           localStorage.setItem('mobile',res.data.mobile)
           setTimeout(function(){
             window.location.href = 'https://crm.eloccitane.com/memberCenter/memberCenter.html'

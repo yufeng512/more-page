@@ -136,24 +136,24 @@ export default {
             signature: res.data.signature,// 必填，签名
             jsApiList: ['addCard'] // 必填，需要使用的JS接口列表
         });
-        wx.addCard({
-          cardList: [{
-            cardId: res.data.card_id,
-            cardExt: '{"code":"' + res.data.memberCode + '","openid":"","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
-          }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
-          success: function(result) {
-            // alert('领取成功', result);
-            window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
-          },
-          fail: function(res) {
-            // alert('领取失败', res);
-            window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
-          },
-          complete: function() {
-            window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
-          }
-        })
         wx.ready(function(){
+          wx.addCard({
+            cardList: [{
+              cardId: res.data.card_id,
+              cardExt: '{"code":"' + res.data.memberCode + '","openid":"","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
+            }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
+            success: function(result) {
+              // alert('领取成功', result);
+              window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
+            },
+            fail: function(res) {
+              // alert('领取失败', res);
+              window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
+            },
+            complete: function() {
+              window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
+            }
+          })
           // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
         });
         wx.error(function(res){
@@ -185,8 +185,8 @@ export default {
           // alert('res'+JSON.stringify(res))
           if(res.code == 0){
             self.$toast("更新成功");
-            window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
             self.setLocal(res.data)
+            window.location.href="https://crm.eloccitane.com/memberCenter/memberCenter.html"
           }else{
             self.$toast(res.msg||"更新失败");
           }
@@ -246,7 +246,6 @@ export default {
           this.info.region =  this.regions[0].text
         })
       })
-      
     },
     // 选市
     choseCity (e) {
