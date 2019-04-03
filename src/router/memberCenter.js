@@ -1,6 +1,7 @@
 import index from '../components/memberCenter/index'
 import info from '../components/memberCenter/info'
-import point from '../components/memberCenter/point'
+import point from '../components/memberCenter/point/index'
+import pointDetails from '../components/memberCenter/point/details'
 import pointHistory from '../components/memberCenter/pointHistory'
 import orderHistory from '../components/memberCenter/orderHistory'
 import card from '../components/memberCenter/card'
@@ -24,7 +25,14 @@ const routes = [
     component: point,
     meta: {
       title: '积分'
-    }
+    },
+    children: [
+      {
+        path: '/pointDetails',
+        name: 'pointDetails',
+        component: pointDetails,
+      }
+    ]
   },
   {
     path: '/pointHistory',

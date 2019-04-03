@@ -7,29 +7,37 @@
           <p>感谢您近期光临欧舒丹，根据您此次的购物体验，您是否愿意推举欧舒丹给您的家人或朋友？</p>
           <div>
               <el-radio-group v-model="info.buyFeel" @change="onChange" >
-                <el-radio label="1">0-6购物体验差，我完全不会推荐给好友</el-radio>
-                <el-radio label="2">7-8购物体验适中，我可能会推荐给好友</el-radio>
-                <el-radio label="3">9-10购物体验感很好，我肯定会推荐给朋友</el-radio>
+                <el-radio label="1">购物体验差，我完全不会推荐给好友</el-radio>
+                <el-radio label="2">购物体验适中，我可能会推荐给好友</el-radio>
+                <el-radio label="3">购物体验感很好，我肯定会推荐给朋友</el-radio>
               </el-radio-group>
           </div>
           <div v-if="isShow">
-            <p v-if="isShowList1">您认为我们在哪些方面可以做出改善（请填写至多3项</p>
-            <p v-if="isShowList2">请与我们分享，最令您满意的3点</p>
-            <el-checkbox-group v-model="selectValue" :max="3">
-              <el-checkbox v-for="item in list" :label="item.value" :key="item.value">{{item.text}}</el-checkbox>
-            </el-checkbox-group>
             <p v-if="isShowList1">很遗憾未能为您带来满意的购物体验，请给予我们改进的机会，可以留下您宝贵的意见或建议吗？</p>
             <p v-if="isShowList2">很高兴能为您带来满意的购物体验，您能告诉我们哪方面最令您满意吗？</p>
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="info.experienceRemark"> </el-input>
             </div>
+            <p v-if="isShowList1">您认为我们在哪些方面可以做出改善（请填写至多3项</p>
+            <p v-if="isShowList2">请与我们分享，最令您满意的3点</p>
+            <el-checkbox-group v-model="selectValue" :max="3">
+              <el-checkbox v-for="item in list" :label="item.value" :key="item.value">{{item.text}}</el-checkbox>
+            </el-checkbox-group>
             <h4>其他，请补充：</h4>
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入补充内容" v-model="info.otherRemark"> </el-input>
             </div>
-            <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 分值：（完全不满意）0-10（非常满意）</p>
+            <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 分值：<br>(完全不满意) 0-10 (非常满意)</p>
+            <div>
+                <el-radio-group v-model="info.points">
+                  <el-radio label="1">0-6</el-radio>
+                  <el-radio label="2">7-8</el-radio>
+                  <el-radio label="3">9-10</el-radio>
+                </el-radio-group>
+            </div>
+            <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 分值：<br>(完全不满意) 0-10 (非常满意)</p>
             <div class="input-box">
-              <el-input type="number" :rows="2" placeholder="请输入分值" v-model="info.points"> </el-input>
+              <el-input type="textarea" :rows="2" placeholder="请输入意见或建议" v-model="info.text"> </el-input>
             </div>
             <div class="btn-box">
               <el-button type="primary" @click="submit">提交</el-button>
@@ -51,6 +59,7 @@ export default {
             experienceRemark: '',
             otherRemark: '',
             points: '',
+            text: ''
           },
           isShowText: true,
           selectValue: [],
@@ -82,6 +91,7 @@ export default {
         onChange (key) {
           console.log(key)
           this.isShow = true
+          this.info.points = ''
           this.selectValue = []
           if(key == 1 || key == 2) {
             this.isShowList1 = true

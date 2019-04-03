@@ -71,7 +71,7 @@ export default {
           var arr=str.split("&"); //各个参数放到数组里
           // alert('res11'+JSON.stringify(arr))
           for(var i=0;i < arr.length;i++){
-            num=arr[i].split("=");
+            num=arr[i].split("=")
             if(num[0]=='code'){
               obj.code=num[1]
             }
