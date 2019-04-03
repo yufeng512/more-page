@@ -123,6 +123,8 @@ export default {
                 success:function(res){
                     alert(JSON.stringify(res))
                     if(res.code==0){
+                        localStorage.setItem("openId",res.data.openId)
+                        localStorage.setItem("unionId",res.data.unionId)
                         if(res.data.member){
                             localStorage.setItem("mobile",res.data.member.mobile)
                             self.getMobileInfo(res.data.member.mobile)
