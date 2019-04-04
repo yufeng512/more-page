@@ -27,7 +27,7 @@
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入补充内容" v-model="info.otherRemark"> </el-input>
             </div>
-            <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 分值：<br>(完全不满意) 0-10 (非常满意)</p>
+            <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 <br>分值：完全不满意) 0-10 (非常满意)</p>
             <div>
                 <el-radio-group v-model="info.points">
                   <el-radio label="1">0-6</el-radio>
@@ -35,7 +35,7 @@
                   <el-radio label="3">9-10</el-radio>
                 </el-radio-group>
             </div>
-            <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 分值：<br>(完全不满意) 0-10 (非常满意)</p>
+            <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 <br>分值：(完全不满意) 0-10 (非常满意)</p>
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入意见或建议" v-model="info.remark"> </el-input>
             </div>
@@ -92,6 +92,8 @@ export default {
           console.log(key)
           this.isShow = true
           this.info.points = ''
+          this.info.experienceRemark = ''
+          this.info.remark = ''
           this.selectValue = []
           if(key == 1 || key == 2) {
             this.isShowList1 = true
@@ -109,16 +111,8 @@ export default {
             return false
           }
           if (this.info.points == '') {
-            this.$toast('请输入分值');
+            this.$toast('请输入选择分值');
             return false
-          }
-          if (!(/(^[1-9]\d*$)/.test(this.info.points))) { 
-              this.$toast('输入的不是正整数');
-    　　　　　　return false; 
-    　　　　}
-          if (this.info.points>10){
-              this.$toast('输入的最大分值为10');
-              return false; 
           }
           if (this.info.buyFeel == 1||this.info.buyFeel == 2){
             this.info.perfectView = this.selectValue.join(',')
@@ -130,6 +124,7 @@ export default {
           this.info.openId = localStorage.getItem("openId")
           this.info.campaignid = localStorage.getItem("campaignId")
           addQuestion(this.info).then(res=>{
+            alert(JSON.stringify(res))
             if(res.code == 0){
               this.$toast('评价完成');
               this.isShowText = false
