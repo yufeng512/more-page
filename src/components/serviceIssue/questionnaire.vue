@@ -27,7 +27,7 @@
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入补充内容" v-model="info.otherRemark"> </el-input>
             </div>
-            <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 <br>分值：完全不满意) 0-10 (非常满意)</p>
+            <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 <br>分值：(完全不满意) 0-10 (非常满意)</p>
             <div>
                 <el-radio-group v-model="info.points">
                   <el-radio label="1">0-6</el-radio>
@@ -126,7 +126,7 @@ export default {
           addQuestion(this.info).then(res=>{
             alert(JSON.stringify(res))
             if(res.code == 0){
-              this.$toast('评价完成');
+              this.$toast(res.msg||'评价完成');
               this.isShowText = false
             }else{
               this.$toast('评价失败');
