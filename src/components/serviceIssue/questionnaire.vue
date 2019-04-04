@@ -124,7 +124,7 @@ export default {
           this.info.openId = localStorage.getItem("openId")
           this.info.campaignid = localStorage.getItem("campaignId")
           addQuestion(this.info).then(res=>{
-            alert(JSON.stringify(res))
+            // alert(JSON.stringify(res))
             if(res.code == 0){
               this.$toast(res.msg||'评价完成');
               this.isShowText = false
