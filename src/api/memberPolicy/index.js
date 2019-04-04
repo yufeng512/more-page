@@ -1,8 +1,6 @@
 import api from '../baseUrl'
-import { fetch, post, patch, put } from '@/utils/request'
-export function getMapJson(url) {
-  return fetch(url)
-}
+import { fetch, post } from '@/utils/requestApi'
+
 //会员新增
 export function MemberInsert(params) {
   return post(api.MemberInsert, params)

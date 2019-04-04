@@ -1,9 +1,7 @@
 import api from '../baseUrl'
 import {
   fetch,
-  post,
-  patch,
-  put
+  post
 } from '@/utils/request'
 //当前城市
 export function getMemberInfo(mobile) {
