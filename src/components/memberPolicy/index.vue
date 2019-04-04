@@ -201,7 +201,7 @@ export default {
             self.settime()
           }else if(data.code==1){
             self.$toast(data.msg||'错误');
-            this.codeText="短信已发送";
+            self.codeText="短信已发送";
           }else{
             self.$toast(data.msg||'错误');
           }

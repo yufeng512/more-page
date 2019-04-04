@@ -94,7 +94,7 @@ export default {
     methods: {
         goPage(str){
             if(str!=''){
-                this.$router.push(str)
+                this.$router.push('/'+str)
             }
         },
         goStore () {
