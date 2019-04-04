@@ -1,5 +1,5 @@
 import api from '../baseUrl'
-import { fetch, post } from '@/utils/requestApi'
+import { fetch, post } from '@/utils/request'
 
 //会员新增
 export function MemberInsert(params) {
