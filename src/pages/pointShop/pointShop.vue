@@ -1,26 +1,19 @@
 <template>
   <div id="app">
-    <loading v-if="showLoading"></loading>
+    <loading v-show="$store.getters.showLoading"></loading>
     <router-view/>
   </div>
 </template>
 <script>
 
 import loading from '@/components/loading'
-import store from '@/store'
 export default {
   name: 'pointShop',
   data () {
-    return {
-    }
+    return {}
   },
-  components:{
+  components: {
     loading
-  },
-  computed:{
-    showLoading(){
-      return store.state.showLoading
-    }
   },
   mounted() {
   }

@@ -37,7 +37,7 @@
             </div>
             <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 分值：<br>(完全不满意) 0-10 (非常满意)</p>
             <div class="input-box">
-              <el-input type="textarea" :rows="2" placeholder="请输入意见或建议" v-model="info.text"> </el-input>
+              <el-input type="textarea" :rows="2" placeholder="请输入意见或建议" v-model="info.remark"> </el-input>
             </div>
             <div class="btn-box">
               <el-button type="primary" @click="submit">提交</el-button>
@@ -59,7 +59,7 @@ export default {
             experienceRemark: '',
             otherRemark: '',
             points: '',
-            text: ''
+            remark: ''
           },
           isShowText: true,
           selectValue: [],

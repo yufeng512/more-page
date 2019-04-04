@@ -14,8 +14,7 @@ axios.interceptors.request.use(config => {
   // if (token) {
   //   config.headers.Authorization = "Token " + token; //携带权限参数
   // }
-  store.state.showLoading = true
-  console.log(store.state.showLoading)
+  store.dispatch('showloader')
   return config;
 },
   err => {
@@ -23,8 +22,7 @@ axios.interceptors.request.use(config => {
   })
 //添加一个响应拦截器
 axios.interceptors.response.use(response => {
-  store.state.showLoading = false
-  console.log(store.state.showLoading)
+  store.dispatch('hideloader')
   console.log(response);
   // if (response.status == 401) {
   //   this.$router.push('/login')//push后面是一个参数对象，可以携带很多参数，具体可以去vue-router上查看，例如query字段表示携带的参数

@@ -1,5 +1,9 @@
 import * as types from './type.js'
 
+const state = {
+  showLoading: false
+}
+
 const mutations = {
   [types.SHOWLOADING](state) {
     state.showLoading = true
@@ -16,5 +20,5 @@ const getters = {
 }
 
 export default {
-  mutations, getters
+  state, mutations, getters
 }
