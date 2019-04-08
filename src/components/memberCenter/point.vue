@@ -76,6 +76,12 @@ export default {
   p
     color: #666666
     font-size: 14px
+  button
+    border: none
+    background: #dbdbdb
+    padding: 4px 8px
+    color: #333
+    outline: none
     
     
 </style>

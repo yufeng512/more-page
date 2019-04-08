@@ -197,8 +197,15 @@ export default {
     border-bottom: 1px solid #dbdbdb
     display: flex
     justify-content: flex-start
+    align-items: center
     p
       width: 70%
+      button
+        border: none
+        background: #dbdbdb
+        padding: 4px 8px
+        color: #333
+        outline: none
     span
       color: #666666
       &:first-child
