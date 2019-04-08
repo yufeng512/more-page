@@ -111,7 +111,7 @@ export default {
             this.isShow = false
         },
         changeInfo() {
-            this.$router.push({name:'userInfo',params:{mobile: self.phone}})
+            this.$router.push({name:'userInfo',params:{mobile: this.info.phone}})
         },
         use(){
             this.isShow = true
