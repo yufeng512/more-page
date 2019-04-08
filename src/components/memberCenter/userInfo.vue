@@ -110,6 +110,7 @@ export default {
   mounted () {
     this.getProvincesList()
     this.info.mobile = this.$route.params.mobile
+    alert(JSON.stringify(this.info.mobile))
     getMemberInfo(this.info.mobile).then(res=>{
         alert(JSON.stringify(res))
         if(res.code == 0){
@@ -136,9 +137,9 @@ export default {
       // params.unionId = localStorage.getItem("unionId")||'otMBn1ON_z6ahyzGkQaPnWzPBRVy'
       params.openId = localStorage.getItem("openId")
       params.unionId = localStorage.getItem("unionId")
-      // alert('res'+JSON.stringify(params))
+      alert('res'+JSON.stringify(params))
       MemberUpdate(params).then(res=>{
-        // alert('res'+JSON.stringify(res))
+        alert('res'+JSON.stringify(res))
         if(res.code == 0){
           self.$toast("更新成功");
           self.$router.push('/')
