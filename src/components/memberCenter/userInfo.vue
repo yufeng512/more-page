@@ -84,6 +84,7 @@
 </template>
 <script>
 import { ProvincesList, Cities, Districts, MemberUpdate, MemberInsert, GetCardSign} from '@/api/memberPolicy'
+import { getMemberInfo } from '@/api/memberCenter/index'
 import _  from 'lodash'
 
 export default {
