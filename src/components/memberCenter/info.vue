@@ -39,6 +39,9 @@
                 <span>{{info.memberAddress}}</span>
             </div>
         </div>
+        <div class="change-btn">
+            <button  @click="changeInfo">修改我的信息</button>
+        </div>
     </div>
 </template>
 <script>
@@ -50,6 +53,9 @@ export default {
         }
     },
     methods: {
+        changeInfo() {
+            this.$router.push({name:'userInfo',params:{mobile: this.info.mobile}})
+        },
         getMobileInfo(mobile){
             getMemberInfo(mobile).then(res=>{
                 // alert(JSON.stringify(res))
@@ -90,4 +96,16 @@ export default {
       width: 30%
     &:last-child
       width: 70%
+.change-btn
+  button
+    outline: none
+    border: #999999
+    padding: 0 20px
+    border-radius: 4px
+    background: #999999
+    color: #ffffff
+    font-size: 14px
+    width: 100%
+    height: 32px
+    margin-top: 10px
 </style>

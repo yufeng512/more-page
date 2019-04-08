@@ -10,7 +10,7 @@
                     <span>姓名:</span>
                     <p class="flex-btw">
                         <span>{{info.name}}</span>
-                        <button @click="getCard">领取卡券</button>
+                        <a style="" @click="getCard">领取卡券</a>
                     </p>
                 </div>
                 <div class="info-item">
@@ -28,9 +28,6 @@
                 <div class="info-item" >
                     <span>天猫积分:</span>
                     <span>{{info.tmallPoint?info.tmallPoint:'0'}}</span>
-                </div>
-                <div class="change-btn">
-                    <button  @click="changeInfo">修改我的信息</button>
                 </div>
             </div>
             <div class="btn-box flex-btw">
@@ -109,9 +106,6 @@ export default {
         },
         close(){
             this.isShow = false
-        },
-        changeInfo() {
-            this.$router.push({name:'userInfo',params:{mobile: this.info.mobile}})
         },
         use(){
             this.isShow = true
@@ -244,12 +238,9 @@ export default {
     align-items: center
     p
       width: 70%
-      button
-        border: none
-        background: #dbdbdb
-        padding: 4px 8px
-        color: #333
-        outline: none
+      a
+        font-size: 14px
+        color: #666666
     span
       color: #666666
       &:first-child
@@ -273,17 +264,6 @@ export default {
   &:nth-child(2)
     border-left: 1px solid #dbdbdb
     border-right: 1px solid #dbdbdb 
-.change-btn
-  button
-    outline: none
-    border: #999999
-    padding: 0 20px
-    border-radius: 4px
-    background: #999999
-    color: #ffffff
-    width: 100%
-    height: 32px
-    margin-top: 10px
 .popup
   position: fixed
   width: 100%
