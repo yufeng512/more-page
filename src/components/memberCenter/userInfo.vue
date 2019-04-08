@@ -110,7 +110,7 @@ export default {
     this.getProvincesList()
     this.info.mobile = this.$route.params.mobile
     getMemberInfo(this.info.mobile).then(res=>{
-        // alert(JSON.stringify(res))
+        alert(JSON.stringify(res))
         if(res.code == 0){
             localStorage.setItem("memberCode",res.data.memberCode)
             this.info = res.data
