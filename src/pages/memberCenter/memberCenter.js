@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import memberCenter from './memberCenter.vue'
 import routes from '@/router/memberCenter.js'
 import '@/styles/index.sass'
-console.log(routes)
+import Toast from '@/components/Toast'
+Vue.use(Toast);
 import {
   Tabs,
   TabPane,
