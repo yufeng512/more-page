@@ -191,7 +191,7 @@ export default {
             self.$toast(res.msg||"更新失败");
           }
         }).catch(err=>{
-          alert('err'+JSON.stringify(err))
+          self.$toast('更新失败')
         })
       }else{
         MemberInsert(params).then(res=>{
@@ -204,7 +204,7 @@ export default {
             self.$toast(res.msg||'保存失败');
           }
         }).catch(err=>{
-          alert('err'+JSON.stringify(err))
+          self.$toast('保存失败');
         })
       }
     },
