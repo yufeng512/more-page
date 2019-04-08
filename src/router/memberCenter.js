@@ -2,6 +2,7 @@ import index from '../components/memberCenter/index'
 import info from '../components/memberCenter/info'
 import point from '../components/memberCenter/point'
 import exchangeDetail from '../components/memberCenter/exchangeDetail'
+import userInfo from '../components/memberCenter/userInfo'
 import pointHistory from '../components/memberCenter/pointHistory'
 import orderHistory from '../components/memberCenter/orderHistory'
 import card from '../components/memberCenter/card'
@@ -15,6 +16,14 @@ const routes = [
     path: '/info',
     name: 'info',
     component: info,
+    meta: {
+      title: '会员信息'
+    }
+  },
+  {
+    path: '/userInfo',
+    name: 'userInfo',
+    component: userInfo,
     meta: {
       title: '会员信息'
     }
