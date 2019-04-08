@@ -8,9 +8,17 @@ import {
   Tabs,
   TabPane,
   Button,
+  Input,
+  Select,
+  Option,
+  DatePicker,
   InputNumber,
 } from 'element-ui'
+Vue.use(Option)
+Vue.use(Select)
+Vue.use(DatePicker)
 Vue.use(Tabs)
+Vue.use(Input)
 Vue.use(TabPane)
 Vue.use(Button)
 Vue.use(InputNumber)
