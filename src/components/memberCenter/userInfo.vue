@@ -98,7 +98,8 @@ export default {
         province: '',
         city: '',
         region: '',
-        address:''
+        address:'',
+        id: ''
       },
       sexList: [{ label: "男", value: '1'}, { label: "女", value: '2' }],
       provinces: [],
@@ -115,7 +116,15 @@ export default {
         alert(JSON.stringify(res))
         if(res.code == 0){
             localStorage.setItem("memberCode",res.data.memberCode)
-            this.info = res.data
+            this.info.name = res.data.name
+            this.info.mobile = res.data.mobile
+            this.info.gender = res.data.sex
+            this.info.birthday = res.data.birthday
+            this.info.province = res.data.province
+            this.info.city = res.data.city
+            this.info.region = res.data.region
+            this.info.address = res.data.memberAddress
+            this.info.id = res.data.id
         }
     })
   },
