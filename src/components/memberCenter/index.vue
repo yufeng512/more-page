@@ -169,13 +169,13 @@ export default {
                         cardExt: '{"code":"' + res.data.memberCode + '","openid":"","timestamp":"' + res.data.timestamp + '","nonce_str":"' + res.data.nonceStr + '","signature":"' + res.data.signature + '","outer_str":"wx"}'
                         }], //这里需要注意的是cardExt参数的value值是 String类型，不要使用对象发送；另外openid如果在创建优惠券的时候没有指定，则这边为空，千万不要填写当前用户的openid
                         success: function(result) {
-                            self.$toast("领取成功")
+                            alert("领取成功")
                         },
                         fail: function(res) {
-                            self.$toast("领取失败")
+                            alert("领取失败")
                         },
                         complete: function() {
-                            self.$toast("领取完成")
+                            alert("领取完成")
                         }
                     })
                     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
