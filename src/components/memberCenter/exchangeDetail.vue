@@ -7,7 +7,9 @@
           <div class="coupon-box">
               <div>
                   <h4>端午优惠券</h4>
-                  <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
+                  <div class="number-box">
+                    <el-input-number v-model="num1" @change="handleChange"  size="small" :min="1" :max="10" label="描述文字"></el-input-number>
+                  </div>
                   <p>分值：1200</p>
               </div>
               <div class="btn-box" @click="use">
@@ -71,6 +73,9 @@ export default {
     line-height: 32px
     outline: none
     border: 1px solid #dbdbdb
-    
+.number-box
+  width: 120px
+  .el-input-number
+    width: 100%
     
 </style>
