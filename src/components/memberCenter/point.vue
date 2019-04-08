@@ -11,7 +11,7 @@
                         <div class="list-item flex-btw" v-for="(item,index) in couponList" :key="index">
                             <div>
                                 <h4>{{item.couponName}}</h4>
-                                <p>有效期：{{item.beginDate}}-{{item.endDate}} </p>
+                                <p>有效期：{{item.beginDate}} - {{item.endDate}} </p>
                             </div>
                             <div class="btn-box" @click="use(item.id)">
                                 <button>立即兑换</button>
