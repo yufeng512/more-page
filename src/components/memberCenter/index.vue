@@ -8,7 +8,10 @@
             <div class="info-box">
                 <div class="info-item">
                     <span>姓名:</span>
-                    <span>{{info.name}}</span>
+                    <p class="flex-btw">
+                        <span>{{info.name}}</span>
+                        <button>领取卡券</button>
+                    </p>
                 </div>
                 <div class="info-item">
                     <span>手机:</span>
@@ -94,7 +97,7 @@ export default {
     methods: {
         goPage(str){
             if(str!=''){
-                this.$router.push(str)
+                this.$router.push('/'+str)
             }
         },
         goStore () {
@@ -194,6 +197,8 @@ export default {
     border-bottom: 1px solid #dbdbdb
     display: flex
     justify-content: flex-start
+    p
+      width: 70%
     span
       color: #666666
       &:first-child

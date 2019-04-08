@@ -7,9 +7,13 @@ console.log(routes)
 import {
   Tabs,
   TabPane,
+  Button,
+  InputNumber,
 } from 'element-ui'
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Button)
+Vue.use(InputNumber)
 Vue.use(VueRouter)
 var router = new VueRouter({
   routes
