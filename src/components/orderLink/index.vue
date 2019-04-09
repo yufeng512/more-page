@@ -23,7 +23,7 @@
 </template>
 <script>
 import $ from 'jquery'
-import { getMemberScoreQuery } from '@/api/pointShop/index'
+import { getMemberOrderQuery } from '@/api/memberCenter/index'
 export default {
     data () {
         return {
