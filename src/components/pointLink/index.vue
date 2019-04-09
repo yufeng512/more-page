@@ -36,7 +36,7 @@ export default {
             }
             $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
                 success:function(res){
-                    alert(JSON.stringify(res))
+                    // alert(JSON.stringify(res))
                     if(res.code==0){
                         localStorage.setItem("openId",res.data.openId)
                         localStorage.setItem("unionId",res.data.unionId)
