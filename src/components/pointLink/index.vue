@@ -23,6 +23,7 @@ export default {
     methods:{
         getMemberPoint(no) {
             getMemberScoreQuery(no).then((res)=>{
+                alert('积分'+JSON.stringify(res))
                 this.pointList = res
             })
         },
