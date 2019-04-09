@@ -7,7 +7,7 @@
             </div>
         </div>
         <div v-else>
-            <p>当前没有积分历史</p>
+            <p class="no-list">当前没有积分历史</p>
         </div>
     </div>
 </template>
@@ -85,5 +85,9 @@ export default {
       padding: 10px 0 15px
     p
       font-size: 14px
+.no-list
+  text-align: center
+  line-height: 32px
+  color: #666666
 </style>
 
