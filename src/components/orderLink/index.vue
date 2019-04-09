@@ -34,6 +34,7 @@ export default {
     methods:{
         getMemberOrder(no) {
             getMemberOrderQuery(no).then((res)=>{
+                alert('订单'+JSON.stringify(res))
                 this.orderList = res
             })
         },
