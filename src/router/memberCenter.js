@@ -33,7 +33,7 @@ const routes = [
     name: 'point',
     component: point,
     meta: {
-      title: '积分'
+      title: '积分商城'
     }
   },
   {
@@ -41,7 +41,7 @@ const routes = [
     name: 'exchangeDetail',
     component: exchangeDetail,
     meta: {
-      title: '积分'
+      title: '积分详情'
     }
   },
   {
