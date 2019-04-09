@@ -17,7 +17,7 @@
             </div>
         </div>
         <div v-else>
-            <p>当前没有消费历史</p>
+            <p class="no-list">当前没有消费历史</p>
         </div>
     </div>
 </template>
@@ -118,4 +118,8 @@ export default {
         color: #999999
         line-height: 20px
         margin-bottom: 0
+.no-list
+  text-align: center
+  line-height: 32px
+  color: #666666
 </style>
