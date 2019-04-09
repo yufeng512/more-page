@@ -4,7 +4,7 @@
           <img src="@/assets/quest_bg.png" alt="">
         </div>
         <div class="container" v-if="isShowText">
-          <p>感谢您近期光临欧舒丹，根据您此次的购物体验，您是否愿意推举欧舒丹给您的家人或朋友？</p>
+          <h4>感谢您近期光临欧舒丹，根据您此次的购物体验，您是否愿意推举欧舒丹给您的家人或朋友？</h4>
           <div>
               <el-radio-group v-model="info.buyFeel" @change="onChange" >
                 <el-radio label="1">购物体验差，我完全不会推荐给好友</el-radio>
@@ -13,13 +13,13 @@
               </el-radio-group>
           </div>
           <div v-if="isShow">
-            <p v-if="isShowList1">很遗憾未能为您带来满意的购物体验，请给予我们改进的机会，可以留下您宝贵的意见或建议吗？</p>
-            <p v-if="isShowList2">很高兴能为您带来满意的购物体验，您能告诉我们哪方面最令您满意吗？</p>
+            <p v-if="isShowList">很遗憾未能为您带来满意的购物体验，请给予我们改进的机会，可以留下您宝贵的意见或建议吗？</p>
+            <p v-else>很高兴能为您带来满意的购物体验，您能告诉我们哪方面最令您满意吗？</p>
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="info.experienceRemark"> </el-input>
             </div>
-            <p v-if="isShowList1">您认为我们在哪些方面可以做出改善（请填写至多3项</p>
-            <p v-if="isShowList2">请与我们分享，最令您满意的3点</p>
+            <p v-if="isShowList">您认为我们在哪些方面可以做出改善（请填写至多3项）</p>
+            <p v-else>请与我们分享，最令您满意的3点</p>
             <el-checkbox-group v-model="selectValue" :max="3">
               <el-checkbox v-for="item in list" :label="item.value" :key="item.value">{{item.text}}</el-checkbox>
             </el-checkbox-group>
@@ -29,13 +29,14 @@
             </div>
             <p>根据您此次的购物体验，请对美容顾问的服务满意度打分 <br>分值：(完全不满意) 0-10 (非常满意)</p>
             <div>
-                <el-radio-group v-model="info.points">
+                <el-radio-group v-model="info.points" @change="onRemarkChange">
                   <el-radio label="1">0-6</el-radio>
                   <el-radio label="2">7-8</el-radio>
                   <el-radio label="3">9-10</el-radio>
                 </el-radio-group>
             </div>
-            <p>请在下方空格中对美容顾问的服务满意度打分。如对美容顾问有任何意见或建议，也请一并告知哦 <br>分值：(完全不满意) 0-10 (非常满意)</p>
+            <p v-if="isShowNum">感谢您的评分，为了下次可以提供更好的服务，请将美容顾问可以提高的地方和建议告诉我们： <br>分值：(完全不满意) 0-10 (非常满意)</p>
+            <p v-else>感谢您的评分，为了可以继续提供优质的服务，请将美容顾问让您觉得满意的地方告诉我们： <br>分值：(完全不满意) 0-10 (非常满意)</p>
             <div class="input-box">
               <el-input type="textarea" :rows="2" placeholder="请输入意见或建议" v-model="info.remark"> </el-input>
             </div>
@@ -61,12 +62,12 @@ export default {
             points: '',
             remark: ''
           },
+          isShowNum: true,
           isShowText: true,
           selectValue: [],
           list: [],
           isShow: false,
-          isShowList1: false,
-          isShowList2: false,
+          isShowList: true,
           list1: [
             {text:'产品种类不够齐全，库存不足',value: 1},
             {text:'美容顾问服务的专业性待提高',value: 2},
@@ -88,20 +89,25 @@ export default {
         }
     },
     methods:{
-        onChange (key) {
+        onRemarkChange (key) {
           console.log(key)
+          if(key == 1 || key == 2) {
+            this.isShowNum = true
+          }else{
+            this.isShowNum = false
+          }
+        },
+        onChange (key) {
           this.isShow = true
           this.info.points = ''
           this.info.experienceRemark = ''
           this.info.remark = ''
           this.selectValue = []
           if(key == 1 || key == 2) {
-            this.isShowList1 = true
-            this.isShowList2 = false
+            this.isShowList = true
             this.list = this.list1
           }else{
-            this.isShowList1 = false
-            this.isShowList2 = true
+            this.isShowList = false
             this.list = this.list2
           }
         },
@@ -138,12 +144,20 @@ export default {
     }
 }
 </script>
+<style>
+.el-checkbox__label,
+.el-radio__label{
+  font-size: 16px;
+  color: #333333
+}
+
+</style>
+
 <style lang="sass" scoped>
 .el-radio,
 .el-checkbox
   margin: 15px 0
   display: block
-  color: #000000
 
 .issue-box
   position: relative
@@ -171,11 +185,11 @@ export default {
     z-index: 1
     padding: 20px 0
     p
-      font-size: 14px
+      font-size: 16px
       color: #000000
       line-height: 22px
     h4
-      font-size: 14px
+      font-size: 18px
       color: #000000
       line-height: 22px
       margin: 10px 0
