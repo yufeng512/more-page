@@ -13,10 +13,10 @@
                                 <img src="@/assets/memberCenter/logo.jpg" alt="">
                             </div>
                             <div>
-                                <h4>{{item.couponName}}</h4>
-                                <p>{{item.beginDate}} - {{item.endDate}} </p>
+                                <h4>{{item.name}}</h4>
+                                <p>{{item.exchangeStartDate}} - {{item.exchangeEndDate}} </p>
                             </div>
-                            <div class="btn-box" @click="use(item.id)">
+                            <div class="btn-box" @click="use(item)">
                                 <button>立即兑换</button>
                             </div>
                         </div>
@@ -32,52 +32,77 @@
                 <img class="close" src="@/assets/close.png" alt="" @click="close">
                 <div>
                     <h4>端午优惠券</h4>
-                    <p>分值：1200</p>
+                    <p>分值：{{point*nums}}</p>
                     <div class="number-box">
-                        <el-input-number v-model="num1" @change="handleChange"  size="small" :min="1" :max="10" label="描述文字"></el-input-number>
+                        <el-input-number v-model="nums" @change="handleChange"  size="small" :min="1" :max="10" label="描述文字"></el-input-number>
                     </div>
                 </div>
                 <div class="btn-box" @click="use">
-                    <el-button type="primary" size="small">立即兑换</el-button>
+                    <el-button type="primary" size="small" @click="exchange">立即兑换</el-button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import { getMemberScoreQuery } from '@/api/pointShop/index'
+import _ from 'lodash'
+import { getMemberCouponList, getMemberCouponExchange } from '@/api/memberCenter/index'
 export default {
     data () {
         return {
             tags:[ {name:'1-1000'}, {name:'1001-3000'}, {name:'3000以上'}],
-            couponList: [
-                {id: '1',couponName:'端午优惠券',beginDate:'2019-06-01' ,endDate:'2019-06-15'},
-                {id: '2',couponName:'七夕优惠券',beginDate:'2019-07-01' ,endDate:'2019-07-15'},
-                {id: '3',couponName:'端午优惠券',beginDate:'2019-06-01' ,endDate:'2019-06-15'},
-                {id: '4',couponName:'七夕优惠券',beginDate:'2019-07-01' ,endDate:'2019-07-15'},
-                {id: '5',couponName:'端午优惠券',beginDate:'2019-06-01' ,endDate:'2019-06-15'},
-                {id: '6',couponName:'七夕优惠券',beginDate:'2019-07-01' ,endDate:'2019-07-15'},
-                {id: '7',couponName:'端午优惠券',beginDate:'2019-06-01' ,endDate:'2019-06-15'},
-                {id: '8',couponName:'七夕优惠券',beginDate:'2019-07-01' ,endDate:'2019-07-15'},
-            ],
+            couponList: [],
+            targetList: [],
             isShow: false,
-            num1: 0,
+            point:0,
+            ids: '',
+            nums: 0,
             activeName: ''
         }
     },
     methods:{
-        getMemberPoint(no) {
-            getMemberScoreQuery(no).then((res)=>{
-
+        getMemberCouponList() {
+            getMemberCouponList().then((res)=>{
+                console.log(res)
+                this.couponList = res.data.rows.filter((item)=>{
+                    return item.availablePoint <= 1000
+                })
+                this.targetList = res.data.rows
             })
         },
         handleClick () {
-            
+            let key = this.activeName
+            if(key==0){
+                this.couponList = this.targetList.filter((item)=>{
+                    return item.availablePoint <= 1000
+                }) 
+            }else if(key == 1) {
+                this.couponList = this.targetList.filter((item)=>{
+                    return item.availablePoint > 1000 && item.availablePoint <= 3000
+                }) 
+            }else {
+                this.couponList = this.targetList.filter((item)=>{
+                    return item.availablePoint > 3000
+                }) 
+            }
+        },
+        exchange () {
+            let params = {
+                ids: this.ids,
+                nums: this.nums,
+                memberId: localStorage.getItem("memberId")
+            }
+            getMemberCouponExchange(params).then(res=>{
+                console.log(res)
+                alert(JSON.stringify(res))
+            })
         },
         close(){
             this.isShow = false
         },
-        use (id) {
+        use (item) {
+            this.point = item.availablePoint
+            this.ids = item.id
             this.isShow = true
         },
         handleChange () {
@@ -87,7 +112,7 @@ export default {
     mounted () {
         // let no = localStorage.getItem("memberCode")
         // this.getMemberPoint(no)
-        // this.getMemberPoint('CNL000000451')
+        this.getMemberCouponList()
     }
 }
 </script>

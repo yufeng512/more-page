@@ -19,3 +19,9 @@ export function getMemberScoreQuery(memberNo) {
 export function getMemberOrderQuery(memberNo) {
   return post(api.MemberOrderQuery + '?tenantId=3&memberNo=' + memberNo)
 }
+export function getMemberCouponList() {
+  return fetch(api.MemberCouponList + '?tenantId=3&menuId=1700000268')
+}
+export function getMemberCouponExchange(params) {
+  return post(api.MemberCouponExchange, params)
+}
