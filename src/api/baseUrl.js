@@ -29,6 +29,9 @@ export default {
     MemberNoCoupon: BASEAPI + 'mobile/member/couponQuery', //会员卡号查询
     MemberScoreQuery: BASEAPI + 'mobile/member/scoreQuery', //会员卡号积分查询
     MemberOrderQuery: BASEAPI + 'mobile/member/orderQuery', //会员卡号消费查询
+    MemberCouponList: BASEAPI + 'pmall/coupon/listPage', //优惠券列表
+    MemberCouponExchange: BASEAPI + 'pmall/coupon/exchange', //优惠券兑换
+    MemberCouponReturnBack: BASEAPI + 'pmall/coupon/returnBack', //优惠券退还
 
     GetCardSign: BASEAPI + 'mobile/wx/getCardSign', //会员卡param memberCode 签名
     DecryptCode: BASEAPI + 'mobile/wx/decryptCode', //会员param card_id, encrypt_code
