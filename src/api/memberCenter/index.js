@@ -23,5 +23,8 @@ export function getMemberCouponList() {
   return fetch(api.MemberCouponList + '?tenantId=3&menuId=1700000268')
 }
 export function getMemberCouponExchange(params) {
-  return post(api.MemberCouponExchange, params)
+  return post(api.MemberCouponExchange + '?ids=' + params.ids + '&nums=' + params.nums + '&memberId=' + params.memberId)
+}
+export function getMemberCouponReturnBack(params) {
+  return post(api.MemberCouponReturnBack, params)
 }

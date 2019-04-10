@@ -32,12 +32,12 @@
                 <img class="close" src="@/assets/close.png" alt="" @click="close">
                 <div>
                     <h4>端午优惠券</h4>
-                    <p>分值：{{point*nums}}</p>
+                    <p>分值：{{ nums * point }}</p>
                     <div class="number-box">
                         <el-input-number v-model="nums" @change="handleChange"  size="small" :min="1" :max="10" label="描述文字"></el-input-number>
                     </div>
                 </div>
-                <div class="btn-box" @click="use">
+                <div class="btn-box">
                     <el-button type="primary" size="small" @click="exchange">立即兑换</el-button>
                 </div>
             </div>
@@ -46,7 +46,7 @@
 </template>
 <script>
 import _ from 'lodash'
-import { getMemberCouponList, getMemberCouponExchange } from '@/api/memberCenter/index'
+import { getMemberCouponList, getMemberCouponExchange, getMemberCouponReturnBack } from '@/api/memberCenter/index'
 export default {
     data () {
         return {
@@ -54,7 +54,7 @@ export default {
             couponList: [],
             targetList: [],
             isShow: false,
-            point:0,
+            point: 0,
             ids: '',
             nums: 0,
             activeName: ''
@@ -87,13 +87,13 @@ export default {
             }
         },
         exchange () {
+            let self = this
             let params = {
-                ids: this.ids,
-                nums: this.nums,
-                memberId: localStorage.getItem("memberId")
+                ids: self.ids,
+                nums: self.nums,
+                memberId: '12370434'
             }
             getMemberCouponExchange(params).then(res=>{
-                console.log(res)
                 alert(JSON.stringify(res))
             })
         },
@@ -101,8 +101,8 @@ export default {
             this.isShow = false
         },
         use (item) {
-            this.point = item.availablePoint
             this.ids = item.id
+            this.point = item.availablePoint
             this.isShow = true
         },
         handleChange () {
