@@ -31,7 +31,7 @@
             <div class="content">
                 <img class="close" src="@/assets/close.png" alt="" @click="close">
                 <div>
-                    <h4>端午优惠券</h4>
+                    <h4>{{couponName}}</h4>
                     <p>分值：{{ nums * point }}</p>
                     <div class="number-box">
                         <el-input-number v-model="nums" @change="handleChange"  size="small" :min="1" :max="10" label="描述文字"></el-input-number>
@@ -56,6 +56,7 @@ export default {
             isShow: false,
             point: 0,
             ids: '',
+            couponName: '',
             nums: 0,
             activeName: ''
         }
@@ -102,6 +103,7 @@ export default {
         },
         use (item) {
             this.ids = item.id
+            this.couponName = item.name
             this.point = item.availablePoint
             this.isShow = true
         },
