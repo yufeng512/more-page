@@ -1,31 +1,35 @@
 <template>
     <!-- <div>即将上线,敬请期待...</div> -->
-    <div>
+    <div class="container">
         <div class="banner-box">
-            <img src="@/assets/memberCenter/logo.jpg" alt="">
+            <img src="@/assets/memberCenter/ponit-head.png" alt="">
+        </div>
+        <div class="banner-text flex-btw">
+            <p>等级: {{info.gradeDesc}}</p>
+            <p>会员积分：{{info.point||'0'}}</p>
+            <p>天猫积分：{{info.tmallPoint||'0'}}</p>
         </div>
         <div>
-            <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane :label="item.name" v-for="(item, index) in tags" :key="index">
-                    <div class="list-box flex-box" v-if="couponList.length>0">
-                        <div class="list-item" v-for="(item,index) in couponList" :key="index">
-                            <div class="img-box">
-                                <img src="@/assets/memberCenter/logo.jpg" alt="">
-                            </div>
-                            <div>
-                                <h4>{{item.name}}</h4>
-                                <p>{{item.exchangeStartDate}} - {{item.exchangeEndDate}} </p>
-                            </div>
-                            <div class="btn-box" @click="use(item)">
-                                <button>立即兑换</button>
-                            </div>
+            <div class="tab-box flex-box">
+                <div class="tab-item" :class="{active: current == index}" v-for="(item, index) in tags" :key="index" @click="handleClick(index)">{{item.name}}</div>
+            </div>
+            <div class="list-box" v-if="couponList.length>0">
+                <div class="list-item flex-btw" v-for="(item,index) in couponList" :key="index">
+                    <div class="img-box">
+                        <img src="@/assets/memberCenter/product.jpg" alt="">
+                    </div>
+                    <div class="content-box">
+                        <h4>{{item.name}}</h4>
+                        <p>积分: {{item.availablePoint}} </p>
+                        <div class="btn-box" @click="use(item)">
+                            <button>立即兑换</button>
                         </div>
                     </div>
-                    <div v-else>
-                        <p>当前没有卡券</p>
-                    </div>
-                </el-tab-pane>
-            </el-tabs>
+                </div>
+            </div>
+            <div v-else>
+                <p>当前没有卡券</p>
+            </div>
         </div>
         <div class="popup" v-if="isShow">
             <div class="content">
@@ -38,7 +42,7 @@
                     </div>
                 </div>
                 <div class="btn-box">
-                    <el-button type="primary" size="small" @click="exchange">立即兑换</el-button>
+                    <el-button size="small" @click="exchange">立即兑换</el-button>
                 </div>
             </div>
         </div>
@@ -46,6 +50,7 @@
 </template>
 <script>
 import _ from 'lodash'
+import { getMemberInfo } from '@/api/memberCenter/index'
 import { getMemberCouponList, getMemberCouponExchange, getMemberCouponReturnBack } from '@/api/memberCenter/index'
 export default {
     data () {
@@ -58,7 +63,9 @@ export default {
             ids: '',
             couponName: '',
             nums: 0,
-            activeName: ''
+            activeName: '',
+            current: 0,
+            info:{}
         }
     },
     methods:{
@@ -71,13 +78,13 @@ export default {
                 this.targetList = res.data.rows
             })
         },
-        handleClick () {
-            let key = this.activeName
-            if(key==0){
+        handleClick (i) {
+            this.current = i
+            if(this.current==0){
                 this.couponList = this.targetList.filter((item)=>{
                     return item.availablePoint <= 1000
                 }) 
-            }else if(key == 1) {
+            }else if(this.current == 1) {
                 this.couponList = this.targetList.filter((item)=>{
                     return item.availablePoint > 1000 && item.availablePoint <= 3000
                 }) 
@@ -107,7 +114,13 @@ export default {
             this.point = item.availablePoint
             this.isShow = true
         },
-        handleChange () {
+        getMobileInfo(mobile){
+            getMemberInfo(mobile).then(res=>{
+                // alert(JSON.stringify(res))
+                if(res.code == 0){
+                    this.info = res.data
+                }
+            })
 
         }
     },
@@ -115,53 +128,82 @@ export default {
         // let no = localStorage.getItem("memberCode")
         // this.getMemberPoint(no)
         this.getMemberCouponList()
+        this.getMobileInfo(localStorage.getItem("mobile"))
     }
 }
 </script>
-<style>
-.el-tabs--border-card>.el-tabs__content{
-  padding: 0
-}
-.el-tabs--border-card{
-    border: none
-}
-</style>
+
 <style lang="sass" scoped>
+.active
+  color: #f5f7fa
+  border-radius: 4px 4px 0 0
+  background: #f8bc32
+.container
+  height: 100%
+  background: #f5f7fa
 .banner-box
-  height: 120px
-  overflow: hidden
-  margin-bottom: 20px
+  margin-bottom: 5px
   img
     width: 100%
+.banner-text
+  margin: 5px 20px
+  p
+    margin: 5px 10px
+    font-size: 14px
+    color: #333333
+    line-height: 24px
+    text-align: center
+.tab-box
+  height: 40px
+  padding-left: 20px
+  align-items: center
+  background: #ffffff
+  border-bottom: 1px solid #f8bc32
+  .tab-item
+    height: 40px
+    line-height: 40px
+    width: 90px
+    font-size: 14px
+    text-align: center
 .list-box
-//   height: 520px
-//   overflow-y: auto
+  padding-top: 20px
 .list-item
-  padding: 10px 0
-  width: 50%
+  border-radius: 10px
+  background: #ffffff
+  width: 80%
+  padding: 25px 5%
+  margin-bottom: 20px
+  margin-left: 5%
   text-align: center
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,.12)
   .img-box
-    padding: 0 10px
+    width: 25%
     img
       width: 100%
-  h4
-    font-size: 14px
-  h4,p
-    text-align: left
-    padding-left: 10px
-    height: 32px
-    line-height: 32px
-  p
-    color: #666666
-    font-size: 12px
-  button
-    margin-top: 10px
-    border: none
-    width: 120px
-    background: #dbdbdb
-    padding: 4px 8px
-    color: #333
-    outline: none
+  .content-box
+    width: 75%
+    .btn-box
+      text-align: right
+    h4
+        font-size: 14px
+    h4,p
+        text-align: left
+        padding-left: 20px
+        height: 32px
+        line-height: 32px
+    p
+        color: #666666
+        font-size: 12px
+    button
+        margin-top: 10px
+        border: none
+        border-radius: 20px
+        width: 120px
+        font-size: 14px
+        background: #f8bc32
+        padding: 5px 8px
+        color: #fff
+        outline: none
 .popup
   position: fixed
   width: 100%
@@ -193,4 +235,8 @@ export default {
     button
       margin-top: 20px
       width: 100px
+      color: #ffffff
+      background: #f8bc32
+      outline: none
+      border: none
 </style>
