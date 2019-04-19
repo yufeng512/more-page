@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import memberCenter from './memberCenter.vue'
 import routes from '@/router/memberCenter.js'
 import '@/styles/index.sass'
-import Toast from '@/components/Toast'
+import store from '@/store/index.js'
+import Toast from '@/common/Toast'
 Vue.use(Toast);
 import {
   Tabs,
@@ -33,12 +34,17 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
+  // store.dispatch('showloader')
   next()
+})
+router.afterEach(function (to) {
+  // store.dispatch('hideloader')
 })
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(memberCenter)
 })

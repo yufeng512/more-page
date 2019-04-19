@@ -50,6 +50,7 @@
 </template>
 <script>
 import _ from 'lodash'
+import store from '@/store/index'
 import { getMemberInfo } from '@/api/memberCenter/index'
 import { getMemberCouponList, getMemberCouponExchange, getMemberCouponReturnBack } from '@/api/memberCenter/index'
 export default {
@@ -71,7 +72,6 @@ export default {
     methods:{
         getMemberCouponList() {
             getMemberCouponList().then((res)=>{
-                console.log(res)
                 this.couponList = res.data.rows.filter((item)=>{
                     return item.availablePoint <= 1000
                 })

@@ -135,14 +135,13 @@ exports.htmlPlugin = function () {
     let conf = {
       // 模板来源
       template: filePath,
-      // 文件名称
-      // filename: 'pages/' + filename + '/' + filename + '.html',
-      filename: filename + '.html',
+      
       // 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
       chunks: ['manifest', 'vendor', filename],
       inject: true
     }
     if (process.env.NODE_ENV === 'production') {
+      conf.filename = filename + '.html',// 文件名称
       conf = merge(conf, {
         minify: {
           removeComments: true,
@@ -151,6 +150,8 @@ exports.htmlPlugin = function () {
         },
         chunksSortMode: 'dependency'
       })
+    }else {
+      conf.filename = 'pages/' + filename + '/' + filename + '.html'// 文件名称
     }
     arr.push(new HtmlWebpackPlugin(conf))
   })

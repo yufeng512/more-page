@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import memberPolicy from './memberPolicy.vue'
 import routes from '../../router/memberPolicy.js'
 import '@/styles/index.sass'
-import Toast from '@/components/Toast'
+import Toast from '@/common/Toast'
 Vue.use(Toast);
 import {
   Input,
