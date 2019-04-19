@@ -23,12 +23,12 @@
                 <span>{{info.gradeDesc}}</span>
             </div>
             <div class="info-item">
-                <span>积分:</span>
-                <span>{{info.point}}</span>
+                <span>会员积分:</span>
+                <span>{{info.point?info.point:0}}</span>
             </div>
             <div class="info-item" >
                 <span>天猫积分:</span>
-                <span>{{info.tmallPoint}}</span>
+                <span>{{info.tmallPoint?info.tmallPoint:'0'}}</span>
             </div>
             <div class="info-item">
                 <span>省市区:</span>
@@ -38,6 +38,9 @@
                 <span>详细地址:</span>
                 <span>{{info.memberAddress}}</span>
             </div>
+        </div>
+        <div class="change-btn">
+            <button  @click="changeInfo">修改我的信息</button>
         </div>
     </div>
 </template>
@@ -50,6 +53,9 @@ export default {
         }
     },
     methods: {
+        changeInfo() {
+            this.$router.push({name:'userInfo',params:{mobile: this.info.mobile}})
+        },
         getMobileInfo(mobile){
             getMemberInfo(mobile).then(res=>{
                 // alert(JSON.stringify(res))
@@ -87,5 +93,19 @@ export default {
   span
     color: #666666
     &:first-child
-      width: 25%
+      width: 30%
+    &:last-child
+      width: 70%
+.change-btn
+  button
+    outline: none
+    border: #999999
+    padding: 0 20px
+    border-radius: 4px
+    background: #999999
+    color: #ffffff
+    font-size: 14px
+    width: 100%
+    height: 32px
+    margin-top: 10px
 </style>

@@ -13,7 +13,13 @@
     </div>
 </template>
 <script>
+<<<<<<< HEAD
 import { getMemberScoreQuery } from '@/api/memberCenter/index'
+=======
+import $ from 'jquery'
+import { hasPartQues } from '@/api/common.js'
+import { Login } from '@/api/memberPolicy/index'
+>>>>>>> dev
 export default {
     data () {
         return {
@@ -21,10 +27,74 @@ export default {
     },
     methods:{
         submit () {
+<<<<<<< HEAD
           this.$router.push('questionnaire')
         }
     },
     mounted () {
+=======
+          let self = this
+          var obj = self.UrlSearch()
+          var params = {
+            openId: localStorage.getItem("openId"),
+            campaignId: obj.campaignId
+          }
+          localStorage.setItem("campaignId",obj.campaignId||'') 
+          hasPartQues(params).then(res=>{
+            // alert(JSON.stringify(res))
+            if(res){
+              self.$toast('您已参与过该活动评价');
+            }else{
+              self.$router.push('questionnaire')
+            }
+          })
+        },
+        isLogin (){
+          let self = this
+          let obj = self.UrlSearch()
+          let params ={
+            code: obj.code
+          }
+          $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
+            success:function(res){
+              if(res.code==0){
+                if(res.data.member){
+                  localStorage.setItem("openId",res.data.openId) 
+                }else{
+                  self.$toast('登陆失败');
+                }
+              }else{
+                self.$toast('登陆失败');
+              }
+            },
+            error:function(e){
+              self.$toast(e)
+            }
+          })
+        },
+        UrlSearch() {
+          //encrypt_code=ENCRYPT_CODE&card_id=CARDID
+          var obj={}
+          var str=location.href; //取得整个地址栏
+          var num=str.indexOf("?")
+          str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+          var arr=str.split("&"); //各个参数放到数组里
+          // alert('res11'+JSON.stringify(arr))
+          for(var i=0;i < arr.length;i++){
+            num=arr[i].split("=")
+            if(num[0]=='code'){
+              obj.code=num[1]
+            }
+            if(num[0]=='campaignId'){
+              obj.campaignId=num[1]
+            }
+          }
+          return obj
+        }
+    },
+    mounted () {
+      this.isLogin()
+>>>>>>> dev
     }
 }
 </script>
@@ -36,7 +106,11 @@ export default {
 .issue-box
   position: relative
   .bg
+<<<<<<< HEAD
     position: absolute
+=======
+    position: fixed
+>>>>>>> dev
     top: 0
     z-index: 0
     img

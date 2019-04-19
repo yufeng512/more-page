@@ -5,7 +5,11 @@
                 <div class="list-box" v-if="couponList.length>0">
                     <div class="list-item flex-btw" v-for="(item,index) in couponList" :key="index">
                         <div>
+<<<<<<< HEAD
                             <h4>{{item.couponName}}}</h4>
+=======
+                            <h4>{{item.couponName}}</h4>
+>>>>>>> dev
                             <p>有效期：{{item.beginDate}}-{{item.endDate}} </p>
                         </div>
                         <div class="item-code flex-column" @click="use(item)">

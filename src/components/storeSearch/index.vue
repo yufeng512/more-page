@@ -2,21 +2,24 @@
     <div class="map-warpper">
         <div class="map-box" id="map">
         </div>
-        <div class="panel-box">
-            <div class="panel-item" :class="{'active':current == index}" v-for="(item,index) in panelList" :key="index" @click="infohtmlset(item,index)">
+        <div class="panel-box" v-if="panelList.length>0">
+            <div class="panel-item" v-for="(item,index) in panelList" :key="index" @click="infohtmlset(item,index)">
                 <div class="logo-box">
                     <img src="@/assets/logo.jpg" alt="">
                 </div>
                 <div class="text-box">
-                    <h2>{{item.title}}</h2>
+                    <h2>{{item.counterName}}</h2>
                     <p>{{item.address}}</p>
                     <div class="tag">
-                        <span>{{item.phoneNumber}}</span>
-                        <span>{{item.distance}}KM</span>
-                        <span>{{item.phone}}</span>
+                        <span v-show="item.phone">{{item.phone}}</span>
+                        <span v-show="item.businessHour">{{item.businessHour}}</span>
+                        <!-- <span v-show="item.distance">{{item.distance}}米</span> -->
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="panel-box" v-if="isShow">
+            <div style="text-align: center: color: #666666;font-size: 14px;line-height:32px;">当前门店没有查询到相关的门店信息！</div>
         </div>
         <div class="select-box" @click="choiceArea">
             <div class="img-box"><img src="@/assets/address.png" alt=""></div>
@@ -29,25 +32,19 @@
             </div>
             <mt-picker :slots="citySlots" @change="onCityChange" :visible-item-count="5"></mt-picker>
         </mt-popup>
-        <div id="redituser" style="visibility:hidden;">
-        </div>
-        <div id="tpl" >
-            <h4 style='font-size:14px'>{{title}}</h4>
-            <p style='margin:6px 0;font-size:12px;color:#666666;'>{{address}}</p>
-            <button @click='goDetails' style='color:#666666;font-size:12px;'>到这里去</button>
-        </div>
     </div>
 </template>
 <script>
-import { getCurrentCity, getCounterList, Provinces, Cities} from '@/api/storeSearch/index'
+import { CurrentCity, getCounterList, Provinces, Cities} from '@/api/storeSearch/index'
+import { getlocalAPi } from '@/api/common'
 var local,
     map,
+    infoWindow,
     address = {}
 export default {
     name: 'store',
-    data() { 
+    data() {
         return {
-            current: 0,
             panelList: [],
             currentLocation: '',
             searchWord: '',
@@ -56,6 +53,7 @@ export default {
             address: '',
             detailUrl: '',
             popupVisible: false,
+            isShow: false,
             latitude: '',
             longitude: '',
             targetLatitude: '',
@@ -80,76 +78,112 @@ export default {
         }
     },
     created(){ 
-        this.getCurrentCity()
     },
     mounted(){
-        
-        var options = {
-            enableHighAccuracy: false,
-            timeout: 6000,
-            maximumAge: 1
-        }
+        let self = this
         setTimeout(()=>{
             map = new BMap.Map("map",{enableMapClick:false });
-            let geolocation = new BMap.Geolocation();
-            let r = {
-                point:{
-                    lng:121.44,
-                    lat:31.28
-                }
-            }
-            this.longitude = r.point.lng
-            this.latitude = r.point.lat
-            var mk = new BMap.Marker(r.point);
-            map.addOverlay(mk);
-            map.panTo(r.point);
+            getlocalAPi({
+                    originId:'gh_4b16ea1dcc6f',
+                    url: 'https://crm.eloccitane.com/wmth5/storeSearch.html'
+            }).then(res=>{
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.appId, // 必填，公众号的唯一标识
+                    timestamp: res.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.nonceStr, // 必填，生成签名的随机串
+                    signature: res.signature,// 必填，签名
+                    url: res.url,
+                    jsApiList: ['getLocation','openLocation'] // 必填，需要使用的JS接口列表
+                });
+                wx.ready(function(){
+                    wx.getLocation({
+                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                        success: function (r) {
+                            // alert('res222'+JSON.stringify(r))
+                            self.latitude = r.latitude; // 纬度，浮点数，范围为90 ~ -90
+                            self.longitude = r.longitude; // 经度，浮点数，范围为180 ~ -180。
+                            // let option = { lat: self.latitude, lng: self.longitude }
+                            // let point = new BMap.Point(option.lng, option.lat)
+                            // let marker = new BMap.Marker(point);
+                            // map.addOverlay(marker)
+                            // map.centerAndZoom(point,11)
+                            let params = {
+                                longitude: self.longitude,
+                                latitude: self.latitude
+                            }
+                            self.getCurrentCity(params)
+                        },
+                        fail: function (e) {
+                            alert('fail') 
+                        }
+                    })
+                })
+            })
+            // let geolocation = new BMap.Geolocation();
+
             // geolocation.getCurrentPosition(function(r){
             //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
             //         var mk = new BMap.Marker(r.point);
             //         map.addOverlay(mk);
             //         map.panTo(r.point);
-            //         this.latitude = r.point.lat
-            //         this.longitude = r.point.lng
-            //         console.log('您的位置：'+r.point.lng+','+r.point.lat);
+            //         self.latitude = r.point.lat
+            //         self.longitude = r.point.lng
+            //         // console.log('您的位置：'+r.point.lng+','+r.point.lat);
+            //         let params = {
+            //             longitude:self.longitude,
+            //             latitude:self.latitude
+            //         }
+            //         self.getCurrentCity(params)
             //     }else {
-            //         console.log('failed'+this.getStatus());
+            //         alert('您的浏览器不支持地图定位')
             //     }
             // },{enableHighAccuracy: false})
-            this.getProvinces()
-            this.counterList()
-            this.doSearch()
-        },300)
+            
+        },600)
     },
     methods: {
-        getCurrentCity () {
-            let params = {
-                longitude:this.longitude||121.443010,
-                latitude:this.latitude||31.280850
-            }
-            getCurrentCity(params).then((res)=>{
-                console.log(res)
+        getCurrentCity (params) {
+            CurrentCity(params).then((res)=>{ 
                 this.currentLocation = res.data.name
+                this.areaText = res.data.name
+                this.doSearch()
+                this.counterList()
             })
         },
         counterList () {
             let params = {
-                city: this.currentLocation,
-                longitude:this.longitude||121.443010,
-                latitude:this.latitude||31.280850
-            }
+                    longitude: this.longitude,
+                    latitude: this.latitude,
+                    city: this.currentLocation
+                }
+            // alert('params111'+JSON.stringify(params))
             getCounterList(params).then(res=>{
                 console.log(res.data)
-                this.panelList = res.data
+                // alert('paramsres'+JSON.stringify(res))
+                if(res.data.length>0){
+                    this.isShow = false
+                    res.data.forEach(item=>{
+                        let option = { lat: item.latitude, lng: item.longitude }
+                        let point = new BMap.Point(option.lng, option.lat)
+                        let marker = new BMap.Marker(point);
+                        map.addOverlay(marker);
+                    })
+                    this.panelList = res.data
+                }else{
+                    this.isShow = true
+                }
+                
             })
         },
         getProvinces() {
             let obj={}
             Provinces().then((res)=>{ 
                 res.data.forEach((item)=>{
-                    Cities({provinceCode:item.code}).then(r=>{
+                    Cities({province:item.text}).then(r=>{
                         let arr = []
-                        r.data.forEach((i)=>{ arr.push(i.name) })
-                        obj[item.name] =arr
+                        r.data.forEach((i)=>{ arr.push(i.text) })
+                        obj[item.text] =arr
                         address = obj
                         this.citySlots[0].values = Object.keys(address)
                         this.citySlots[2].values = Object.values(address)[0]
@@ -159,6 +193,7 @@ export default {
         },
         choiceArea () {
             this.popupVisible = true
+            this.getProvinces()
         },
         cancleaddress () {
             this.popupVisible = false
@@ -171,43 +206,23 @@ export default {
         onCityChange (picker, values) {
             console.log(picker, values)
             picker.setSlotValues(1, address[values[0]])
-            // this.areaText =values[0]+' / '+ values[1]
+            this.areaText = values[1]
             this.currentLocation = values[1]
         },
         doSearch () {
-            map.centerAndZoom(this.currentLocation,11);  //设置地图的中心点：
+            let point = new BMap.Point(this.longitude, this.latitude)
+            map.centerAndZoom(point,11);  //设置地图的中心点：
             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
             map.setCurrentCity(this.currentLocation); // 设置地图显示的城市
             let option = { map:map, autoViewport:false, selectFirstResult: false }
             local = new BMap.LocalSearch(map,{ renderOptions:option});
-            // local.search(this.searchWord);
-            // // local.searchNearby([val], mPoint, 2000)
-            // local.setSearchCompleteCallback((res)=>{
-            //     this.panelList = res.Gq
-            // })
-            // local.setMarkersSetCallback((res)=>{
-            //     console.log('23423423', res)
-            // })
-            // local.setInfoHtmlSetCallback((res)=>{
-            //     console.log('234234231111111111', res)
-            //     this.panelList.forEach((item,i)=>{
-            //         if(item.uid == res.uid){
-            //             this.current = i
-            //         }
-            //     })
-            // })
         },
         infohtmlset(item,index) {
-            // let sContent = document.getElementById('tpl')
-            // document.getElementById('redituser').appendChild(sContent)
-            this.current = index
             this.targetLatitude = item.latitude
             this.targetLongitude = item.longitude
             this.infoWindow(item,index)
         },
         infoWindow (item,index) {
-            this.title = item.title
-            this.address = item.address
             let option = { lat: item.latitude, lng: item.longitude }
             let point = new BMap.Point(option.lng, option.lat)
             let marker = new BMap.Marker(point)
@@ -217,27 +232,35 @@ export default {
                 width :250,
                 minHeight:45,
             }
-            let sContent = document.getElementById('tpl')
+            let sContent =  `<div style="font-size:14px">欧舒丹精品店</div><div style="margin: 6px 0;color:#333;font-size:14px;">`+item.counterName+ `</div><div style="font-size:12px;color:#666;">`+item.address +`</div>`
+                            // `</span><a style="font-size:14px;margin-left:15px;text-decoration:underline;color:#3d6dcc;" href="https://api.map.baidu.com/direction?origin=latlng:`+this.latitude+`,`+this.longitude+`|name:我的位置&destination=`+item.address+`&mode=driving&region=`+this.currentLocation+`&output=html&src=webapp.baidu.openAPIdemo'">到这里去</a></div>`
             console.log(sContent)
-            let infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
+            infoWindow =new BMap.InfoWindow(sContent,opts);// 创建信息窗口对象
+            infoWindow.disableCloseOnClick()
             marker.addEventListener("click",function(){
                 map.openInfoWindow(infoWindow,point);
             });
+            console.log(infoWindow)
             map.enableScrollWheelZoom(true);
-            map.openInfoWindow(infoWindow,map.getCenter());//开启信息窗口
+            map.openInfoWindow(infoWindow, map.getCenter());//开启信息窗口
         },
         goDetails () {
-            let sContent = document.getElementById('tpl')
-            document.getElementById('redituser').appendChild(sContent)
-            console.log(this.targetLongitude,this.targetLatitude)
-            // location.href= this.detailUrl
-            // var map = new BMap.Map("map");
-            map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
-            var p1 = new BMap.Point(116.301934,39.977552);
-            var p2 = new BMap.Point(116.508328,39.919141);
-            var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-            driving.search(p1, p2);
-        }
+            // alert(this.address)
+            console.log(this.currentLocation)
+            location.href = 'https://api.map.baidu.com/direction?origin=latlng:'+this.latitude+','+this.longitude+'|name:我的位置&destination='+this.address+'&mode=driving&region='+this.currentLocation+'&output=html&src=webapp.baidu.openAPIdemo'
+        },
+        handler (e) {
+            e.preventDefault();
+        }	
+    },
+    watch: {
+        popupVisible(val) {
+            if (val) {
+                document.addEventListener('touchmove', this.handler, false)
+            } else {
+                document.removeEventListener('touchmove', this.handler, false)
+            }
+        }  
     }
 }
 </script>
@@ -259,7 +282,7 @@ export default {
     position: fixed;
     left: 4%;
     top: 10px;
-    z-index: 2;
+    z-index: 99;
     width: 92%;
     border: 1px solid #dbdbdb;
     border-radius: 4px;
@@ -336,6 +359,11 @@ export default {
     color: #333333;
     font-size: 12px;
 }
+.tag{
+    background: #eee;
+    padding: 4px;
+    border-radius: 4px;
+}
 .tag span{
     font-size: 12px
 }
@@ -344,6 +372,13 @@ export default {
 }
 .mint-popup-4{
     width: 100%;
+}
+.address{
+    margin: 6px 0;
+}
+.tpl{
+    position: absolute;
+    bottom: 0
 }
 </style>
 

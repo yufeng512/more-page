@@ -17,4 +17,28 @@ export default {
     ListAvailable: BASEAPI + 'mobile/campaign/listAvailable', //渠道查询接口
     //专柜查询
     CounterList: BASEAPI + 'mobile/counter/counterList', //城市门店列表
+    //会员注册
+    Send: BASEAPI + 'mobile/code/send', //发送短信验证码接口
+    CodeVerify: BASEAPI + 'mobile/code/verify', //校验短信验证码接口
+    CheckBind: BASEAPI + 'mobile/member/checkBind', //校验短信验证码接口
+    Login: BASEAPI + 'mobile/auth/login', //登陆
+    //会员中心
+    MemberInfo: BASEAPI + 'mobile/member/queryByMobile/', //会员信息
+    Querypoint: BASEAPI + 'mobile/scoreQuery', //积分信息
+    MemberCoupon: BASEAPI + 'mobile/member/couponQueryByCode', //卡券信息
+    MemberNoCoupon: BASEAPI + 'mobile/member/couponQuery', //会员卡号查询
+    MemberScoreQuery: BASEAPI + 'mobile/member/scoreQuery', //会员卡号积分查询
+    MemberOrderQuery: BASEAPI + 'mobile/member/orderQuery', //会员卡号消费查询
+    MemberCouponList: BASEAPI + 'pmall/coupon/listPage', //优惠券列表
+    MemberCouponExchange: BASEAPI + 'pmall/coupon/exchange', //优惠券兑换
+    MemberCouponReturnBack: BASEAPI + 'pmall/coupon/returnBack', //优惠券退还
+
+    GetCardSign: BASEAPI + 'mobile/wx/getCardSign', //会员卡param memberCode 签名
+    DecryptCode: BASEAPI + 'mobile/wx/decryptCode', //会员param card_id, encrypt_code
+
+    //问卷
+    addQuestion: BASEAPI + 'mobile/member/addQuestion', //提交问卷    
+    hasPartQues: BASEAPI + 'mobile/member/hasPartQues/', //判断是否
+    localAPi: 'https://crm.eloccitane.com/weixin/wechat/auth/jsapi_signature',
+
 }

@@ -42,7 +42,7 @@ export default {
     },
     mounted () {
         let no = localStorage.getItem("memberCode")
-        alert(no)
+        // alert(no)
         this.getMemberOrder(no)
     }
 }
