@@ -66,7 +66,7 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   module: {
-    name: 'memberCenter',
+    name: 'tiandun',
     isTestPackage: false
   }
 }
