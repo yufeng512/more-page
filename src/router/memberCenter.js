@@ -1,10 +1,7 @@
 import index from '../components/memberCenter/index'
 import info from '../components/memberCenter/info'
 import point from '../components/memberCenter/point'
-<<<<<<< HEAD
-=======
 import userInfo from '../components/memberCenter/userInfo'
->>>>>>> dev
 import pointHistory from '../components/memberCenter/pointHistory'
 import orderHistory from '../components/memberCenter/orderHistory'
 import card from '../components/memberCenter/card'
@@ -23,8 +20,6 @@ const routes = [
     }
   },
   {
-<<<<<<< HEAD
-=======
     path: '/userInfo',
     name: 'userInfo',
     component: userInfo,
@@ -33,16 +28,11 @@ const routes = [
     }
   },
   {
->>>>>>> dev
     path: '/point',
     name: 'point',
     component: point,
     meta: {
-<<<<<<< HEAD
-      title: '积分'
-=======
       title: '积分商城'
->>>>>>> dev
     }
   },
   {
