@@ -1,29 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div>积分更新中...</div>
-</template>
-<script>
-import { getMemberScoreQuery } from '@/api/memberCenter/index'
-export default {
-    data () {
-        return {
-            
-        }
-    },
-    methods:{
-        getMemberPoint(no) {
-            getMemberScoreQuery(no).then((res)=>{
-
-            })
-        }
-    },
-    mounted () {
-        let no = localStorage.getItem("memberCode")
-        this.getMemberPoint(no)
-    }
-}
-</script>
-=======
     <!-- <div>即将上线,敬请期待...</div> -->
     <div class="container">
         <div class="banner-box">
@@ -47,7 +22,7 @@ export default {
                         <h4>{{item.name}}</h4>
                         <p>积分: {{item.availablePoint}} </p>
                         <div class="btn-box" @click="use(item)">
-                            <button>立即兑换</button>
+                            <el-button type="primary">立即兑换</el-button>
                         </div>
                     </div>
                 </div>
@@ -67,7 +42,7 @@ export default {
                     </div>
                 </div>
                 <div class="btn-box">
-                    <el-button size="small" @click="exchange">立即兑换</el-button>
+                    <el-button size="small" type="primary" @click="exchange">立即兑换</el-button>
                 </div>
             </div>
         </div>
@@ -225,7 +200,6 @@ export default {
         border-radius: 20px
         width: 120px
         font-size: 14px
-        background: #f8bc32
         padding: 5px 8px
         color: #fff
         outline: none
@@ -261,8 +235,6 @@ export default {
       margin-top: 20px
       width: 100px
       color: #ffffff
-      background: #f8bc32
       outline: none
       border: none
 </style>
->>>>>>> dev
