@@ -248,36 +248,22 @@ export default {
             }
             return value
         },
-<<<<<<< HEAD
-=======
         
->>>>>>> dev
         getMobileInfo (mobile){
             getMemberInfo(mobile).then(res=>{
                 // alert(JSON.stringify(res))
                 if(res.code == 0){
-<<<<<<< HEAD
-                    this.info = res.data
-                    // localStorage.setItem("memberCode",'C0004500000019851')
-                    localStorage.setItem("memberCode",res.data.memberCode)
-=======
                     localStorage.setItem("memberCode",res.data.memberCode)
                     this.info = res.data
                 }else{
                     // window.location.href = 'https://crm.eloccitane.com/member/memberPolicy.html'
                     window.location.href = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
->>>>>>> dev
                 }
             })
         }
     },
     mounted () {
         this.isLogin()
-<<<<<<< HEAD
-        // let mobile = '13818645674'
-        // this.getMobileInfo(mobile)
-=======
->>>>>>> dev
     }
 }
 </script>
@@ -288,13 +274,8 @@ export default {
   .card-code
     position: absolute
     width: 40px
-<<<<<<< HEAD
-    right: 40px
-    top: 60px
-=======
     left: 30px
     top: 35px
->>>>>>> dev
   img
     width: 100%
 .info-box
@@ -304,12 +285,6 @@ export default {
     border-bottom: 1px solid #dbdbdb
     display: flex
     justify-content: flex-start
-<<<<<<< HEAD
-    span
-        color: #666666
-        &:first-child
-        width: 25%
-=======
     align-items: center
     p
       width: 70%
@@ -322,7 +297,6 @@ export default {
         width: 30%
       &:last-child
         width: 70%
->>>>>>> dev
 .btn-box
   border-bottom: 1px solid #dbdbdb
 .btn-item
@@ -330,15 +304,9 @@ export default {
   height: 80px
   flex: 1
   .img-box
-<<<<<<< HEAD
-    height: 30px
-    img
-      width: 35%
-=======
     height: 40px
     img
       width: 30%
->>>>>>> dev
   p
     font-size: 16px
     padding: 10px 0
