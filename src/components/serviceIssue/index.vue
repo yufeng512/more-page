@@ -13,13 +13,9 @@
     </div>
 </template>
 <script>
-<<<<<<< HEAD
-import { getMemberScoreQuery } from '@/api/memberCenter/index'
-=======
 import $ from 'jquery'
 import { hasPartQues } from '@/api/common.js'
 import { Login } from '@/api/memberPolicy/index'
->>>>>>> dev
 export default {
     data () {
         return {
@@ -27,12 +23,6 @@ export default {
     },
     methods:{
         submit () {
-<<<<<<< HEAD
-          this.$router.push('questionnaire')
-        }
-    },
-    mounted () {
-=======
           let self = this
           var obj = self.UrlSearch()
           var params = {
@@ -94,7 +84,6 @@ export default {
     },
     mounted () {
       this.isLogin()
->>>>>>> dev
     }
 }
 </script>
@@ -106,11 +95,7 @@ export default {
 .issue-box
   position: relative
   .bg
-<<<<<<< HEAD
-    position: absolute
-=======
     position: fixed
->>>>>>> dev
     top: 0
     z-index: 0
     img

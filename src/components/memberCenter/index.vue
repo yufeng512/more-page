@@ -8,14 +8,10 @@
             <div class="info-box">
                 <div class="info-item">
                     <span>姓名:</span>
-<<<<<<< HEAD
-                    <span>{{info.name}}</span>
-=======
                     <p class="flex-btw">
                         <span>{{info.name}}</span>
                         <a style="" @click="getCard">领取卡券</a>
                     </p>
->>>>>>> dev
                 </div>
                 <div class="info-item">
                     <span>手机:</span>
@@ -26,17 +22,12 @@
                     <span>{{info.gradeDesc}}</span>
                 </div>
                 <div class="info-item">
-<<<<<<< HEAD
-                    <span>积分:</span>
-                    <span>{{info.point}}</span>
-=======
                     <span>会员积分:</span>
                     <span>{{info.point?info.point:0}}</span>
                 </div>
                 <div class="info-item" >
                     <span>天猫积分:</span>
                     <span>{{info.tmallPoint?info.tmallPoint:'0'}}</span>
->>>>>>> dev
                 </div>
             </div>
             <div class="btn-box flex-btw">
@@ -62,11 +53,7 @@
             <div class="btn-box flex-btw">
                 <div class="btn-item flex-column" @click="goPage('pointHistory')">
                     <div class="img-box flex-column">
-<<<<<<< HEAD
-                        <img src="@/assets/memberCenter/search.png" alt="">
-=======
                         <img src="@/assets/memberCenter/point-search.png" alt="">
->>>>>>> dev
                     </div>
                     <p>积分历史</p>
                 </div>
@@ -78,11 +65,7 @@
                 </div>
                 <div class="btn-item flex-column">
                     <div class="img-box flex-column" @click="goStore">
-<<<<<<< HEAD
-                        <img src="@/assets/memberCenter/store.png" alt="">
-=======
                         <img src="@/assets/memberCenter/address.png" alt="">
->>>>>>> dev
                     </div>
                     <p>附近门店</p>
                 </div>
@@ -100,10 +83,7 @@
 </template>
 <script>
 import $ from 'jquery'
-<<<<<<< HEAD
-=======
 import { GetCardSign} from '@/api/memberPolicy'
->>>>>>> dev
 import { getMemberInfo } from '@/api/memberCenter/index'
 import QRCode from 'qrcode'
 export default {
@@ -118,11 +98,7 @@ export default {
     methods: {
         goPage(str){
             if(str!=''){
-<<<<<<< HEAD
-                this.$router.push(str)
-=======
                 this.$router.push('/'+str)
->>>>>>> dev
             }
         },
         goStore () {
@@ -149,32 +125,6 @@ export default {
             }
             $.ajax({ url: process.env.BASE_API+"mobile/auth/login", type:"post", data: params,
                 success:function(res){
-<<<<<<< HEAD
-                // alert(JSON.stringify(res))
-                if(res.code==0){
-                    if(res.data.member){
-                        localStorage.setItem("isMemberCenter",true)
-                        localStorage.setItem("mobile",res.data.member.mobile)
-                        self.getMobileInfo(res.data.member.mobile)
-                    }else{
-                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
-                    }
-                }else {
-                    if(localStorage.getItem("isMemberCenter")){
-                        self.getMobileInfo(localStorage.getItem("mobile"))
-                    }else{
-                        window.location = 'http://wmtuat.eloccitane.com/member/memberPolicy.html'
-                        // window.location = 'https://crm.eloccitane.com/member/memberPolicy.html'
-                    }
-                }
-                },
-                error:function(e){
-                    alert(e)
-                }
-            })
-        },
-=======
                     if(res.code==0){
                         localStorage.setItem("openId",res.data.openId)
                         localStorage.setItem("unionId",res.data.unionId)
@@ -233,7 +183,6 @@ export default {
                 });
             })
         },
->>>>>>> dev
         UrlSearch() {
             var name,value;
             var str=location.href; //取得整个地址栏

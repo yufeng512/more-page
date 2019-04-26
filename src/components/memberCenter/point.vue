@@ -1,29 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div>积分更新中...</div>
-</template>
-<script>
-import { getMemberScoreQuery } from '@/api/memberCenter/index'
-export default {
-    data () {
-        return {
-            
-        }
-    },
-    methods:{
-        getMemberPoint(no) {
-            getMemberScoreQuery(no).then((res)=>{
-
-            })
-        }
-    },
-    mounted () {
-        let no = localStorage.getItem("memberCode")
-        this.getMemberPoint(no)
-    }
-}
-</script>
-=======
     <!-- <div>即将上线,敬请期待...</div> -->
     <div class="container">
         <div class="banner-box">
@@ -265,4 +240,3 @@ export default {
       outline: none
       border: none
 </style>
->>>>>>> dev
