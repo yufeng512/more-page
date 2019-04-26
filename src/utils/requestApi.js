@@ -1,74 +1,38 @@
 // import Vue from 'vue'
 import axios from 'axios'
 import { Promise } from 'es6-promise'
-import store from '../store'
+import store from '../store/index.js'
 
-// Vue.prototype.$http = axios
+window.baseURL = process.env.BASE_API
+
+const service = axios.create({
+  baseURL: baseURL,
+  // timeout: 2000,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  }
+});
 //添加一个请求拦截器
-axios.interceptors.request.use(config => {
-  // const token = sessionStorage.getItem("token");
-  config.data = JSON.stringify(config.data);
-  config.headers = {
-    'Content-Type': 'application/json' //设置跨域头部,虽然很多浏览器默认都是使用json传数据，但咱要考虑IE浏览器。
-  };
-  // if (token) {
-  //   config.headers.Authorization = "Token " + token; //携带权限参数
-  // }
-  store.dispatch('showloader')
-  return config;
+service.interceptors.request.use(config => {
+    config.data = JSON.stringify(config.data)
+    store.dispatch('showloader')
+    return config;
 },
-  err => {
-    return Promise.reject(err);
-  })
+err => {
+  return Promise.reject(err);
+})
+
 //添加一个响应拦截器
-axios.interceptors.response.use(response => {
-  store.dispatch('hideloader')
-  console.log(response);
-  // if (response.status == 401) {
-  //   this.$router.push('/login')//push后面是一个参数对象，可以携带很多参数，具体可以去vue-router上查看，例如query字段表示携带的参数
-  // }
-  return response
+service.interceptors.response.use(response => {
+    store.dispatch('hideloader')
+    if (response.status == 401) {
+      this.$router.push('/login')
+    }
+    return response.data
 },
-  err => {
+err => {
     return Promise.reject(err)
-  })
+})
 
-  /**
- * 封装get方法
- * @param url
- * @param data
- * @returns {Promise}
- */
-
-  export function fetch(url, params = {}){
-  return new Promise((resolve, reject) => {
-    axios.get(url, {
-      params: params
-    })
-      .then(response => {
-        resolve(response.data);
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
-
-
-/**
- * 封装post请求
- * @param url
- * @param data
- * @returns {Promise}
- */
-
-export function post(url, data = {}) {
-  return new Promise((resolve, reject) => {
-    axios.post(url, data)
-      .then(response => {
-        resolve(response.data);
-      }, err => {
-        reject(err)
-      })
-  })
-}
+export default service

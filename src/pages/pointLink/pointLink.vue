@@ -6,9 +6,9 @@
 </template>
 <script>
 
-import loading from '@/components/loading'
+import loading from '@/common/loading'
 export default {
-  name: 'pointShop',
+  name: 'pointLink',
   data () {
     return {}
   },

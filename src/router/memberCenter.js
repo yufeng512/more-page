@@ -1,7 +1,6 @@
 import index from '../components/memberCenter/index'
 import info from '../components/memberCenter/info'
 import point from '../components/memberCenter/point'
-import exchangeDetail from '../components/memberCenter/exchangeDetail'
 import userInfo from '../components/memberCenter/userInfo'
 import pointHistory from '../components/memberCenter/pointHistory'
 import orderHistory from '../components/memberCenter/orderHistory'
@@ -34,14 +33,6 @@ const routes = [
     component: point,
     meta: {
       title: '积分商城'
-    }
-  },
-  {
-    path: '/exchangeDetail/:id',
-    name: 'exchangeDetail',
-    component: exchangeDetail,
-    meta: {
-      title: '积分详情'
     }
   },
   {
